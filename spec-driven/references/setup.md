@@ -21,16 +21,16 @@ Ask once, early, with real options:
   catches more.
 - **Lead and coder** — a lead agent (product manager, tech lead, architect, reviewer) writes specs,
   ADRs, plans and task briefs, and reviews; a coder agent implements and reports. They communicate
-  only through files, and the user can step in at any point. Ask which tool each agent runs in: if any
-  of them is not Claude Code, everything the agents share must be written into the project, because
-  that agent cannot load these skills.
+  only through files, and the user can step in at any point. Ask which tool each agent runs in, and on
+  whose machine: everything the agents share must be written into the project, because these skills
+  live in one user's skills folder, not in the project.
 - **Another split the user prefers** — a separate reviewer, several coders. Map it onto the same roles
   and files.
 
 Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, read `multi-agent.md` and,
 before phase 1, set up `docs/handoff/` from `handoff-templates.md` — protocol, control (paused), board
-and templates — and, when any agent's tool cannot load these skills, `docs/engineering/principles.md`
-(senior-engineering `project-knowledge.md`).
+and templates — and, when any agent works without these skills installed,
+`docs/engineering/principles.md` (senior-engineering `project-knowledge.md`).
 
 ## Decide the size and the architecture, with the user
 

@@ -123,7 +123,8 @@ engineering rules and the stack playbook. The spec phases are held by their gate
 1. Reads `CONTROL.md`, `BOARD.md`, the brief, and the files it links — nothing more by default.
 2. Implements within the files in scope, writes the tests the brief's lenses call for, and verifies
    exactly as the brief says.
-3. Self-reviews with senior-engineering, or `docs/engineering/principles.md` in another tool.
+3. Self-reviews with senior-engineering, or with `docs/engineering/principles.md` where the skills are
+   not installed.
 4. Writes the report — `submitted` or `blocked` — and stops.
 
 **The user** tells each session when to take its turn, reads the board's "waiting on the user" list,
@@ -180,11 +181,11 @@ Ideas beyond the brief go into the report's *Proposals* section — never into t
 
 ## Mixed tools
 
-Everything a coder in another tool needs lives in the project, not in anyone's skills folder:
+Everything a coder without these skills needs lives in the project, not in anyone's skills folder:
 `AGENTS.md` → `docs/handoff/PROTOCOL.md` (with the stop-and-ask list and the templates it links) → the
-brief → the linked files. When the coder's tool cannot load these
-skills, the lead writes `docs/engineering/principles.md` (senior-engineering `project-knowledge.md`) and
-the stack playbook carries the stack rules. A tool that does not read `AGENTS.md` gets a shim. Keep
+brief → the linked files. When the coder works without these skills installed, the lead writes
+`docs/engineering/principles.md` (senior-engineering `project-knowledge.md`) and the stack playbook
+carries the stack rules. A tool that does not read `AGENTS.md` gets a shim. Keep
 everything plain Markdown with paths from the repository root and no tool-specific syntax. Each report
 names the tool and model that wrote it.
 

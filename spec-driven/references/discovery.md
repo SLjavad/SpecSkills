@@ -17,9 +17,8 @@ Discovery opens the project and returns at every gate.
 
 ## Why this has its own step
 
-Studies of coding models find that, given an underspecified task, most responses start producing
-instead of asking — and that when the model does ask, results improve substantially. The cheapest moment to resolve an ambiguity is before anything
-depends on it: a wrong assumption here costs a paragraph; the same assumption in code costs a rewrite.
+The cheapest moment to resolve an ambiguity is before anything depends on it: a wrong assumption here
+costs a paragraph; the same assumption in code costs a rewrite.
 
 ## Sweep both sides
 
@@ -74,7 +73,7 @@ Applied to: <FR-/ADR-/file>
 
 - **Draft, then ask.** Write the first pass from what you have, marking every inference, then ask about
   the gaps that actually matter. Never interrogate from a blank page.
-- **Batch per round**: at most four or five questions — the ones with the most impact — each with real
+- **Batch per round**: at most four questions — the ones with the most impact — each with real
   options, the trade-off, and your recommendation. Use the tool's question mechanism.
 - **Ask when two readings lead to materially different work.** Decide the routine points yourself and
   record them as `assumed`.

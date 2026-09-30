@@ -126,8 +126,8 @@ Every agent in multi-agent mode starts at docs/handoff/PROTOCOL.md.
   without the user's yes.
 
 ## Engineering baseline
-Claude Code: the senior-engineering and spec-driven skills.
-Other tools: docs/engineering/principles.md.
+Agents with the senior-engineering and spec-driven skills installed: use them.
+Every other agent: docs/engineering/principles.md.
 ```
 
 Add each line when its target exists — no links to files nobody has written, and no `Commands` section
@@ -139,7 +139,8 @@ until the commands exist.
 @AGENTS.md
 
 ## Claude Code
-- Skills: senior-engineering (always), spec-driven (specs, plans, reviews, multi-agent work).
+- Skills, where installed: senior-engineering (always), spec-driven (specs, plans, reviews, multi-agent
+  work).
 - <Claude-only notes: MCP servers to prefer, plan-mode areas, permission notes.>
 ```
 
@@ -159,7 +160,7 @@ reliable — it may never open the file. On Windows, use the import, not a symli
 
 ## Engineering principles for agents without these skills
 
-When an agent that cannot load these skills works on the project — another tool, another machine —
+When an agent without these skills installed works on the project — in any tool, on any machine —
 write `docs/engineering/principles.md`, under 200 lines, distilled from senior-engineering for this
 project. Record the date and the skill it came from, and refresh it when the skill changes.
 
