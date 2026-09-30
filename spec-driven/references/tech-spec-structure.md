@@ -60,6 +60,7 @@ saying so honestly is better than dressing it up.
 Bring the user a recommendation with reasons and real alternatives — researched, not remembered
 (`discovery.md`, "Research"). What to weigh:
 
+- **The architecture decided at setup** — its shape and the size it was chosen for.
 - **What the team already runs.** An unfamiliar-but-better stack is usually worse. Ask what they operate
   today, and what they are willing to operate.
 - **Fit to the problem.** Heavy concurrency, heavy data, heavy UI, scheduled batch, real-time — these
@@ -107,9 +108,12 @@ pseudo-guidance is what this phase exists to avoid.
 
 ## Step 2 — Architecture
 
-- **Style, named and justified**: layered, clean, hexagonal, modular monolith, services, vertical
-  slices. State why it fits *this* project's size and team, not why it is good in general — as an ADR.
-  Choose the lightest style the requirements allow: every layer is paid for by every later change.
+The shape and the internal style were decided at setup, in the architecture ADR (`setup.md`). First
+check them against the architecturally significant NFRs, and add those ids to the ADR as a dated
+addendum. If a requirement contradicts the decision, stop and propose a superseding ADR — the user
+decides. Never make the architecture heavier here on your own: every layer is paid for by every later
+change. Then detail it:
+
 - **Module boundaries and the dependency direction.** List every module and what it may depend on.
   Dependencies point inward, toward policy. State what the innermost layer is forbidden to know.
 - **The composition root** — the one place that wires everything.

@@ -34,7 +34,8 @@ volumes and growth; money, time and units; legal, regulatory and contractual con
 integrations; how success is measured; what is out of scope.
 
 **Technical side** — existing systems, code and data (migration?); integrations and their real
-contracts; environments, hosting and who operates them; what the team already runs; quality targets —
+contracts; environments, hosting and who operates them; what the team already runs; team size and the
+expected lifespan; whether any part must scale, deploy or be owned separately; quality targets —
 latency, availability, scale; security and privacy — data classes, identity, authorization model;
 constraints on the stack; deadlines; who approves what.
 

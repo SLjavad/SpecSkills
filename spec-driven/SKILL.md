@@ -21,7 +21,7 @@ demand. Design principles are the one exception: senior-engineering keeps them a
 ## The pipeline
 
 ```
-0. Setup and discovery  mode, AGENTS.md, docs skeleton; understanding, gray areas → AGENTS.md, docs/discovery/
+0. Setup and discovery  mode, size, architecture; understanding, gray areas       → AGENTS.md, docs/adr/, docs/discovery/
 1. Product              what and why                                              → docs/specs/01-product/
 2. Requirements         what exactly, how well                                    → docs/specs/02-requirements/
 3. Tech spec            how — with ADRs and the stack playbook                    → docs/specs/03-tech/, docs/adr/, docs/engineering/
@@ -44,7 +44,8 @@ it ships (`references/changes.md`).
 change needs no change folder and no separate plan: run senior-engineering's product pass, add or amend
 the affected requirements and design items in the living specs — ids, EARS statements, the traceability
 row — in the same edit as the code, and report it as one step. Heavy process on small work is how
-spec-driven development gets abandoned.
+spec-driven development gets abandoned. The project's own weight — its size, architecture and the
+practices it uses — is decided once, at setup, with the user.
 
 ## Ask the operating mode first
 
@@ -53,6 +54,11 @@ lead that acts as product manager, tech lead, architect and reviewer, plus a cod
 and which tool each agent runs in. Record the answer in `AGENTS.md`. In multi-agent mode the agents
 communicate only through files, the user can step in at any point, and `references/multi-agent.md`
 governs the loop.
+
+Then, from discovery's answers, propose the project's **size, architecture and practices** — a
+monolith is the usual start, a modular monolith where a later split is plausible, services only for a
+stated need (`references/setup.md`). The user decides at gate 0; it is recorded in `AGENTS.md` and the
+first ADR, and every later phase follows it.
 
 ## Every document is small, focused and linked
 
@@ -169,8 +175,9 @@ going back one document is trivial compared with discovering it during implement
 
 ## Gates
 
-**Gate 0 — after setup and the first discovery pass:** present the operating mode, the files created,
-the playback of your understanding, and the first batch of questions. Wait for the user's corrections
+**Gate 0 — after setup and the first discovery pass:** present the operating mode, the size,
+architecture and practices proposed, the files created, the playback of your understanding, and the
+first batch of questions. Wait for the user's corrections
 before writing the product spec.
 
 **After each of phases 1 to 4: stop and present.** Summarize what the documents decide; list the

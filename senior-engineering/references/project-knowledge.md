@@ -106,6 +106,8 @@ Integration tests need: <e.g. Docker running>
 
 ## Working mode
 <single agent | lead + coder> · Lead: <tool> · Coder: <tool>
+Size: <small | standard> · Architecture: <shape, style> — docs/adr/0001-<slug>.md
+Practices: <how heavy: file merging, ADR form, mutation / architecture / load tests where they apply>
 Every agent in multi-agent mode starts at docs/handoff/PROTOCOL.md.
 
 ## Rules for every change

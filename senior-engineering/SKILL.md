@@ -138,9 +138,9 @@ Before planning a change in an area, build an accurate picture of it. Cheapest f
 - **Use a code-graph or index tool if the project has one** — callers, callees, impact — before text
   search; it answers "who calls this" and "what breaks if I change it" directly. Fall back to text
   search for literals, configs, and anything the graph does not cover.
-- **Establish the dependency direction** before you add a reference. Which way is inward? What is the
-  composition root? A change that points a dependency the wrong way is architecture damage that
-  compiles.
+- **Establish the architecture** before you add a reference: the size, shape and practices in
+  `AGENTS.md` and its ADR, which way is inward, where the composition root is. A change that points a
+  dependency the wrong way is architecture damage that compiles.
 - **Find the conventions by reading neighbours**, not by asking: error handling, naming, test layout,
   how failures are logged, how config is read. Match them.
 - **Find out how this project verifies itself** — tests, containers, probes, manual steps. That

@@ -26,9 +26,9 @@ sum is code a newcomer cannot follow. SOLID is below, as decisions; DRY and KISS
 Dependencies point **inward**, toward policy and away from mechanism. **The direction is fixed; the
 number of layers is not.** The domain — the entities and the rules they hold — never references the
 web or UI framework, the message bus or a provider's SDK. How many layers sit between them is the
-project's architecture decision, recorded in its ADR: clean or hexagonal where the domain is rich and
-long-lived, vertical slices or plain layers where it is not. Follow the chosen style, and add no layer
-it did not choose.
+project's architecture decision, made at setup and recorded in its ADR: clean or hexagonal where the
+domain is rich and long-lived, vertical slices or plain layers where it is not. Follow the chosen
+style, and add no layer it did not choose.
 
 - **A framework or vendor type in a domain signature is a leak** — an HTTP request object, a
   provider's DTO, a UI framework type. Map at the boundary instead.
@@ -228,7 +228,8 @@ one caller earns its place only by naming a concept the call site cannot express
 ## Enforce the structure with architecture tests
 
 Rules that live only in prose erode. Where the architecture has a boundary worth enforcing, encode the
-structural rules as architecture tests — fitness functions that fail the build: the domain references no ORM, web or UI framework; module dependencies
-point only inward; no cycles between modules; the rules an ADR's *Confirmation* section names. Start
+structural rules as architecture tests — fitness functions that fail the build: the domain references
+no web or UI framework, nor the ORM where the chosen style keeps it out; module dependencies point only
+inward; no cycles between modules; the rules an ADR's *Confirmation* section names. Start
 from the current state — fail on *new* violations and baseline the legacy ones — so the test gets
 adopted instead of muted. The project's stack playbook names the maintained tool.

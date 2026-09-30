@@ -5,6 +5,7 @@ every later document plugs into.
 
 ## Contents
 - Ask the operating mode
+- Decide the size and the architecture, with the user
 - AGENTS.md and CLAUDE.md
 - The docs skeleton
 - The indexes
@@ -29,6 +30,36 @@ Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, read
 before phase 1, set up `docs/handoff/` from `handoff-templates.md` — protocol, control (paused), board
 and templates — and, when any agent's tool cannot load these skills, `docs/engineering/principles.md`
 (senior-engineering `project-knowledge.md`).
+
+## Decide the size and the architecture, with the user
+
+Every later phase depends on how heavy this project should be, so it is decided once, here — never
+re-guessed by each session. The inputs come from discovery's technical sweep (`discovery.md`): expected
+scale and growth, team size, lifespan, what the team already runs, where it will be deployed, and
+whether any part must scale, deploy or be owned separately. Propose, with your reasons; the user decides.
+
+- **Size — small or standard.** Small: a few people, one deployable, a handful of capabilities, no
+  stated need to scale far. Standard: anything more. Size is not stakes — a small tool that moves money
+  still gets full tests on its money rules and a security review.
+- **The architecture shape — the lightest one the stated scale needs.** A monolith is the usual start.
+  A modular monolith — one deployable whose modules own their data and talk through explicit
+  interfaces — where the domain has clear boundaries and a later split is plausible: it keeps that split
+  open without paying for it now. Separate services only for a stated need — independent scaling,
+  deployment or team ownership.
+- **The internal style**: plain layers or vertical slices, or clean or hexagonal where the domain is
+  rich and long-lived.
+- **The practices this project uses**, recommended from its size: how far the spec phases merge their
+  files, short or full ADRs, one agent or several, and where mutation, architecture and load tests
+  apply. A small project usually merges files, writes short ADRs and runs one agent.
+
+Record the shape and style as the first ADR — `proposed`, citing the discovery answers it rests on —
+and, under "Working mode" in `AGENTS.md`, the size, the architecture with its ADR, and the practices.
+The user accepts it at gate 0.
+The tech spec details this architecture and checks it against the requirements; changing it later —
+growing from small to standard included — is a superseding ADR with the user's yes.
+
+No size changes senior-engineering's non-negotiables and standing defaults, the data-egress rules,
+Testcontainers for real dependencies, or tests on every rule that was hard to get right.
 
 ## AGENTS.md and CLAUDE.md
 
@@ -63,8 +94,8 @@ docs/
   handoff/                multi-agent only: PROTOCOL.md, CONTROL.md, BOARD.md, templates/
 ```
 
-Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md` and `docs/discovery/` now; create each other
-folder when its phase starts, never as empty placeholders.
+Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/` and `docs/adr/` (for the
+architecture ADR) now; create each other folder when its phase starts, never as empty placeholders.
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly
 into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its plan, task
@@ -123,8 +154,12 @@ A project with code but no specs does not get a reverse-engineered bundle of eve
 `AGENTS.md`, a short product overview and the glossary, and the living specs for the area the first
 change touches; the specs grow change by change. Backfill ADRs only for decisions that matter now.
 
+Its architecture is the one that exists: record it and the project's size as the first ADR instead of
+choosing again. Changing it is a proposal, like any other.
+
 ## Then stop
 
 Continue straight into discovery (`discovery.md`): the sweep, the playback and the first batch of
-questions. Then stop at gate 0 — present the mode recorded, the files created, the playback and the
-questions — and wait for the user's corrections before writing the product spec.
+questions. Then stop at gate 0 — present the mode recorded, the size, architecture and practices
+proposed, the files created, the playback and the questions — and wait for the user's decisions and
+corrections before writing the product spec.
