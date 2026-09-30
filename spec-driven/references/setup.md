@@ -16,8 +16,9 @@ every later document plugs into.
 
 Ask once, early, with real options:
 
-- **Single agent** — one agent writes the specs, implements, and reviews. Prefer a fresh-context
-  session for the review; a reviewer with no memory of writing the code catches more.
+- **Single agent** — one agent writes the specs, implements, and reviews; the usual choice for a small
+  project. Prefer a fresh-context session for the review; a reviewer with no memory of writing the code
+  catches more.
 - **Lead and coder** — a lead agent (product manager, tech lead, architect, reviewer) writes specs,
   ADRs, plans and task briefs, and reviews; a coder agent implements and reports. They communicate
   only through files, and the user can step in at any point. Ask which tool each agent runs in: if any
@@ -46,17 +47,22 @@ whether any part must scale, deploy or be owned separately. Propose, with your r
   interfaces — where the domain has clear boundaries and a later split is plausible: it keeps that split
   open without paying for it now. Separate services only for a stated need — independent scaling,
   deployment or team ownership.
-- **The internal style**: plain layers or vertical slices, or clean or hexagonal where the domain is
-  rich and long-lived.
+- **The internal style**: plain layers or vertical slices, or clean or hexagonal where the business
+  rules are complex and long-lived.
 - **The practices this project uses**, recommended from its size: how far the spec phases merge their
-  files, short or full ADRs, one agent or several, and where mutation, architecture and load tests
-  apply. A small project usually merges files, writes short ADRs and runs one agent.
+  files, short or full ADRs, when a change gets its own folder, and where mutation, architecture and
+  load tests apply. A small project usually merges files and writes short ADRs.
 
-Record the shape and style as the first ADR — `proposed`, citing the discovery answers it rests on —
-and, under "Working mode" in `AGENTS.md`, the size, the architecture with its ADR, and the practices.
-The user accepts it at gate 0.
+Record the size, shape and style as one decision in the first ADR (senior-engineering
+`decision-records.md`) — `proposed`, citing the discovery answers and any open or `assumed` entries it
+rests on — and, under "Working mode" in `AGENTS.md`, the size and architecture with the ADR's link, and
+the practices. The user decides it at gate 0 or, where it rests on open questions, once they are
+answered and before the tech spec starts.
+
 The tech spec details this architecture and checks it against the requirements; changing it later —
-growing from small to standard included — is a superseding ADR with the user's yes.
+growing from small to standard included — is a superseding ADR with the user's yes. A change of size
+applies forward: merged files split when next touched or at the cap, accepted ADRs stay as written,
+and new practices start with the next change.
 
 No size changes senior-engineering's non-negotiables and standing defaults, the data-egress rules,
 Testcontainers for real dependencies, or tests on every rule that was hard to get right.
@@ -154,12 +160,13 @@ A project with code but no specs does not get a reverse-engineered bundle of eve
 `AGENTS.md`, a short product overview and the glossary, and the living specs for the area the first
 change touches; the specs grow change by change. Backfill ADRs only for decisions that matter now.
 
-Its architecture is the one that exists: record it and the project's size as the first ADR instead of
-choosing again. Changing it is a proposal, like any other.
+Its architecture is the one that exists: record its size, shape and style as the first ADR instead of
+choosing again; changing it is a proposal, like any other. The living specs for the area describe the
+system as it is, and the first change writes deltas against them, like any later change.
 
 ## Then stop
 
 Continue straight into discovery (`discovery.md`): the sweep, the playback and the first batch of
 questions. Then stop at gate 0 — present the mode recorded, the size, architecture and practices
-proposed, the files created, the playback and the questions — and wait for the user's decisions and
-corrections before writing the product spec.
+proposed, the files created, the playback, the `assumed` entries and the questions — and wait for the
+user's decisions and corrections before writing the product spec.

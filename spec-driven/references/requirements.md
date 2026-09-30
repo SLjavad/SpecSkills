@@ -48,7 +48,7 @@ Given/When/Then. EARS states the rule; the scenarios are its examples.
 ```markdown
 ### FR-014 — Free cancellation window
 Source: C-03, J-02 (docs/specs/01-product/capabilities.md) · Priority: Must · Actor: Guest
-Status: proposed | approved | implemented | retired
+Status: proposed | approved | retired
 
 **Statement.** When a guest cancels a booking more than 24 hours before check-in, the system shall
 refund the full amount.
@@ -104,7 +104,7 @@ and portability · Cost — and any quality the product needs that this list doe
 ```markdown
 ### NFR-NNN — <category>: <short title>
 Source: product spec file and item, or the constraint it comes from
-Priority: Must | Should | Could · Status: proposed | approved | implemented | retired
+Priority: Must | Should | Could · Status: proposed | approved | retired
 
 **Statement.** The quality required, in one sentence.
 
@@ -132,7 +132,8 @@ met by whoever is asked. Convert or delete:
 
 **Security gets a level, not an adjective.** Choose the OWASP ASVS verification level with the user —
 the middle level suits most applications that hold personal data or move money — and cite the ASVS
-requirement ids that apply, alongside the product's own security requirements.
+requirement ids the threat model's mitigations rely on, alongside the product's own security
+requirements.
 
 **Name the conflicts.** NFRs contradict each other — latency against consistency, auditability against
 data minimisation, cost against redundancy. A pair that cannot both hold is a decision, not an
@@ -202,7 +203,8 @@ What the matrix is *for* — read it, do not just maintain it:
 - **A plan step citing no requirement is work nobody asked for.**
 
 Each row lives in one place. Copies drift, and a drifted coverage matrix is worse than none because it
-reports coverage that does not exist.
+reports coverage that does not exist. So nothing is recorded twice: the requirement holds its lifecycle
+status and its verification *mechanism*; the matrix holds its progress and the verification *result*.
 
 ## Done when
 
@@ -214,7 +216,7 @@ reports coverage that does not exist.
 - Every NFR category is either populated or explicitly marked not applicable.
 - NFR conflicts are named with a decided winner, and the architecturally significant NFRs are flagged.
 - The matrix lists every id, with downstream columns empty and ready.
-- No `TBD`, no unmeasurable NFR, no open `Q-` citation in an approved file.
+- No `TBD`, no unmeasurable NFR, no unresolved `Q-` citation in an approved file.
 
 ## Then stop
 

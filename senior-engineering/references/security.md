@@ -101,7 +101,9 @@ tool has left the machine, and may be logged or indexed by someone else.
   metadata commands, `git push`, cloud CLIs, `curl`.
 - Unsure? Treat it as remote.
 
-**Never put these into any remote input** — query, URL, path, argument, header or body:
+**Never put these into any remote input** — query, URL, path, argument, header or body — outside the
+organisation's own git remotes, package feeds and registries already configured for the project, which
+the git, deploy and package rules govern instead:
 - secrets and credentials: keys, tokens, passwords, connection strings, cookies, signed URLs;
 - personal data and customer data;
 - internal infrastructure: hostnames, internal URLs, IPs, ports, tenant or resource ids, internal
@@ -177,6 +179,6 @@ The table is the minimum; the threat model and the change itself decide what els
 | AI features and agents | prompt-injection paths, tools with excessive privilege, model output used unvalidated |
 
 **Each security finding records** the location, the evidence (the request or input that exploits it),
-the impact, the severity, the fix, the regression test that proves the fix, and the OWASP/ASVS/CWE
-reference. Severity: a CVSS vector for a concrete vulnerability; likelihood × impact for a design
-risk. Critical and high findings block release.
+the impact, the rating, the fix, the regression test that proves the fix, and the OWASP/ASVS/CWE
+reference. Rating: a CVSS vector for a concrete vulnerability rated high or critical; likelihood ×
+impact otherwise. Critical and high ratings block release.

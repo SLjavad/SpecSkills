@@ -61,7 +61,8 @@ Applied to: <FR-/ADR-/file>
 ```
 
 - **Every would-be `TBD` becomes an entry**, and the document cites it where the doubt sits — `[Q-012]`.
-  A document carrying an open `Q-` citation cannot be approved.
+  An approved document cites no **unresolved** entry — any status but `answered`, or an `assumed`
+  entry the user has not yet confirmed at a gate.
 - **`assumed`** means you decided a routine point yourself. Every assumed entry is listed at the next
   gate for the user to confirm or correct — cheaply, before anything depends on it.
 - **A changed answer is a new entry** that supersedes the old one; the history stays readable.
@@ -120,6 +121,7 @@ An optimization or refactor adds three lines: **Where** (file and symbol) and **
 lens), and **Verification** — the equivalence tests, the before-and-after measurement, and how to roll
 back. Its evidence is a measurement or an estimate at a stated data size, never a hunch.
 
+- **`idea`** is noted but not yet worked up; it becomes `proposed` once its fields are filled in.
 - **Hard rule: nothing in this register is built until the user accepts it.** An accepted proposal
   enters the work by the normal route — a requirement, an ADR, a change, a plan step.
 - **Keep rejections, with their reasons.** They stop the same idea coming back every month.

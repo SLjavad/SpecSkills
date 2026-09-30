@@ -35,13 +35,15 @@ Write one when the decision:
   before.
 
 Skip it for local, cheap-to-reverse choices inside one component; those are implementation notes.
-Backfill an ADR when you discover an undocumented decision that matters.
+Propose backfilling an ADR when you discover an undocumented decision that matters.
 
 ## The ADR template
 
 Plain Markdown, in two sizes of one shape. **The short form** fits most decisions in 20–40 lines. **The
 full form** adds the sections after it, for a decision that is expensive to reverse, architecturally
-significant, or in an area where the project had trouble before. Neither passes about 150 lines.
+significant, or in an area where the project had trouble before — unless the project's practices chose
+the short form. Neither passes about 150 lines. Once a decision is accepted, a confirmation or rule
+added later goes in a dated addendum.
 
 ```markdown
 # ADR-NNNN: <the decision, as a short phrase>
@@ -91,7 +93,8 @@ The condition that would reopen this decision.
 ## Lifecycle rules
 
 - **Agents propose; the user decides.** An agent writes an ADR as `proposed`. Only the user moves it to
-  `accepted` or `rejected`, and the record says who decided and when.
+  `accepted` or `rejected`, and the record says who decided and when. `deprecated` means it no longer
+  applies and nothing replaces it; `superseded` means a newer ADR does.
 - **Edit freely while it is proposed. Once decided, never rewrite it** — change only the status and the
   links, or add a dated addendum. A new decision is a new ADR that supersedes the old one, and the old
   one is marked `superseded by`. The rejected reasoning is what stops the same debate recurring.

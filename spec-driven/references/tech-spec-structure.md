@@ -4,7 +4,8 @@
 flows without asking you anything, and specific enough that two implementers working from it
 independently would produce substantially the same system. Vagueness here becomes improvisation later.
 
-This part fixes **what exists**: stack, architecture, domain, data, contracts, components. Part 2,
+This part fixes **what exists**: the stack, the detail of the architecture decided at setup, domain,
+data, contracts, components. Part 2,
 `tech-spec-behaviour.md`, fixes how it behaves and how you will know it works.
 
 **Hard rule: no product decisions and no new requirements.** If writing this surfaces a question about
@@ -40,8 +41,9 @@ decisions go to `docs/adr/`.
 | `components.md` | The component inventory; split per module past 300 lines |
 | `flows/`, `rules/`, `cross-cutting.md`, `performance.md`, `testing.md`, `security.md` | Part 2 |
 
-**A small system may merge** — each aggregate with its tables in one file, the endpoints and the error
-taxonomy in one `contracts.md`, all flows in `flows.md`, all rules in `rules.md` — as long as no file
+**Where the project's practices merge files**, a small system may keep each aggregate with its tables
+in one file, the endpoints and the error taxonomy in one `contracts.md`, all flows in `flows.md` and
+all rules in `rules.md` — as long as no file
 passes 300 lines and each still holds one coherent topic. The ids stay in the headings; split a file
 again when it outgrows the cap.
 
@@ -82,7 +84,8 @@ named; for .NET, the latest stable release and xUnit. They are the user's decisi
 them in the stack ADRs rather than asking again, and ask only to deviate.
 
 Record each significant choice as an ADR (senior-engineering `decision-records.md`) with status
-`proposed`; the user accepts it. Then summarize in `stack.md`:
+`proposed`, and get the user's decision before writing the rest of this phase — the playbook and every
+later step depend on it. Then summarize in `stack.md`:
 
 ```markdown
 | Concern | Choice | Version | ADR |
@@ -120,8 +123,8 @@ change. Then detail it:
 - **What must not leak inward.** Name the concrete types: the HTTP request, the provider's DTOs, the
   framework's attributes — and the ORM context, where the chosen style keeps the domain free of it.
 - **A diagram**, as Mermaid `graph`: modules as boxes, arrows for the allowed dependency direction only.
-- **Architecture tests** that enforce the above, where there is a boundary worth enforcing — named here
-  as the *Confirmation* of the architecture ADR, and built by an early plan step.
+- **Architecture tests** that enforce the above, where there is a boundary worth enforcing — recorded
+  as the architecture ADR's *Confirmation* in the same dated addendum, and built by an early plan step.
 
 Then the check for the chosen style. For any style: does anything depend in a forbidden direction? For
 clean or hexagonal, also: *could the HTTP layer and the datastore be deleted and the use cases still
@@ -185,16 +188,17 @@ Every externally visible surface, fully specified.
 
 ## Step 6 — Component inventory
 
-This is the "what classes do I create" answer. A table, one row per component, covering everything to be
-built.
+This is the "what do I create" answer. A table, one row per component — a unit with its own
+responsibility; its contract types, mappers and private helpers belong to its row.
 
 ```markdown
 | Component | Kind | Module/layer | Responsibility (one sentence) | Satisfies | Collaborators | Notes |
 |---|---|---|---|---|---|---|
 ```
 
-- **One sentence per responsibility, and it must not contain "and".** If it does, the component has two
-  jobs — split the row.
+- **One sentence per responsibility.** If it needs "and", check the two jobs against single
+  responsibility (senior-engineering `design.md`): split the row only when they change for different
+  reasons.
 - **Every component names the reason it exists.** A component whose row reads as forwarding is a layer
   with no purpose; remove it.
 - **An interface appears only where it passes the need test** in senior-engineering's `design.md`
@@ -202,7 +206,7 @@ built.
   interface belongs to the layer that needs it, the implementation to the layer outside.
 - **`Satisfies` carries the requirement ids** this component exists for. An empty cell is a question to
   answer, not a cell to leave blank.
-- **The inventory is exhaustive.** If a plan step later needs a class that is not in this table, this
-  document was incomplete.
+- **The inventory is exhaustive.** If a plan step later needs a component that is not in this table,
+  this document was incomplete.
 
 Continue with `tech-spec-behaviour.md`.

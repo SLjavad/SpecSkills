@@ -100,13 +100,11 @@ with the user's explicit yes, recorded in an ADR.
 
 ## The product pass
 
-**For a new project or a major feature, use the `spec-driven` skill instead of this phase.** It runs
-the same thinking as a full pipeline — discovery, product spec, numbered requirements, technical spec
-with ADRs, stepwise plan, review — and produces documents another agent can build from. What follows
+**For a new project or a major feature, use the `spec-driven` skill instead of this pass.** It runs
+the same thinking as a full pipeline and produces documents another agent can build from. What follows
 is the compressed version, for a change that does not warrant it: answer these in your head or in the
-report, and if the answer to "how well must this perform / how available / how secure" is a number
-nobody has stated, that is the signal to take it through `spec-driven` — as a requirement added to the
-living specs for a small change, or through the full pipeline for a larger one.
+report. If a quality target the change depends on — how fast, how available, how secure — is a number
+nobody has stated, ask for it; where the project has living specs, record it there as a requirement.
 
 Do this before designing. It takes two minutes and it is the phase most often skipped.
 
@@ -139,8 +137,9 @@ Before planning a change in an area, build an accurate picture of it. Cheapest f
   search; it answers "who calls this" and "what breaks if I change it" directly. Fall back to text
   search for literals, configs, and anything the graph does not cover.
 - **Establish the architecture** before you add a reference: the size, shape and practices in
-  `AGENTS.md` and its ADR, which way is inward, where the composition root is. A change that points a
-  dependency the wrong way is architecture damage that compiles.
+  `AGENTS.md` and its ADR, which way is inward, where the composition root is. Where none is recorded,
+  work at the project's existing weight — new document sets, test kinds or tools only as proposals. A
+  change that points a dependency the wrong way is architecture damage that compiles.
 - **Find the conventions by reading neighbours**, not by asking: error handling, naming, test layout,
   how failures are logged, how config is read. Match them.
 - **Find out how this project verifies itself** — tests, containers, probes, manual steps. That

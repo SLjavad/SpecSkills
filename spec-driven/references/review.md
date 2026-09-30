@@ -7,6 +7,8 @@ file, and close the loop so the same correction is never needed twice.
 written to work from the artifacts alone: the living specs, the change folder, and the code. Never assume
 the reviewer remembers the conversation, and never assume the fixer does either. A reviewer with no
 memory of writing the code catches more than one that has; if the user has a choice, prefer that one.
+In multi-agent mode it runs in the lead role, and its blocking findings reach the coder as a fix brief
+(`multi-agent.md`, "Ending the loop").
 
 Write findings to `docs/changes/CH-NNN-<slug>/reviews/R-NN/`: a `README.md` summary, plus one file per
 group of lenses that produced findings:
@@ -20,7 +22,8 @@ group of lenses that produced findings:
 | `security.md` | security |
 | `tests.md` | verification |
 
-A small review keeps everything in `README.md`. In multi-agent mode each task also gets a per-task
+A small review keeps everything in `README.md`, and so does any lens added for the change
+(`other: <name>`). In multi-agent mode each task also gets a per-task
 review in its folder (`handoff-templates.md`); this phase reviews the whole change before it closes.
 
 ## Contents
@@ -73,10 +76,12 @@ Then, in order:
     senior-engineering's `design.md`.
 12. **Leftovers.** Debug output, commented-out code, `TODO`s, scaffolding, unused imports, dead
     abstractions with no caller.
-    The order above is the minimum; add any lens the change calls for — a data migration, accessibility,
-    operability, compatibility with existing clients.
 13. **The documents tell the truth.** The change deltas, ADRs and area records match the code, so the
-    merge at close (`changes.md`) will leave the living specs correct.
+    merge at close (`changes.md`) will leave the living specs correct. A mismatch is a `spec-defect`
+    finding, or `conformance` where the code is what is wrong.
+
+The order above is the minimum; add any lens the change calls for — a data migration, accessibility,
+operability, compatibility with existing clients.
 
 ## Finding format
 
@@ -87,7 +92,7 @@ Every finding, in the file:
 Severity: blocker | major | minor | note · Blocking: yes | no · Introduced by this change: yes | no
 Lens: requirement-gap | conformance | correctness | unverified | design | domain | dependency |
       performance | security | silent-risk | failure-path | verification | readability | leftover |
-      spec-defect
+      spec-defect | other: <name>
 Requirement: <FR/NFR id, where the finding is against one>
 Location: <path>:<line>  (or the spec file and id, for a spec defect)
 Status: open | fixed | rejected | deferred
@@ -105,16 +110,18 @@ result. If you cannot name one, downgrade to note.
 ```
 
 A **security** finding also records the exploit input, the impact, the OWASP/ASVS/CWE reference, the
-regression test that proves the fix, and a `Rating:` line — a CVSS vector for a concrete vulnerability,
-likelihood × impact for a design risk. A critical or high rating is always severity `blocker`.
+regression test that proves the fix, and a `Rating:` line — a CVSS vector for a concrete vulnerability
+rated high or critical, likelihood × impact otherwise. A critical or high rating is always severity
+`blocker`.
 
-`F-` ids are scoped to the change and allocated in one sequence by the reviewer across the change's
-task reviews and phase-6 reviews: cite them as `CH-007/F-12`.
+`F-` ids are scoped to the change and allocated in one sequence across the change's task reviews and
+phase-6 reviews — by the lead in multi-agent mode, by the reviewer otherwise. Cite them as
+`CH-007/F-12`.
 
 **Severity means something.** A blocker produces wrong data, loses money, breaks a contract, or opens a
 security hole. A major is a real defect on a reachable path. A minor is a defect on an unlikely path or a
 genuine readability problem. A note is an observation with no defect behind it — keep these few, or they
-train the reader to skim.
+train the reader to skim. A blocker or major is always `Blocking: yes`.
 
 **No finding without a consequence.** "This could be cleaner" is not reviewable. Name the input that
 breaks it, or the specific thing a reader misunderstands. And **do not manufacture findings** — a

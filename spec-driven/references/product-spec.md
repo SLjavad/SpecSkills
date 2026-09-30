@@ -87,8 +87,9 @@ One topic per file, each opening with the standard header (status, summary, ids,
 
 - **Assumptions and open questions are not sections.** They are entries in `docs/discovery/questions.md`,
   cited by id where they apply.
-- **A small product may merge** `overview.md`, `success.md` and `scale.md`, or keep its journeys in a
-  single `journeys.md` — as long as no file passes 300 lines and each still holds one coherent topic.
+- **Where the project's practices merge files**, `overview.md`, `success.md` and `scale.md` may share
+  one file, and the journeys may live in a single `journeys.md` — as long as no file passes 300 lines
+  and each still holds one coherent topic.
 - **Add every file to the manifest** (`docs/specs/README.md`) as you create it.
 
 ## The glossary is not optional
@@ -109,7 +110,7 @@ domain area.
 - Scope has an explicit "out" list.
 - No technology appears anywhere.
 - Every assumption is a register entry rather than prose buried in a paragraph, and no approved file
-  cites an open `Q-` entry.
+  cites an unresolved `Q-` entry.
 - Every file is within the size budget, opens with its header, and is listed in the manifest.
 
 ## Then stop

@@ -29,8 +29,8 @@ one coherent slice of work.
 | Role | Owns | Never |
 |---|---|---|
 | **User** | `CONTROL.md` and `PROTOCOL.md`; decides every question, proposal and ADR outside the approved spec; approves gates; accepts each change | — |
-| **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans, ADRs (as proposed), the registers, `docs/engineering/`, `BOARD.md`, briefs, reviews | edits production code or tests |
-| **Coder** | code, tests, reports | edits specs, plans, ADRs, registers, briefs, reviews or the board; deletes or weakens a test to make work pass |
+| **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans, ADRs (as proposed), `docs/discovery/` (the understanding and the registers), `docs/engineering/`, `docs/handoff/templates/`, `BOARD.md`, briefs, reviews | edits production code or tests |
+| **Coder** | code, tests, reports | edits any document — specs, plans, ADRs, registers, briefs, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
 
 **One writer per file.** Once a file is submitted its content is frozen; a correction is a new file —
 the next report round, a new task folder — never an edit to someone else's. Two exceptions: the owner
@@ -48,7 +48,8 @@ Only what stays inside the approved spec:
 - accept or reject the coder's choices within the brief's stated latitude;
 - order and split tasks, write feedback, request changes.
 
-Everything else waits for the user, and the task stops with status `blocked`, waiting on the user:
+Everything else waits for the user: the lead writes an `escalated` review — or keeps a brief not yet
+issued in `draft` — and lists the item under "Waiting on the user":
 
 - new ideas and improvements — they are proposals (`discovery.md`);
 - accepting or rejecting an ADR;
@@ -74,9 +75,12 @@ docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/
   report-02.md, review-02.md, …
 ```
 
+**A small change has no change folder**, so its task folder is `docs/handoff/tasks/YYYY-MM-DD-<slug>/`,
+and its brief cites the living-spec ids it touches instead of a plan step.
+
 Templates for all of these are in `handoff-templates.md`. **A brief links; it never copies.** It points
-at the plan step and the exact spec files — at most six — and quotes nothing at length, because a copy
-drifts from its source.
+at the plan step, the stack playbook and at most six spec files, and quotes nothing at length, because
+a copy drifts from its source.
 
 ## Whose turn is it
 
@@ -85,25 +89,25 @@ Computed from the files, never from memory:
 | State of the task folder | Turn |
 |---|---|
 | brief `ready`, no report yet | coder |
-| latest report `in-progress` | coder — still working |
+| latest report `in progress` | coder — still working |
 | latest report `submitted`, no review for that round | lead |
 | latest report `blocked` | lead — or the user, if the question needs them |
 | latest review `changes-requested` or `answered` | coder — the next round |
 | latest review `approved` | done — the lead updates the board and the traceability table |
 | latest review `escalated` | the user; once the user decides, the lead writes the next review or supersedes the brief |
 
-`answered` means the review only answers the report's questions; it does not count toward the round
-limit. The board lists the tasks, but the task folder decides whose turn it is — the board may lag
-behind a report that was just submitted.
+**A round** is one report and the review of it. `answered` means the review only answers the report's
+questions; it does not count as a round. The board lists the tasks, but the task folder decides whose
+turn it is — the board may lag behind a report that was just submitted.
 
-Every session starts the same way: read `CONTROL.md` and stop unless it says `run`; read `BOARD.md`;
-then read only its task's folder, the files the brief links, the engineering rules and the stack
-playbook.
+Every session of the implementation loop (phase 5 on) starts the same way: read `CONTROL.md` and stop
+unless it says `run`; read `BOARD.md`; then read only its task's folder, the files the brief links, the
+engineering rules and the stack playbook. The spec phases are held by their gates instead.
 
 ## The loop
 
 **The lead**
-1. Turns a plan step into a brief and checks it is ready: no open `Q-` citations in the linked files,
+1. Turns a plan step into a brief and checks it is ready: no unresolved `Q-` citations in its files,
    every acceptance criterion testable, the files in scope and the verification commands named. Marks
    it `ready` and updates the board.
 2. When a report is submitted: reads the report, reads the diff, and **re-runs the verification commands
@@ -138,30 +142,35 @@ instead of guessing, when:
 - a security-relevant choice is not covered by the spec;
 - the same fix has failed three times;
 - an unrelated test starts failing;
-- configuration or secrets are missing.
+- configuration, secrets or a required tool (such as Docker) is missing.
 
 Ideas beyond the brief go into the report's *Proposals* section — never into the code.
 
 ## Ending the loop
 
-1. **At most three rounds per brief.** After a third `changes-requested`, the lead either escalates to
-   the user or supersedes the brief: it amends the plan (the step split or rewritten under new step
-   numbers), opens their task folders for a fresh coder session, and marks the old brief `superseded`
-   with a link to the new ones.
+1. **At most three rounds per brief.** The review that would be the third `changes-requested` is
+   written as `escalated` instead — or the lead supersedes the brief: it amends the plan (the step split
+   or rewritten under new step numbers), opens their task folders for a fresh coder session, and marks
+   the old brief `superseded` with a link to the new ones.
 2. **Only blocking findings block**: an unmet acceptance criterion or requirement, an ADR violation, a
-   failing test, a security issue, a regression. Everything else is recorded as non-blocking and
-   deferred — to a later task, or to the proposal register.
-3. **From round two, a review may only close earlier findings or flag regressions the fix introduced.**
-   No new goalposts.
+   failing test, a security issue, a regression — and every finding of severity blocker or major. A
+   non-blocking defect is deferred to a later task; only an improvement that is not a defect goes to
+   the proposal register.
+3. **From the second round, a review may only close earlier findings or flag regressions the fix
+   introduced.** No new goalposts.
 4. **A finding that reopens, or is disputed twice, escalates** to the user.
 5. **Prefer a fresh coder session per task**, and per round once a session has grown long. Everything the
    coder needs is in the files; a long transcript only adds drift.
-6. **A change is done** when every task is approved, the change's review (phase 6) is closed, the living
+6. **The change's review (phase 6) runs in the lead role** — the lead, or a fresh session acting as
+   one. Its blocking findings reach the coder as a fix brief in `tasks/R-NN-fixes/`, and the lead
+   allocates every `F-` id.
+7. **A change is done** when every task is approved, the change's review (phase 6) is closed, the living
    specs are merged, and the user has accepted it.
 
 ## The user stays in control
 
-- **`CONTROL.md`** — set `pause` or `stop`; every agent checks it at session start and before each handoff.
+- **`CONTROL.md`** — `pause` holds the loop until the user sets `run` again; `stop` ends it for good.
+  Every agent in the loop checks it at session start and before each handoff.
 - **The board's "Waiting on the user" section** — every blocked question, proposal, proposed ADR and
   escalation, one line each with its link. That list is the user's inbox.
 - **The user may edit any file.** The agents treat the files as the truth, including the user's edits.
@@ -176,8 +185,8 @@ Everything a coder in another tool needs lives in the project, not in anyone's s
 brief → the linked files. When the coder's tool cannot load these
 skills, the lead writes `docs/engineering/principles.md` (senior-engineering `project-knowledge.md`) and
 the stack playbook carries the stack rules. A tool that does not read `AGENTS.md` gets a shim. Keep
-everything plain Markdown with relative links and no tool-specific syntax. Each report names the tool
-and model that wrote it.
+everything plain Markdown with paths from the repository root and no tool-specific syntax. Each report
+names the tool and model that wrote it.
 
 ## Parallel coders
 

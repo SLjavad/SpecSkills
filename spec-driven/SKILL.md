@@ -57,8 +57,9 @@ governs the loop.
 
 Then, from discovery's answers, propose the project's **size, architecture and practices** — a
 monolith is the usual start, a modular monolith where a later split is plausible, services only for a
-stated need (`references/setup.md`). The user decides at gate 0; it is recorded in `AGENTS.md` and the
-first ADR, and every later phase follows it.
+stated need (`references/setup.md`). The size, shape and style go in the first ADR, the practices in
+`AGENTS.md`; the user decides at gate 0, or once the questions it rests on are answered, and every later
+phase follows it.
 
 ## Every document is small, focused and linked
 
@@ -73,9 +74,9 @@ Every phase, in every pipeline stage, writes **a folder of topic files**, never 
 - **Every living document is reachable from `AGENTS.md` in two hops**: `AGENTS.md` → an index (the specs
   manifest, the ADR index, the engineering index) → the file. A change folder is reached through the
   changes index, and inside it the plan index lists its steps and tasks.
-- **Stable ids in headings** — `FR-`, `NFR-`, `ADR-`, `Q-`, `P-`, `C-`, `J-`, `FL-`, `RL-`, `CH-`, plus
-  ids scoped to a change such as `CH-007/S-02` — and cross-references by id plus the path from the
-  repository root.
+- **Stable ids in headings** — `FR-`, `NFR-`, `ADR-`, `Q-`, `P-`, `C-`, `J-`, `FL-`, `RL-`, `TH-`,
+  `CH-`, plus ids scoped to a change such as `CH-007/S-02` — and cross-references by id plus the path
+  from the repository root.
 - **Every plan step and task brief names the exact files it needs**, so nobody reads the whole bundle.
 
 `AGENTS.md` describes the project and points into the specs; the specs point into their sub-files; a new
@@ -89,7 +90,7 @@ Read the files for the current phase, not all of them.
 
 | Phase | Read |
 |---|---|
-| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project-knowledge.md` |
+| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project-knowledge.md`, `../senior-engineering/references/decision-records.md` for the architecture ADR |
 | 0 — Discovery, and at every gate | `references/discovery.md` |
 | 1 — Product spec | `references/product-spec.md` |
 | 2 — Requirements | `references/requirements.md` |
@@ -107,7 +108,8 @@ Every document satisfies all of these. A document that fails any of them is not 
 it is.
 
 - **Self-contained for its topic.** No "as we discussed", "the approach above", "the usual pattern", or
-  reference to anything outside the repository. Other files are cited by id and relative path.
+  reference to anything outside the repository. Other files are cited by id and path from the
+  repository root.
 - **No pronouns pointing at the conversation.** The reader was not there.
 - **Every decision carries its reason** — in the document for a small one, in an ADR for a significant
   one. A decision without a rationale gets silently reversed by the next reader who prefers something
@@ -176,8 +178,8 @@ going back one document is trivial compared with discovering it during implement
 ## Gates
 
 **Gate 0 — after setup and the first discovery pass:** present the operating mode, the size,
-architecture and practices proposed, the files created, the playback of your understanding, and the
-first batch of questions. Wait for the user's corrections
+architecture and practices proposed, the files created, the playback of your understanding, the
+`assumed` entries, and the first batch of questions. Wait for the user's corrections
 before writing the product spec.
 
 **After each of phases 1 to 4: stop and present.** Summarize what the documents decide; list the
@@ -197,11 +199,17 @@ several steps and verify at the end, and do not improvise work that is not in th
 wrong, say so and amend it. In multi-agent mode the loop in `references/multi-agent.md` does this.
 
 **Review (phase 6)** may be run by any agent the user chooses — the spec author, the implementer, or a
-fresh one. Write it so it works for a reviewer with no context: it reads the files and the code. Findings
-are recorded to files, not just reported in chat, so the loop survives a new session.
+fresh one — in multi-agent mode, one working in the lead role. Write it so it works for a reviewer with
+no context: it reads the files and the code. Findings are recorded to files, not just reported in chat,
+so the loop survives a new session.
 
 **Close (phase 7):** after the review is closed and the user has accepted the change, merge it into the
 living specs and archive its folder (`references/changes.md`).
+
+**From phase 5 on, "the next gate"** is the board's "Waiting on the user" list in multi-agent mode, or
+the next step report in single-agent mode. **A phase the user skips** is recorded in `AGENTS.md` or the
+change's proposal, and the checks that cite its ids are dropped for that work — never filled with
+invented ids.
 
 ## Amending an approved spec
 

@@ -126,8 +126,9 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
   worker. Reset every stateful dependency — data, caches, queues, mailboxes.
 - **Shared fixtures are thread-safe**, or the tests that share them are serialized explicitly.
 - **CI runs them on runners that can run the containers** (typically Linux runners with Docker),
-  caches the images, and captures container logs on failure. If CI cannot run containers, say so —
-  never let the suite be skipped quietly.
+  caches the images, and captures container logs on failure. If CI or your own environment cannot run
+  containers, say so and report those tests as written but not run — never substitute another engine,
+  and never let the suite be skipped quietly.
 
 ## Writing a test worth having
 

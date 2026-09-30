@@ -27,7 +27,8 @@ rules apply: no product decisions, no new requirements, every element cites the 
 | `testing.md` | The test strategy |
 | `security.md` | Threat model, data classification, controls |
 
-A small system merges flows and rules into one file each, as `tech-spec-structure.md` allows.
+Where the project's practices merge files, flows and rules may each share one file, as
+`tech-spec-structure.md` allows.
 
 ## Step 7 — Flows
 
@@ -136,7 +137,7 @@ tries to break; one skipped is skipped with a reason.
 | Unit | domain rules, rules/RL-*, value objects | framework wiring | |
 | Integration (Testcontainers) | every flow that crosses an external dependency; the flow-risk tests (concurrency, idempotency, resilience, …) | | |
 | Contract | outbound providers whose shape can drift | | |
-| Architecture | the layering ADR's rules | | |
+| Architecture | the architecture ADR's rules | | |
 | Mutation | the domain core, with the break threshold | adapters, UI glue | |
 | Load / benchmark | the architecturally significant NFRs | | |
 | Smoke | the deployed thing answers and its dependencies resolve | | |
@@ -171,7 +172,7 @@ What each level is actually for:
   for the other kinds of test.
 - **Mutation testing**: which modules, which tool, the break threshold, and when it runs.
 - **Which requirement ids are covered by a test**, and which rely on a probe, a structural check or
-  nothing — this is the `Verification` column of the matrix, and the strategy has to agree with it.
+  nothing — this is each requirement's `Verification` field, and the strategy has to agree with it.
 - **The exact verification command**, so an implementer and a reviewer run the same thing.
 - **If the project will have no automated tests, say so and say what replaces them.** "No tests" with
   nothing named in its place means nothing is verified, and every rule in this spec is protected by
@@ -223,7 +224,7 @@ Before declaring the tech spec done:
 | Indexes | Each names the query it serves |
 | Flows | Each has a failure path per step, and its idempotency and concurrency decided |
 | Rules | Each has a worked example with real numbers |
-| Components | Every responsibility is one sentence with no "and" |
+| Components | Every component has one responsibility and one reason to change |
 | Domain | Aggregates are rich; every plain-CRUD classification is justified |
 | Versions | Every dependency pinned; the stack playbook written |
 | Nulls | Every nullable field states what null means |

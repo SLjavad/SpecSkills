@@ -19,11 +19,13 @@ these lenses too, after checking the code against the spec.
 
 1. **Understand the change and its intent** before judging it. Get its blast radius from the code graph
    where the project has one: what calls the changed code, and what it reaches.
-2. **Run the automated gates first** — build, tests, analyzers, audits. Do not spend review attention on
-   what a tool already enforces, and name any gate that did not run.
-3. **Run the lenses as separate passes**, or as parallel sub-reviews where the tooling allows, so one
-   concern does not crowd out the others. The lenses below are the minimum; add whatever further lens
-   the change calls for — data migration, accessibility, operability, compatibility, and so on.
+2. **Run the automated gates first** — build, tests, analyzers, and a dependency audit when the change
+   touches dependencies. Do not spend review attention on what a tool already enforces, and name any
+   gate that did not run.
+3. **Run the lenses at the scale of the change** — beyond a local change, as separate passes or
+   parallel sub-reviews where the tooling allows, so one concern does not crowd out the others. The
+   lenses below are the minimum; add whatever further lens the change calls for — data migration,
+   accessibility, operability, compatibility, and so on.
 4. **Verify every candidate finding** against the code before reporting it — reproduce it, trace it, or
    measure it. Drop what does not survive; merge duplicates across lenses.
 5. **Rank the result**: blocking first, then non-blocking, with problems that pre-date the change
@@ -37,10 +39,10 @@ time zones. Every failure branch reachable, and handled the way the spec says.
 
 ## Lens: design principles
 
-Judge the code against **the project's declared principles first** — its architecture ADRs, the
-architecture style in the tech spec, the rules in `AGENTS.md` and the area records — and then against
-SOLID, DRY and KISS/YAGNI. The set is small on purpose (`design.md`): do not review against principles
-beyond it, because each one added is another push toward layers and abstraction.
+Judge the code against **the project's declared principles first** — the rules in `AGENTS.md`, the
+area records and the ADRs that set conventions — and then against SOLID, DRY and KISS/YAGNI. The set
+is small on purpose (`design.md`): do not review against principles beyond it, because each one added
+is another push toward layers and abstraction.
 
 Raise a finding only with a concrete change scenario or defect risk — "could be cleaner" or "violates
 principle X" on its own is not a finding. **Over-engineering is a finding with the same weight as a
@@ -61,15 +63,15 @@ principles pull apart, the simpler design wins.
 Layering and module boundaries are not weighed here as principles: they are the project's chosen
 architecture, checked by its architecture tests and by the dependency lens below.
 
-Finally the balance test from `design.md`: read down from the entry point; four hops to the decision is
-over-fragmented, five unrelated things at once is under-decomposed.
+Finally the entry-point test from `design.md`: read down from the entry point; four hops to the
+decision is over-fragmented, five unrelated things at once is under-decomposed.
 
 ## Lens: domain model
 
-Anemic signals: entities with public setters and no behaviour; services named *Manager* or *Helper*
-holding `if (x.Status == …) x.Status = …`; the same validation repeated across handlers; invariants
-checked in controllers or components; collections exposed mutable. Each is a finding against the
-rich-domain rules in `design.md` — unless the tech spec classifies that module as plain CRUD.
+Anemic signals: public setters on state that carries an invariant; services named *Manager* or
+*Helper* holding `if (x.Status == …) x.Status = …`; the same validation repeated across handlers;
+invariants checked in controllers or components; collections exposed mutable. Each is a finding
+against the rich-domain rules in `design.md` — unless the module is classified as plain CRUD there.
 
 ## Lens: dependencies in the code
 
@@ -87,7 +89,8 @@ rich-domain rules in `design.md` — unless the tech spec classifies that module
 
 ## Lens: package dependencies
 
-Known-vulnerable (transitive included), outdated, deprecated, archived or unmaintained, unused or
+When the change adds, removes or upgrades a package, or on request: known-vulnerable (transitive
+included), outdated, deprecated, archived or unmaintained, unused or
 redundant (two libraries doing one job), version drift between projects, licence changes, and runtimes
 near end of support. Use the stack's audit and outdated-package commands and record their output. An
 upgrade or removal is a proposal, like any other change.
@@ -135,14 +138,17 @@ Anything beyond fixing a defect — an optimization, a refactor, an upgrade, a b
 
 ```markdown
 ### P-NNN — <title>
-Status: proposed · Raised: YYYY-MM-DD by <agent/role> · Type: optimization | refactor | dependency | architecture
+Status: idea | proposed | accepted | rejected | deferred | withdrawn | implemented | superseded
+Raised: YYYY-MM-DD by <agent/role> · Type: product | architecture | optimization | refactor | dependency | process
 Where: <file / symbol> · Found by: <lens>
 Problem and evidence: <measurement or estimate; data size; environment; tool; the cause>
 Proposal: <the minimal change> · Alternatives: <…, including doing nothing>
 Benefit: <metric and target> · Cost: <…> · Risk: <behaviour or API change, memory against CPU, concurrency>
 Reversibility: <…> · Confidence: <…>
+Spec impact: <the documents, requirements and ADRs that would change>
 Verification: <equivalence tests; before/after benchmark or profile; how to roll back>
 Decision: <accepted | rejected | deferred> — by the user, YYYY-MM-DD — <reason>
+Implemented through: <FR-/ADR-/CH-> · Revisit when: <…>
 ```
 
 This is the proposal register's format (spec-driven `discovery.md`) with the three optimization lines

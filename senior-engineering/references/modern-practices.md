@@ -46,7 +46,8 @@ One file per stack in the project — for example `docs/engineering/stack-dotnet
 `docs/engineering/stack-react.md` — written when the stack ADR is accepted and refreshed when versions
 move. It is the project's current, sourced answer to "how do we write this stack here". Research it
 across sources — vendor documentation, release notes and what's-new pages, the platform's performance
-write-ups, registries, issue trackers — synthesize, and keep it under 300 lines.
+write-ups, registries, issue trackers — synthesize, and keep only the sections this project has
+something to say in: a small project's playbook is often a page, and none passes 300 lines.
 
 ```markdown
 # <Stack> playbook

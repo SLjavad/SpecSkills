@@ -24,9 +24,10 @@ reviewable, and separate from that truth until it ships.
 
 ## When to open a change
 
-Open one for a major feature, a behaviour change to something users or other systems rely on, a schema
-or contract change, or anything that needs more than one plan step. A small local fix amends the living
-spec directly, in the same edit as the code — no folder, no ceremony.
+Open one for a major feature, a breaking change to a contract, schema or behaviour others rely on, or
+anything that needs more than one plan step — or wherever the project's practices set the line.
+Anything smaller — a bug fix, a hotfix, an added field — amends the living spec directly, in the same
+edit as the code: no folder, no ceremony.
 
 ## The change folder
 
@@ -87,8 +88,10 @@ FR-011: "Booking hold" → "Tentative booking"
   flows, rules, aggregates, tables, contracts, components.
 - **Each delta file keeps its own small traceability table** for the items it adds or modifies; the
   plan and review fill it in, and it is merged into the living matrix at close.
-- **From CH-002 on, nothing in `docs/specs/` changes while the change is open** — only the merge at
-  close writes there. (CH-001 writes the first living specs directly; see above.)
+- **From CH-002 on, nothing this change adds or modifies is written to `docs/specs/` while it is
+  open** — only the merge at close writes there. (CH-001 writes the first living specs directly; see
+  above.) A small fix made meanwhile amends the living specs directly, and the change reconciles
+  against it at close ("Concurrent changes").
 
 ## IDs across changes
 

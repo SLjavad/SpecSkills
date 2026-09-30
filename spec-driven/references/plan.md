@@ -8,7 +8,8 @@ step needs a decision, the tech spec is incomplete — go back and fix it there,
 decides things is a tech spec pretending to be a schedule.
 
 A plan belongs to a change: write it to `docs/changes/CH-NNN-<slug>/plan/` — `README.md` as the plan's
-index, and one file per step in `steps/S-NN-<slug>.md`.
+index, and one file per step in `steps/S-NN-<slug>.md`, or, where the project's practices merge files,
+each step as a section of the index.
 
 **Every step cites the requirement ids it implements**, and you fill in the traceability columns that
 make an unimplemented `Must` visible — see "Done when".
@@ -56,11 +57,11 @@ archive the folder. The plan's last step leaves everything the review needs in p
 
 ## Step template
 
-Every step, without exception, in its own file:
+Every step, in its own file or its own section:
 
 ```markdown
 # S-NN — <imperative title>
-Status: not started | in progress | done | blocked · Depends on: <S-NN, or none> · Parallel: yes | no
+Status: not started | in progress | done | blocked | superseded · Depends on: <S-NN, or none> · Parallel: yes | no
 Implements: <FR/NFR ids> · Spec: <tech spec files this builds>
 Summary: <one line: what this step delivers>
 

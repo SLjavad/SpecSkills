@@ -27,8 +27,8 @@ Dependencies point **inward**, toward policy and away from mechanism. **The dire
 number of layers is not.** The domain — the entities and the rules they hold — never references the
 web or UI framework, the message bus or a provider's SDK. How many layers sit between them is the
 project's architecture decision, made at setup and recorded in its ADR: clean or hexagonal where the
-domain is rich and long-lived, vertical slices or plain layers where it is not. Follow the chosen
-style, and add no layer it did not choose.
+business rules are complex and long-lived, vertical slices or plain layers where they are not. Follow
+the chosen style, and add no layer it did not choose.
 
 - **A framework or vendor type in a domain signature is a leak** — an HTTP request object, a
   provider's DTO, a UI framework type. Map at the boundary instead.
@@ -79,10 +79,9 @@ agent produces by default. Treat it as a defect.
   quantity with its unit, a date range that must not be inverted: immutable, compared by value,
   validated when created. A bare decimal for money is how an amount in the wrong currency gets
   stored; a bare string for a name with no rules is fine.
-- **Aggregates are consistency boundaries.** Model true invariants inside one aggregate, keep
-  aggregates small, and reference other aggregates by identity. Changing two aggregates in one
-  transaction in the same database is fine when the use case needs them consistent together;
-  eventual consistency is for aggregates that live apart.
+- **Aggregates are consistency boundaries.** Model true invariants inside one aggregate and keep
+  aggregates small. Changing two aggregates in one transaction in the same database is fine when the
+  use case needs them consistent together; eventual consistency is for aggregates that live apart.
 - **Whatever orchestrates — a handler, an endpoint, an application service — does not decide**: it
   loads, calls domain behaviour and saves. A business rule in a handler, controller or component is in
   the wrong place.
@@ -93,9 +92,10 @@ agent produces by default. Treat it as a defect.
   - a domain service, when a rule genuinely spans aggregates;
   - a repository, when the architecture ADR keeps persistence out of the domain or the queries deserve
     one home;
-  - strongly typed identifiers, where mixing two ids up is a real risk.
-- **Time, identifiers and randomness are injected**, never read from ambient statics inside the
-  domain, so behaviour is deterministic under test.
+  - strongly typed identifiers, where mixing two ids up is a real risk;
+  - referencing other aggregates only by identity, where they change or load independently.
+- **Time and randomness are injected**, never read from ambient statics inside the domain, so
+  behaviour is deterministic under test — and identifiers too, where a test must predict them.
 - **One error convention per codebase, in the language's idiom.** A broken invariant fails fast — the
   language's mechanism for bugs. An expected business outcome (slot taken, insufficient funds) is a
   typed result the caller must handle.
@@ -108,9 +108,9 @@ bypass aggregates and project straight into DTOs), integration messages, configu
 client-side caches of server state. They carry data across a boundary; they are not domain entities.
 
 **Plain CRUD is a decision, not a default.** A module with genuinely no rules — reference data, admin
-lookups, reporting — may use plain records, but the classification is written in the tech spec with
-its reason, where the user approves it. "It was simpler" is not the reason; "there is no invariant to
-protect" is.
+lookups, reporting — may use plain records, but the classification is recorded with its reason where
+the project records design — the tech spec, an area record or `AGENTS.md` — and the user approves it.
+"It was simpler" is not the reason; "there is no invariant to protect" is.
 
 ## Keeping logic out of the UI layer
 
@@ -182,8 +182,9 @@ Some information cannot be recovered later, and that is what deserves to be stor
 - **A conversion, rounding, or aggregation cannot be undone.** If you keep only the result, the input
   is gone. Keep what an audit, a dispute, or a reconciliation would need — the raw figure, the rate
   applied, the payload actually sent.
-- **A field left out now is not recoverable retroactively.** Storing the whole response is usually the
-  same amount of work as storing the useful subset, and the subset is a guess about future questions.
+- **A field left out now is not recoverable retroactively.** Storing the whole response — minus
+  secrets and personal data you have no use for — is usually the same amount of work as storing the
+  useful subset, and the subset is a guess about future questions.
 - **Distinguish "absent" from "zero" and from "unknown".** Nullable where never-computed is a
   meaningful state. Do not backfill a number you would have to invent.
 
@@ -217,8 +218,9 @@ is not a need.
 - Hide branching in dense one-liners or chained ternaries.
 - Make debugging harder: keep the stack readable and intermediate values inspectable.
 
-**The test for both directions.** Open the entry point as if you had never seen it and read downwards.
-If you can state what it does and what it returns without descending past one level of helper, the
+**The entry-point test, for both directions.** Open the entry point as if you had never seen it and
+read downwards. If you can state what it does and what it returns without descending past one level
+of helper, the
 decomposition is right. Four hops to find the decision means over-fragmented — even when every method
 is small, pure and well named. Five unrelated things to hold at once means under-decomposed.
 
