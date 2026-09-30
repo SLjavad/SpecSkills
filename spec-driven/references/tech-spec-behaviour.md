@@ -27,6 +27,8 @@ rules apply: no product decisions, no new requirements, every element cites the 
 | `testing.md` | The test strategy |
 | `security.md` | Threat model, data classification, controls |
 
+A small system merges flows and rules into one file each, as `tech-spec-structure.md` allows.
+
 ## Step 7 — Flows
 
 For every significant use case, a numbered walkthrough. This is where correctness is actually decided.
@@ -41,7 +43,8 @@ this step fails**. Then, for the flow as a whole:
 - **Transaction boundaries** — what commits together, and what is deliberately outside the transaction.
 - **Ordering that matters**, and why. Note anything that must be persisted before a remote call, or
   published only after a commit.
-- **Idempotency** — what makes a repeat of this flow safe, and what the repeated caller receives.
+- **Idempotency** — what makes a repeat of this flow safe, and what the repeated caller receives; or
+  why a repeat is harmless.
 - **Concurrency** — the contended resources in this flow and how each is arbitrated: unique constraint,
   concurrency token, lock, atomic update, single-writer queue.
 - **The failure matrix**: for each step, the failure, the resulting state, whether it is retryable, and
@@ -138,6 +141,11 @@ tries to break; one skipped is skipped with a reason.
 | Load / benchmark | the architecturally significant NFRs | | |
 | Smoke | the deployed thing answers and its dependencies resolve | | |
 ```
+
+**The rows are a menu, not a form.** Keep the levels this project needs and give each of the others
+one line — `not applicable — <reason>`. A contract test with no outside provider, architecture tests
+with one module, or a load test with no performance requirement behind it protects nothing. Mutation and
+architecture tests stay the default wherever there is a core or a boundary for them to guard.
 
 What each level is actually for:
 

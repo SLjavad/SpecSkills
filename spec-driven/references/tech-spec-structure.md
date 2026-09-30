@@ -40,6 +40,11 @@ decisions go to `docs/adr/`.
 | `components.md` | The component inventory; split per module past 300 lines |
 | `flows/`, `rules/`, `cross-cutting.md`, `performance.md`, `testing.md`, `security.md` | Part 2 |
 
+**A small system may merge** — each aggregate with its tables in one file, the endpoints and the error
+taxonomy in one `contracts.md`, all flows in `flows.md`, all rules in `rules.md` — as long as no file
+passes 300 lines and each still holds one coherent topic. The ids stay in the headings; split a file
+again when it outgrows the cap.
+
 The rationale of every significant decision lives in its ADR. These files state the choice in one line
 and link the ADR — never a copy of the reasoning, which would drift.
 
@@ -91,7 +96,8 @@ Record each significant choice as an ADR (senior-engineering `decision-records.m
 | Observability | | | |
 ```
 
-**Pin versions.** "Latest" is not reproducible and will not be the same next month.
+Write `none` for a concern the system does not have. **Pin versions.** "Latest" is not reproducible
+and will not be the same next month.
 
 **Then write the stack playbook** — `docs/engineering/stack-<name>.md` for each stack, following
 senior-engineering's `modern-practices.md`: the current idioms, performance practice, superseded
@@ -103,17 +109,19 @@ pseudo-guidance is what this phase exists to avoid.
 
 - **Style, named and justified**: layered, clean, hexagonal, modular monolith, services, vertical
   slices. State why it fits *this* project's size and team, not why it is good in general — as an ADR.
+  Choose the lightest style the requirements allow: every layer is paid for by every later change.
 - **Module boundaries and the dependency direction.** List every module and what it may depend on.
   Dependencies point inward, toward policy. State what the innermost layer is forbidden to know.
 - **The composition root** — the one place that wires everything.
-- **What must not leak inward.** Name the concrete types: the ORM context, the HTTP request, the
-  provider's DTOs, the framework's attributes.
+- **What must not leak inward.** Name the concrete types: the HTTP request, the provider's DTOs, the
+  framework's attributes — and the ORM context, where the chosen style keeps the domain free of it.
 - **A diagram**, as Mermaid `graph`: modules as boxes, arrows for the allowed dependency direction only.
-- **Architecture tests** that enforce the above — named here as the *Confirmation* of the architecture
-  ADR, and built by an early plan step.
+- **Architecture tests** that enforce the above, where there is a boundary worth enforcing — named here
+  as the *Confirmation* of the architecture ADR, and built by an early plan step.
 
-Then the check: *could the HTTP layer and the datastore be deleted and the use cases still compile?* If
-not, say where the leak is and fix the design before continuing.
+Then the check for the chosen style. For any style: does anything depend in a forbidden direction? For
+clean or hexagonal, also: *could the HTTP layer and the datastore be deleted and the use cases still
+compile?* If not, say where the leak is and fix the design before continuing.
 
 ## Step 3 — Domain model
 
@@ -121,7 +129,8 @@ Domain entities are **rich** — senior-engineering's `design.md` has the rules.
 
 - **The aggregate root and its entities**: what each represents, its identity.
 - **Behaviour**: the intention-revealing operations the aggregate exposes, each with the invariants it
-  enforces, the events it raises, and the typed outcomes it can return.
+  enforces, the typed outcomes it can return, and any event it raises — only where something else must
+  react.
 - **Invariants**, stated as rules, each with where it is enforced. An invariant with no enforcement
   point is a comment.
 - **Value objects**, and why each exists rather than a primitive.
@@ -184,8 +193,9 @@ built.
   jobs — split the row.
 - **Every component names the reason it exists.** A component whose row reads as forwarding is a layer
   with no purpose; remove it.
-- **Interfaces and their implementations are separate rows**, with the module each lives in — the port
-  belongs to the layer that needs it, the adapter to the layer outside.
+- **An interface appears only where it passes the need test** in senior-engineering's `design.md`
+  ("Balance"). Then it and its implementation are separate rows, with the module each lives in — the
+  interface belongs to the layer that needs it, the implementation to the layer outside.
 - **`Satisfies` carries the requirement ids** this component exists for. An empty cell is a question to
   answer, not a cell to leave blank.
 - **The inventory is exhaustive.** If a plan step later needs a class that is not in this table, this

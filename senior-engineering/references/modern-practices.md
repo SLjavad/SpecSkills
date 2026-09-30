@@ -102,8 +102,9 @@ Stack-neutral; the playbook holds the concrete APIs.
   optimization without a measurement is a guess with a maintenance cost.
 - **In this order**: the algorithm and data structure; then allocations and memory layout; then
   avoiding work — caching, batching, laziness.
-- **Choose structures by access pattern.** Read-mostly lookups built once deserve a structure optimized
-  for reads, such as frozen or perfect-hash collections where the stack has them.
+- **Choose structures by access pattern.** A read-mostly lookup on a measured hot path may deserve a
+  structure optimized for reads, such as frozen or perfect-hash collections where the stack has them;
+  elsewhere the ordinary collection is right.
 - **Expose immutable or read-only views** of collections, never the mutable original — clearer
   contracts and fewer defensive copies.
 - **Allocation-aware APIs on hot paths**: span- or slice-based APIs, pooled buffers and connections,
@@ -113,8 +114,9 @@ Stack-neutral; the playbook holds the concrete APIs.
   and queues.
 - **Data access**: no N+1, project only the columns needed, paginate by key, use set-based updates for
   bulk changes, and read the query the ORM actually emits.
-- **Compile-time over run-time** where the stack offers it — source-generated serializers, loggers and
-  regular expressions over reflection.
+- **Compile-time over run-time** — source-generated serializers, loggers and regular expressions over
+  reflection — where it is the stack's recommended default and adds no ceremony, where ahead-of-time
+  compilation or trimming requires it, or on a measured hot path.
 - **UI**: derive values during rendering, keep side effects (React effects, for example) for
   synchronizing with the outside world, hold bundles within budget, and measure interaction latency
   with the browser's own tools.

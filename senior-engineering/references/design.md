@@ -23,15 +23,22 @@ sum is code a newcomer cannot follow. SOLID is below, as decisions; DRY and KISS
 
 ## The dependency rule
 
-Dependencies point **inward**, toward policy and away from mechanism. Domain and use cases know
-nothing about the web framework, the ORM, the message bus, the UI framework, or the provider SDK.
+Dependencies point **inward**, toward policy and away from mechanism. **The direction is fixed; the
+number of layers is not.** The domain — the entities and the rules they hold — never references the
+web or UI framework, the message bus or a provider's SDK. How many layers sit between them is the
+project's architecture decision, recorded in its ADR: clean or hexagonal where the domain is rich and
+long-lived, vertical slices or plain layers where it is not. Follow the chosen style, and add no layer
+it did not choose.
 
-- **The test:** could you delete the HTTP layer and the database and still compile the use cases? If
-  not, the mechanism has leaked inward.
-- **A framework or vendor type in a domain or use-case signature is a leak** — an ORM context or
-  entity attribute, an HTTP request object, a provider's DTO. Map at the boundary instead.
-- **Ports belong to the inner layer, implementations to the outer.** The interface lives with the
-  code that *needs* it, named for what it needs; the adapter lives outside and depends inward.
+- **A framework or vendor type in a domain signature is a leak** — an HTTP request object, a
+  provider's DTO, a UI framework type. Map at the boundary instead.
+- **The ORM follows the chosen style.** Where the ADR chose clean or hexagonal, the domain does not
+  reference it, and the test is: could you delete the HTTP layer and the database and still compile
+  the use cases? Elsewhere — vertical slices, a small or CRUD-heavy module — a handler may use the ORM
+  directly, and a repository interface over it needs its own reason.
+- **An interface earns its place by the need test in "Balance"**, not by the layer it sits in. Where
+  one exists, it lives with the code that needs it, named for what it needs; the implementation lives
+  outside and depends inward.
 - **Only the composition root knows everything.** If a second place has to know how the whole graph
   is wired, wiring has escaped.
 
@@ -68,25 +75,30 @@ agent produces by default. Treat it as a defect.
   events raised, no ids generated, no clock read.
 - **Collections are encapsulated**: a private mutable field, a read-only view outward, and add/remove
   methods that enforce the rules.
-- **Value objects by default** for concepts with rules — money, quantities, date ranges, identifiers,
-  addresses: immutable, compared by value, validated when created. A bare primitive for such a
-  concept is how an amount in the wrong currency gets stored.
+- **A value object where a concept has rules or is easy to mix up** — money with its currency, a
+  quantity with its unit, a date range that must not be inverted: immutable, compared by value,
+  validated when created. A bare decimal for money is how an amount in the wrong currency gets
+  stored; a bare string for a name with no rules is fine.
 - **Aggregates are consistency boundaries.** Model true invariants inside one aggregate, keep
-  aggregates small, reference other aggregates by identity, and use eventual consistency between
-  them. One transaction changes one aggregate unless a stated reason says otherwise. Only aggregate
-  roots get repositories.
-- **Domain events record what happened.** The aggregate raises them; the unit of work dispatches them.
-  Anything that leaves the process goes through a transactional outbox, and its consumers are
-  idempotent because delivery is at-least-once.
-- **Application services orchestrate, they do not decide**: load, call domain behaviour, save,
-  publish. A business rule in a handler, controller or component is in the wrong place. A rule that
-  spans aggregates lives in a domain service or an event-driven process.
+  aggregates small, and reference other aggregates by identity. Changing two aggregates in one
+  transaction in the same database is fine when the use case needs them consistent together;
+  eventual consistency is for aggregates that live apart.
+- **Whatever orchestrates — a handler, an endpoint, an application service — does not decide**: it
+  loads, calls domain behaviour and saves. A business rule in a handler, controller or component is in
+  the wrong place.
+- **The rest of the toolkit is used on a need, never by default** — each piece costs every reader:
+  - domain events, when another part of the system must react to a change;
+  - a transactional outbox, when a message must leave the process together with a database write —
+    and then its consumers are idempotent, because delivery is at-least-once;
+  - a domain service, when a rule genuinely spans aggregates;
+  - a repository, when the architecture ADR keeps persistence out of the domain or the queries deserve
+    one home;
+  - strongly typed identifiers, where mixing two ids up is a real risk.
 - **Time, identifiers and randomness are injected**, never read from ambient statics inside the
   domain, so behaviour is deterministic under test.
 - **One error convention per codebase, in the language's idiom.** A broken invariant fails fast — the
   language's mechanism for bugs. An expected business outcome (slot taken, insufficient funds) is a
   typed result the caller must handle.
-- **Strongly typed identifiers** where mixing two ids up is a real risk — not by reflex.
 - **Map through the ORM's support for private state** — field access, embedded or complex value
   types, value converters. If the persistence technology cannot map private state, map in the
   repository. Never open a setter for the ORM's convenience.
@@ -106,7 +118,7 @@ The same rule holds on the client, whatever the UI framework. Components render 
 business rules live in framework-free modules with their own unit tests; the framework's orchestration
 layer (hooks in React, view-models elsewhere) coordinates; API clients live in a data layer. Derive
 values during rendering instead of synchronizing them through side effects. Replace the
-same condition scattered through components with one strategy. Client-side validation is for the
+same condition scattered through components with one function. Client-side validation is for the
 user's convenience — the server enforces the invariant, always.
 
 ## Design against silent wrongness
@@ -143,12 +155,13 @@ Two specific traps worth naming:
 
 ## Concurrency and idempotency
 
-Every write path is designed for the second copy of itself: the retry, the redelivered message, the
-double click, two users acting at once.
+Design each write path for the second copy of itself — the retry, the redelivered message, the double
+click, two users acting at once — wherever that copy can do harm: money moved twice, an outside side
+effect repeated, a duplicate record someone must clean up, a lost update. A naturally idempotent write
+— setting a state, replacing a whole resource — needs nothing more.
 
-- **Idempotency is a design decision, not a retry setting.** Anything that can be redelivered,
-  retried, or double-submitted needs a key that makes the second attempt a no-op — and a stated
-  answer for what the second caller receives.
+- **Idempotency is a design decision, not a retry setting.** Where a duplicate does harm, a key makes
+  the second attempt a no-op, with a stated answer for what the second caller receives.
 - **Let the database arbitrate.** A unique constraint decides duplicates; an optimistic concurrency
   token detects a lost update. A read-then-write check in application code is a race.
 - **Commit the dedupe marker and the side effect together**, in one transaction, or the marker lies.
@@ -214,8 +227,8 @@ one caller earns its place only by naming a concept the call site cannot express
 
 ## Enforce the structure with architecture tests
 
-Rules that live only in prose erode. Encode the structural ones as architecture tests — fitness
-functions that fail the build: the domain references no ORM, web or UI framework; module dependencies
+Rules that live only in prose erode. Where the architecture has a boundary worth enforcing, encode the
+structural rules as architecture tests — fitness functions that fail the build: the domain references no ORM, web or UI framework; module dependencies
 point only inward; no cycles between modules; the rules an ADR's *Confirmation* section names. Start
 from the current state — fail on *new* violations and baseline the legacy ones — so the test gets
 adopted instead of muted. The project's stack playbook names the maintained tool.

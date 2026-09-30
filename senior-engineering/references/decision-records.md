@@ -39,7 +39,9 @@ Backfill an ADR when you discover an undocumented decision that matters.
 
 ## The ADR template
 
-Plain Markdown, under about 150 lines.
+Plain Markdown, in two sizes of one shape. **The short form** fits most decisions in 20–40 lines. **The
+full form** adds the sections after it, for a decision that is expensive to reverse, architecturally
+significant, or in an area where the project had trouble before. Neither passes about 150 lines.
 
 ```markdown
 # ADR-NNNN: <the decision, as a short phrase>
@@ -50,10 +52,8 @@ Relates to: <FR-/NFR- ids, Q-, P-, spec files> · Supersedes: <ADR-NNNN or none>
 Summary: <one line: what was decided>
 
 ## Context and problem
-What forces a decision now, in two to five sentences.
-
-## Decision drivers
-The requirement ids and constraints that decide it.
+What forces a decision now, in two to five sentences — with the requirement ids that drive it, and the
+sources, if research informed it.
 
 ## Considered options
 At least two real options; doing nothing may be one of them.
@@ -64,6 +64,13 @@ to achieve <Q>, accepting <D>.
 
 ## Consequences
 Good, bad and neutral: what this now forces or forbids.
+```
+
+The full form adds, after the consequences:
+
+```markdown
+## Decision drivers
+The requirement ids and constraints that decide it, one per line.
 
 ## Confirmation
 How compliance is checked — an architecture test, a review checklist item, a metric.

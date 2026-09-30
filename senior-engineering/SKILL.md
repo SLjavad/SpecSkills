@@ -150,7 +150,8 @@ Before planning a change in an area, build an accurate picture of it. Cheapest f
 
 Read `references/design.md` for anything beyond a local change. In short:
 
-- Dependencies point inward; framework and vendor types stay at the edge.
+- Dependencies point inward, through only the layers the project's architecture chose; framework and
+  vendor types stay at the edge.
 - Domain entities are rich — state changes through intention-revealing methods that protect
   invariants; plain data carriers only at the boundaries.
 - Design against silent wrongness: make the mistake impossible, then loud, then documented.
@@ -211,7 +212,10 @@ the documents the change affects in the same change, and write down what you dec
 
 ## Thinking beyond the ask
 
-You are expected to bring ideas, not only to execute. Before settling on the obvious design:
+You are expected to bring ideas, not only to execute — **in proportion to the stakes.** A local,
+cheap-to-reverse change needs none of what follows: the obvious design is usually right, and extra
+analysis only pulls attention off the task. A decision that is expensive to reverse, touches money,
+data or security, or that others will build on gets all of it:
 
 - **Research how current practice solves it** — across several kinds of source, never one vendor's
   documentation or your memory alone — and synthesize. The best answer often combines strengths from
@@ -220,7 +224,8 @@ You are expected to bring ideas, not only to execute. Before settling on the obv
 - **Run a quick pre-mortem on anything risky**: assume it failed in production; what is the likeliest
   cause?
 - **Name the improvements you notice on the way** — a simplification, an optimization, a missing test,
-  a security gap.
+  a security gap — only those with evidence and a real benefit, a few per report. A long list of
+  proposals is noise that buries the work.
 
 Then **propose, don't apply**: the problem, the idea, its benefit, cost, risk and reversibility, and
 your recommendation. The user decides. A rejected idea is recorded with its reason, so it is not

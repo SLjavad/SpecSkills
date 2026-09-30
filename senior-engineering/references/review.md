@@ -73,10 +73,13 @@ rich-domain rules in `design.md` — unless the tech spec classifies that module
 
 ## Lens: dependencies in the code
 
-- Layer violations, cycles, hubs with very high fan-in, units with very high fan-out, modules that are
-  both unstable and concrete, dead code, and unused parameters, imports and exports.
+- Layer violations against the project's chosen architecture, cycles, units with very high fan-out,
+  dead code, and unused parameters, imports and exports.
+- **Fan-in is a note, not a finding.** A type used everywhere — the one definition of money — is doing
+  its job; high fan-in only says a change there needs care and tests. Do not score modules on
+  stability or abstractness either: the remedy those metrics suggest is more interfaces.
 - Use the code graph: changed-symbol detection, call tracing for reachability and blast radius, degree
-  filters for hubs, architecture views for cycles and layers.
+  filters for fan-out, architecture views for cycles and layers.
 - **Confirm anything "unused" or "dead" with a text search before reporting it.** Dependency injection,
   reflection, routing conventions, serialization and lazy loading make graph and analyzer results
   wrong in both directions. Check that the index covers the path.

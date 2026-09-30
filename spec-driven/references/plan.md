@@ -28,9 +28,10 @@ make an unimplemented `Must` visible — see "Done when".
 leaves nothing verifiable until the end and hides integration problems until they are expensive. Prefer
 one capability working end to end, then the next.
 
-**First step is a skeleton that runs.** Project structure, wiring, configuration, health check, the
-integration-test infrastructure (containers up, reset working), the architecture tests, and one trivial
-path proving the stack works. Everything after it has somewhere to land.
+**First step is a skeleton that runs** — whichever of these the project has: project structure,
+wiring, configuration, a health check, the integration-test infrastructure (containers up, reset
+working), the architecture tests — and one trivial path proving the stack works. Everything after it
+has somewhere to land.
 
 **Then, in this order of preference:** the flow with the most risk or the most unknowns first, while
 there is time to discover the spec was wrong; then the flows the primary journey depends on; then
