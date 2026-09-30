@@ -159,6 +159,7 @@ threat model still match the code?
 Do not spend review attention on what a tool already checks — and name any tool that did not run.
 
 **Then the manual checklist.** Map each finding to the current OWASP Top 10 or ASVS category and CWE.
+The table is the minimum; the threat model and the change itself decide what else to examine.
 
 | Concern | Look for |
 |---|---|

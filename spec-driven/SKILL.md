@@ -14,6 +14,10 @@ That constraint is what makes this method worth the effort, and it is the bar ev
 to. This skill builds on `senior-engineering`, which applies throughout; load both. Use the project's
 own refactoring or cleanup skill when one exists.
 
+Every checklist and example list here is a floor, not a fence: it names what is most often at stake,
+never the edge of what to consider. Each project adds what its own domain, risks and architecture
+demand.
+
 ## The pipeline
 
 ```

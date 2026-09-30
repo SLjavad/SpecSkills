@@ -23,7 +23,8 @@ depends on it: a wrong assumption here costs a paragraph; the same assumption in
 
 ## Sweep both sides
 
-Work through both lists against everything you have been told and everything already in the repository.
+Work through both lists against everything you have been told and everything already in the repository,
+and extend them with whatever this domain adds — the lists are where to start, not where to stop.
 Every item ends up **known** (with its source), **assumed** (your stated default, flagged for
 confirmation), or **asked**.
 

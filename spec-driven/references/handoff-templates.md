@@ -147,9 +147,10 @@ Decide yourself: <internal structure, naming, local algorithm choices that satis
 Not yours to decide: everything PROTOCOL.md reserves for the user.
 
 ## Tests required
-Business: <…> · Technical: <…> · Performance and concurrency: <…> · Security: <…>
+Business: <…> · Technical: <…> · Performance: <…> · Security: <…>
+Other risks this task carries (e.g. concurrency, idempotency, resilience — whatever applies): <…>
 (write "not applicable — <reason>" for a lens that does not apply)
-Integration tests on Testcontainers: <images, from the stack playbook>
+Integration tests with Testcontainers, one container per external dependency touched: <from the stack playbook>
 
 ## Verification
 The exact commands and the expected result: the tests that must pass, by name; the request and its

@@ -52,9 +52,10 @@ Then, in order:
    listed. Off-by-one, rounding direction, null handling, ordering, tie-breaks.
 4. **Requirement verification, FR and NFR** — see below. The part most often skipped, and the part where
    a confident "verified" is most often unearned.
-5. **Design, domain and dependencies** — senior-engineering's `review.md`: SOLID, the dependency rule,
-   the rich domain model, dependencies in the code and in the packages. Architecture tests present and
-   passing where an ADR names them.
+5. **Design, domain and dependencies** — senior-engineering's `review.md`: the project's declared
+   principles first, then SOLID and the wider body of design and architecture principles; the rich
+   domain model; dependencies in the code and in the packages. Architecture tests present and passing
+   where an ADR names them.
 6. **Algorithms and efficiency** — the same file: complexity at the spec's stated scale, data access,
    allocation, blocking, contention. Every finding carries evidence.
 7. **Security — always.** senior-engineering's `security.md` audit, against the diff and against the
@@ -65,13 +66,15 @@ Then, in order:
 9. **Failure paths.** Every step of every flow — is the failure behaviour the spec specified actually
    implemented, or only the happy path? Every FR's stated failure behaviour, too.
 10. **Verification gaps and test quality** — senior-engineering's `testing.md`. Steps marked verified
-    whose verification does not prove what it claims. The four lenses missing on a significant flow.
-    Integration tests against substitutes instead of the real engine. Tests that assert nothing, mirror
+    whose verification does not prove what it claims. A lens, or a risk the flow carries, missing on a
+    significant flow. Integration tests against substitutes instead of a real or emulated dependency. Tests that assert nothing, mirror
     the implementation, cannot fail, or were weakened. Surviving mutants on the core.
 11. **Readability and balance.** Over-fragmentation and over-coupling both — the entry-point test from
     senior-engineering's `design.md`.
 12. **Leftovers.** Debug output, commented-out code, `TODO`s, scaffolding, unused imports, dead
     abstractions with no caller.
+    The order above is the minimum; add any lens the change calls for — a data migration, accessibility,
+    operability, compatibility with existing clients.
 13. **The documents tell the truth.** The change deltas, ADRs and area records match the code, so the
     merge at close (`changes.md`) will leave the living specs correct.
 

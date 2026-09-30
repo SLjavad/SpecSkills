@@ -25,9 +25,11 @@ its end of support.
 1. **Before using an API or pattern** you have not verified for this version, check the vendor's
    documentation for that version — the vendor's documentation MCP server first where one is
    configured, the official documentation site otherwise. Confirm the minimum version on the API page.
-2. **Before recommending or adding a library**, check its registry page: latest version and date,
-   maintenance activity, deprecation, licence (popular libraries have moved to commercial terms),
-   supported runtimes, and known vulnerabilities. Adding a dependency is a proposal the user approves.
+2. **Before recommending or adding a library or tool**, check its registry page: latest version and
+   date, maintenance activity, deprecation, licence, supported runtimes, and known vulnerabilities. It
+   must be free and open-source unless the user named it — popular libraries have moved to commercial
+   terms in a new major version, so check the version you add. Adding a dependency is a proposal the
+   user approves.
 3. **Before an upgrade**, read the breaking-changes pages for every component that moves.
 4. **Keep analyzers and linters at a pinned level** and raise it deliberately; treat their warnings
    about outdated or slow patterns as findings.
@@ -50,6 +52,10 @@ write-ups, registries, issue trackers — synthesize, and keep it under 300 line
 # <Stack> playbook
 Status: current · Last verified: YYYY-MM-DD · Pinned by: ADR-NNNN
 Summary: How <project> writes <stack>: versions, idioms, performance practice, what not to use.
+
+## Standing defaults applied
+The owner's defaults from senior-engineering (for .NET: latest stable release, xUnit; no commercial
+tools) and any deviation the user approved, with its ADR.
 
 ## Versions and support
 | Component | Pinned | Support ends | Source |

@@ -114,8 +114,10 @@ Every agent in multi-agent mode starts at docs/handoff/PROTOCOL.md.
 - Improvements beyond the task are proposals the user approves — never applied silently.
 - Never put secrets, personal data, internal hostnames or proprietary code into a web search, a web
   fetch or any remote tool call.
-- Tests challenge business rules, algorithms, concurrency and performance, and security; integration
-  tests use Testcontainers; never weaken a test to make it pass.
+- Tests challenge business rules, the technical solution, performance and security, plus every other
+  risk a flow carries; integration tests run every external dependency with Testcontainers; never
+  weaken a test to make it pass.
+- No commercial tools or libraries unless the user names them.
 - Update the affected docs in the same change as the code (lead/coder mode: the coder lists them in its
   report and the lead updates them).
 - No state-changing git operations, migrations applied to a database, deploys or destructive commands
@@ -167,12 +169,14 @@ Summary: The rules every agent follows on this project, whatever tool it runs in
 ## Non-negotiables            ask instead of guessing; no silent behaviour change; propose, never
                               smuggle; security is correctness; confidential data never goes to remote
                               tools; check the pinned versions; evidence before assertions; git and
-                              migration rules
-## Design                      dependency rule; rich domain entities and what stays plain; idempotency
-                              and concurrency; fail direction; the project's architecture tests
-## Tests                       the four lenses — business, technical, performance and concurrency,
-                              security; Testcontainers for owned infrastructure; see it fail first;
-                              never weaken a test; mutation testing on the core
+                              migration rules; examples are a floor, not a fence
+## Standing defaults           no commercial tools unless named; the stack's version and test-framework
+                              defaults (for .NET: latest stable release, xUnit)
+## Design                      dependency rule and the design principles that apply here; rich domain
+                              entities and what stays plain; failure design; the architecture tests
+## Tests                       the four lenses — business, technical, performance, security — plus the
+                              flow's other risks; Testcontainers for every external dependency; see it
+                              fail first; never weaken a test; mutation testing on the core
 ## Security                    the design and implementation rules that apply here; the data-egress rules
 ## Before reporting            the self-review checklist and what the report contains
 ## Where to look               the stack playbook, the handoff protocol, the area records

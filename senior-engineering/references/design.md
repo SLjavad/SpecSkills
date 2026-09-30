@@ -3,6 +3,11 @@
 How to shape a change so it is correct, testable, and hard to get silently wrong. Read before
 designing anything beyond a local change, and before reviewing a design.
 
+These are the principles most often at stake, not the complete set. Apply the wider body of design and
+architecture principles wherever they bear — separation of concerns, cohesion and coupling, DRY, KISS,
+YAGNI, encapsulation, composition over inheritance, and the rest (`review.md` lists their signals) — and
+weigh them against each other; "Balance" below settles the conflicts.
+
 ## Contents
 - The dependency rule
 - SOLID, as decisions rather than definitions
@@ -151,8 +156,10 @@ double click, two users acting at once.
 - **Never block on asynchronous work** from inside asynchronous code. Bound every pool and queue, and
   say what happens when it is full.
 
-These are the properties the performance and concurrency test lens exists to challenge — see
-`testing.md`.
+Concurrency and idempotency are two of the failure properties a design must decide; resilience to a
+slow or failing dependency, data consistency across separate updates, and compatibility with old
+clients and old data are others. Decide each one the system actually has, and `testing.md` asks the
+tests to challenge them.
 
 ## Irreversibility
 

@@ -99,7 +99,7 @@ reason — silence reads as oversight and is the most common way an NFR is disco
 
 Performance · Scalability · Availability and reliability · Security · Privacy and compliance ·
 Observability · Maintainability · Usability and accessibility · Internationalisation · Compatibility
-and portability · Cost
+and portability · Cost — and any quality the product needs that this list does not name.
 
 ```markdown
 ### NFR-NNN — <category>: <short title>
@@ -150,9 +150,10 @@ requirement nobody can show is met is indistinguishable from one that is not. Th
 evidence first:
 
 1. **Automated test — the best answer wherever the project has a place for one.** Permanent, runs again
-   next month, fails loudly when someone breaks the rule. Unit tests for pure logic; integration tests on
-   Testcontainers wherever the behaviour touches a database, queue or cache; the four test lenses from
-   senior-engineering's `testing.md` for significant flows; mutation testing on the core rules.
+   next month, fails loudly when someone breaks the rule. Unit tests for pure logic; integration tests
+   with Testcontainers wherever the behaviour crosses an external dependency; the four test lenses and
+   the flow's other risks from senior-engineering's `testing.md` for significant flows; mutation testing
+   on the core rules.
 2. **Probe — a throwaway project or script whose only job is to exercise the thing and report.** Use it
    when there is no suite to add to, or when the answer is a measurement rather than a pass/fail.
    - **For an FR:** drive the flow end to end and check the acceptance criteria against the real

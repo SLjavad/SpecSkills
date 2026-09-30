@@ -6,7 +6,7 @@ these lenses too, after checking the code against the spec.
 ## Contents
 - Process
 - Lens: correctness
-- Lens: design and SOLID
+- Lens: design and architecture principles
 - Lens: domain model
 - Lens: dependencies in the code
 - Lens: package dependencies
@@ -22,7 +22,8 @@ these lenses too, after checking the code against the spec.
 2. **Run the automated gates first** — build, tests, analyzers, audits. Do not spend review attention on
    what a tool already enforces, and name any gate that did not run.
 3. **Run the lenses as separate passes**, or as parallel sub-reviews where the tooling allows, so one
-   concern does not crowd out the others.
+   concern does not crowd out the others. The lenses below are the minimum; add whatever further lens
+   the change calls for — data migration, accessibility, operability, compatibility, and so on.
 4. **Verify every candidate finding** against the code before reporting it — reproduce it, trace it, or
    measure it. Drop what does not survive; merge duplicates across lenses.
 5. **Rank the result**: blocking first, then non-blocking, with problems that pre-date the change
@@ -34,10 +35,20 @@ The rules and algorithms against their worked examples. The edge cases: empty, z
 tie, absent, negative, overflow. Off-by-one, rounding direction, null handling, ordering, tie-breaks,
 time zones. Every failure branch reachable, and handled the way the spec says.
 
-## Lens: design and SOLID
+## Lens: design and architecture principles
 
-Raise a finding only with a concrete change scenario or defect risk — "could be cleaner" is not a
-finding.
+Judge the code against **the project's declared principles first** — its architecture ADRs, the
+architecture style in the tech spec, the rules in `AGENTS.md` and the area records — and then against
+the wider body of software design and architecture principles. The tables below name the ones most
+often at stake and the signals that reveal a violation; they are examples, not the boundary. Apply any
+other principle that bears on the code in front of you.
+
+Principles conflict — DRY against decoupling, open/closed against YAGNI, purity against simplicity — so
+a finding names the concrete consequence and says which principle yields and why; `design.md`'s
+"Balance" settles the trade. Raise a finding only with a concrete change scenario or defect risk —
+"could be cleaner" or "violates principle X" on its own is not a finding.
+
+**SOLID**
 
 | Principle | Signals |
 |---|---|
@@ -47,8 +58,32 @@ finding.
 | Interface segregation | implementers stubbing members; callers using a small slice of a wide interface or props object |
 | Dependency inversion | domain or application code constructing database, HTTP, clock or environment objects; UI components calling API clients directly |
 
-Also the dependency rule — framework types in inner layers, wiring outside the composition root — and
-the balance test from `design.md`: read down from the entry point; four hops to the decision is
+**Other design principles**
+
+| Principle | Signals |
+|---|---|
+| DRY — one source for each piece of knowledge | the same rule or constant decided in two places; but merge only true duplication, at the third occurrence, never coincidental similarity |
+| KISS and YAGNI | machinery with no requirement behind it; configuration nobody sets; a generic framework for one case |
+| Separation of concerns; high cohesion, low coupling | one change forcing edits across unrelated modules; a module mixing unrelated concerns |
+| Encapsulation and information hiding | internal state or representation exposed; callers depending on how, not what |
+| Law of Demeter | call chains reaching through several objects to get at a collaborator's collaborator |
+| Composition over inheritance | deep hierarchies built for code reuse rather than substitutability |
+| Command–query separation | queries that change state; commands whose return value callers depend on for data |
+| Fail fast and explicit dependencies | errors swallowed or deferred; hidden globals, ambient singletons, service locators |
+| Least astonishment | names, defaults or side effects a reader would not predict |
+
+**Architecture principles**
+
+| Principle | Signals |
+|---|---|
+| The dependency rule and layering | framework types in inner layers; wiring outside the composition root; a layer skipped |
+| Boundaries and bounded contexts | one module reaching into another's data or internals; a shared model stretched across contexts |
+| Stable dependencies and abstractions | stable, widely used code depending on volatile code; concrete modules everyone depends on |
+| Consistency of cross-cutting conventions | a second error model, logging style, configuration path or auth check beside the established one |
+| Contracts at boundaries | API shapes, versioning or error bodies that differ from the project's own contract rules |
+| Designed-for failure and operation | remote calls with no timeout or failure handling; state an operator cannot observe |
+
+Finally the balance test from `design.md`: read down from the entry point; four hops to the decision is
 over-fragmented, five unrelated things at once is under-decomposed.
 
 ## Lens: domain model
@@ -95,9 +130,10 @@ realistic size the spec states.
 ## Lens: security, tests, readability
 
 - **Security** — the audit checklist in `security.md`, in every review, not only when asked.
-- **Tests** — `testing.md`: the four lenses covered for significant flows; tests that cannot fail, mirror
-  the implementation, or were weakened; mutation score on the core; Testcontainers wherever owned
-  infrastructure is touched.
+- **Tests** — `testing.md`: the four lenses covered for significant flows, and the flow's other risks —
+  concurrency, idempotency, resilience and whatever else it carries; tests that cannot fail, mirror the
+  implementation, or were weakened; mutation score on the core; Testcontainers wherever an external
+  dependency is touched.
 - **Readability and leftovers** — misleading names, clever lines, debug output, commented-out code,
   stray `TODO`s, scaffolding, dead abstractions.
 

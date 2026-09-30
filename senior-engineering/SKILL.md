@@ -1,6 +1,6 @@
 ---
 name: senior-engineering
-description: The engineering, product and security baseline for work on any codebase in any stack - understand the product and technical sides or ask, design against SOLID, the dependency rule and rich domain entities, write current idiomatic code for the project's pinned versions, treat security as part of correctness, keep confidential data out of external tool calls, test business rules, algorithms, concurrency and security against real infrastructure (Testcontainers, mutation testing), review for design, dependency and efficiency problems, propose improvements for approval instead of applying them, and record decisions as ADRs. Use when starting work on a project, designing, implementing, testing or reviewing code, choosing between approaches, adding a dependency, or when a request could be read more than one way. Also the checklist to self-apply before reporting any task done.
+description: The engineering, product and security baseline for work on any codebase in any stack - understand the product and technical sides or ask, design by SOLID and the wider body of design and architecture principles with rich domain entities, write current idiomatic code for the project's pinned versions, treat security as part of correctness, keep confidential data out of external tool calls, test business rules, the technical solution, performance and security plus every other risk a flow carries, with every external dependency run for real via Testcontainers, review code against design principles, dependencies and efficiency, propose improvements for approval instead of applying them, and record decisions as ADRs. Use when starting work on a project, designing, implementing, testing or reviewing code, choosing between approaches, adding a dependency, or when a request could be read more than one way. Also the checklist to self-apply before reporting any task done.
 ---
 
 # Senior engineering baseline
@@ -16,6 +16,11 @@ leaves the machine.
 The single duty that outranks the rest: **know the project, or ask.** Confident output built on an
 unverified assumption is the most expensive thing you can produce, because it looks finished.
 
+**Every list in these skills is a floor, not a fence.** The examples — principles, test subjects,
+dependency types, threats, tools — name what is most often at stake so you do not miss it; they never
+mark the edge of what to consider. Derive the rest from the project's own domain, requirements, risks
+and architecture, and research what the examples do not cover.
+
 ## Load what the task needs
 
 This file is the always-on core. The detail lives in `references/`, one topic per file — read the ones
@@ -23,8 +28,8 @@ the task touches, not all of them.
 
 | When you are | Read |
 |---|---|
-| Designing or implementing anything beyond a local change | `references/design.md` — dependency rule, SOLID, rich domain model, concurrency, balance |
-| Writing, judging or planning tests | `references/testing.md` — four test lenses, Testcontainers, mutation testing |
+| Designing or implementing anything beyond a local change | `references/design.md` — dependency rule, design principles, rich domain model, failure design, balance |
+| Writing, judging or planning tests | `references/testing.md` — four test lenses and the flow's other risks, Testcontainers for every external dependency, mutation testing |
 | Touching identity, input, secrets, personal data or external calls — and in every review | `references/security.md` |
 | Writing code in any stack, or adding or upgrading a library | `references/modern-practices.md` — versions, stay-current routine, stack playbook |
 | Reviewing code, yours before reporting or anyone's | `references/review.md` |
@@ -78,6 +83,18 @@ destructive commands without an explicit yes** — even when they are the obviou
 a dev environment. The decision is about the action, not its blast radius. Reading history and diffs,
 writing a migration for review, and the schema a test suite creates in its own throwaway containers
 are not such actions.
+
+## Standing defaults
+
+The owner's decisions for every project, so they are applied, not re-asked. A project deviates only
+with the user's explicit yes, recorded in an ADR.
+
+- **No commercial tools or libraries** unless the user names one. Check the licence of the exact
+  version before adding anything — some widely used libraries moved to commercial terms in a new major
+  version. An existing project that already uses a commercial dependency keeps it; flag it.
+- **.NET: the latest stable release** — never a preview. For an existing project, a newer stable
+  release is an upgrade proposal.
+- **.NET tests: xUnit** is the test framework; other free libraries may sit alongside it.
 
 ## The product pass
 
@@ -165,12 +182,14 @@ holds the method table, the four test lenses, and the Testcontainers rules.
 - **Pure logic**: a unit test — cheapest and permanent. Arithmetic, parsing, mapping, and any rule
   that was hard to get right should end up with one; that is where a regression is both most likely
   and least visible.
-- **Anything touching owned infrastructure**: an integration test on Testcontainers against the real
-  engine — never an in-memory substitute.
+- **Anything crossing an external dependency** — any tool or service outside the process: an
+  integration test with Testcontainers, running the real engine, the vendor's emulator, or a
+  containerized mock server — never an in-memory substitute.
 - **Behaviour-preserving change**: capture the current output first, change, re-run, and **diff**. A
   rewrite that "looks equivalent" is worth nothing without the comparison.
-- **A significant flow**: challenged from all four lenses — business rules, technical correctness,
-  performance and concurrency, security.
+- **A significant flow**: challenged through four lenses — business rules, the technical solution,
+  performance, security — and tested for every other risk it carries: concurrency, idempotency,
+  resilience, data integrity, compatibility, or whatever else its requirements and design expose.
 - **Negative cases**: the invalid input, the absent value, the failure branch. A change verified only
   on the happy path is verified for the case that was never in doubt.
 - **A test exists to fail**: see it fail first; never weaken one to make the change pass.

@@ -75,8 +75,9 @@ whole bundle.
 **Details.** What specifically to build, referencing spec files rather than restating them. Anything the
 implementer would otherwise have to infer.
 
-**Tests.** Per lens that applies — business, technical, performance and concurrency, security — what
-the tests must try to break. Integration tests on Testcontainers where infrastructure is touched.
+**Tests.** Per lens that applies — business, technical, performance, security — and per other risk the
+step carries (concurrency, idempotency, resilience, …), what the tests must try to break. Integration
+tests with Testcontainers wherever the step crosses an external dependency.
 
 **Verification.** The exact command or procedure, and the expected result. Not "it builds" — the tests
 that pass by name, the request and its expected response, the row that appears, the log line.

@@ -76,8 +76,8 @@ wrong-but-plausible version alongside the right one.
 Each of these, decided once and written down: authentication and authorization model; configuration and
 secrets; logging, and what must never be logged; metrics, tracing and health; the error-handling
 convention; localization and text; caching and invalidation; background work and scheduling; file and
-blob handling. Where one does not apply, say "not applicable" rather than omitting it — silence reads as
-oversight.
+blob handling — and any other concern this system shares across components. Where one does not apply,
+say "not applicable" rather than omitting it — silence reads as oversight.
 
 ## Step 10 — Performance, and how every NFR is met
 
@@ -121,15 +121,17 @@ anything an area record describes as having been wrong before. These have no I/O
 and they are exactly the code where a regression is both most likely and least visible. If this project
 has such logic and no test covering it, that is a gap to name, not a preference.
 
-**Challenge each significant flow from the four lenses** — business rules, technical correctness,
-performance and concurrency, security — and write down, per flow, which lenses apply and what each
-test tries to break. A lens skipped for a flow is skipped with a reason.
+**Challenge each significant flow through the four lenses** — business rules, the technical solution,
+performance, security — and then through the flow's other risks, drawn from its failure matrix,
+NFRs and threat model: concurrency, idempotency, resilience, data integrity, compatibility, time, or
+whatever else it carries. Write down, per flow, which lenses and subjects apply and what each test
+tries to break; one skipped is skipped with a reason.
 
 ```markdown
 | Level | What is covered here | What is deliberately not | Command |
 |---|---|---|---|
 | Unit | domain rules, rules/RL-*, value objects | framework wiring | |
-| Integration (Testcontainers) | every flow that writes data or publishes; concurrency and idempotency tests | | |
+| Integration (Testcontainers) | every flow that crosses an external dependency; the flow-risk tests (concurrency, idempotency, resilience, …) | | |
 | Contract | outbound providers whose shape can drift | | |
 | Architecture | the layering ADR's rules | | |
 | Mutation | the domain core, with the break threshold | adapters, UI glue | |
@@ -141,8 +143,9 @@ What each level is actually for:
 
 - **Unit** — pure logic in isolation: fast, deterministic, no database, network or clock. The mandated
   class lives here, and the Step 8 worked examples become its test data directly.
-- **Integration** — the real path through real dependencies, on Testcontainers. Slower, so choose the
-  paths where money moves or data is written rather than aiming at coverage.
+- **Integration** — the real path through every external dependency, on Testcontainers: the real
+  engine, the vendor's emulator, or a containerized mock server. Slower, so choose the paths where money
+  moves, data is written or a dependency is crossed, rather than aiming at coverage.
 - **Contract** — that an external service still returns the shape you mapped. Worth its cost the moment
   a provider can change independently of your release, because that drift is silent: a field added
   upstream compiles fine and arrives unconverted.
@@ -153,8 +156,11 @@ What each level is actually for:
 - **Mutation** — proves the unit and integration tests on the core can fail when the code is wrong.
 - **Smoke** — the deployed thing answers and its dependencies resolve.
 
-- **Integration infrastructure**: which Testcontainers images, pinned to the production versions, the
-  reset strategy between tests, and what CI needs (Docker, Linux runners).
+- **Integration infrastructure**: every external dependency and the container that stands in for it —
+  the real engine, the vendor's emulator or a mock server — pinned to the production versions; the reset
+  strategy between tests; and what CI needs to run the containers.
+- **Test framework and tools**: the standing defaults (for .NET, xUnit) plus the free libraries chosen
+  for the other kinds of test.
 - **Mutation testing**: which modules, which tool, the break threshold, and when it runs.
 - **Which requirement ids are covered by a test**, and which rely on a probe, a structural check or
   nothing — this is the `Verification` column of the matrix, and the strategy has to agree with it.

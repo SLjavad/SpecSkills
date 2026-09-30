@@ -6,8 +6,9 @@ they fail for the wrong reasons, get muted, and then everything around them is a
 
 ## Contents
 - Choosing the verification method
-- Challenge every significant flow from four lenses
-- Integration tests run against real infrastructure
+- Four lenses on every significant flow
+- Beyond the lenses: the flow's own risks
+- Integration tests run every external dependency for real
 - Writing a test worth having
 - Proving the tests can fail
 - Sizing the coverage
@@ -20,8 +21,7 @@ Match the method to what is being verified, and state which you used.
 | What is being verified | Method |
 |---|---|
 | Pure logic — rules, arithmetic, parsing, mapping, state transitions | Unit test: fast, no I/O, no clock |
-| Anything touching infrastructure you own or run — database, queue, cache, search, object store | Integration test on Testcontainers, against the real engine |
-| A third-party service you cannot run | A stub at the HTTP boundary, plus a contract test where the provider's shape can drift |
+| Anything that crosses an external dependency — any tool, engine or service outside the process | Integration test with Testcontainers: the real engine, the vendor's emulator, or a containerized mock server |
 | A behaviour-preserving change | Characterization: capture the current output, change, re-run, **diff** |
 | A number — latency, throughput, allocations, a query plan — or a one-off exploration | A benchmark, load test or throwaway probe; record the result and what it ran against |
 | A project with no test suite yet | A probe now — and say plainly what that leaves unprotected next month |
@@ -33,11 +33,11 @@ throw the probe away. A probe verifies once; only a test verifies next month, so
 form wherever the project has a place to put it. Reading the code and agreeing with it is not
 verification.
 
-## Challenge every significant flow from four lenses
+## Four lenses on every significant flow
 
-For each flow that matters — money, stored data, permissions, anything a user relies on — ask what
-each lens would try to break, and write the tests that try it. Not every flow needs every lens;
-skipping one is a decision you state, not an omission.
+For each flow that matters — money, stored data, permissions, anything a user relies on — look at it
+through each lens, ask what would break it, and write the tests that try. Skipping a lens for a flow is
+a decision you state, not an omission. The examples under each lens illustrate; they do not bound it.
 
 **1. Business logic and product requirements**
 - Each acceptance criterion, including its stated failure behaviour, as a scenario test.
@@ -50,42 +50,69 @@ skipping one is a decision you state, not an omission.
 **2. Technical solution and implementation**
 - Correctness against an oracle: the optimised algorithm agrees with a slow reference implementation
   over generated inputs; serialization round-trips; metamorphic relations.
-- Error, retry and timeout paths; migrations; faults injected at the network boundary.
+- The paths that are not the main one: errors, retries, timeouts, faults injected at the boundary.
 - *Example:* the pricing engine matches a naive reference over 10,000 generated carts.
 - *UI:* state logic and formatters (reducers and hooks, in React) tested as plain functions.
 
-**3. Performance, concurrency and idempotency**
-- Lost updates and overbooking: release N writers at once through a barrier against the real
-  database, and repeat the run. *Example:* 50 concurrent bookings for the last seat yield exactly one
-  success, 49 conflicts, and inventory never below zero.
-- Duplicates: the same idempotency key sent sequentially and concurrently; the same message delivered
-  twice; a crash between the side effect and the acknowledgement.
-- Starvation and blocking: run with a capped thread pool or event loop; use the race detector where
-  the stack has one.
-- Query counts asserted (no N+1), allocation budgets on hot paths, and load tests whose thresholds are
-  the NFR targets.
-- *UI:* out-of-order responses, double submit, render and bundle-size budgets.
+**3. Performance**
+- The NFR targets as test thresholds: latency and throughput under the stated load, measured, not
+  assumed.
+- Behaviour at the stated scale: the algorithm stays within its complexity at 10× volume; result sets
+  stay bounded; memory, connections and threads stay within their limits.
+- Query counts asserted (no N+1), allocation budgets on hot paths, micro-benchmarks for measured hot
+  code.
+- *UI:* render and bundle-size budgets, interaction latency.
 
 **4. Security**
 - The authorization matrix — role × ownership × operation, per endpoint — including another user's or
   tenant's object id (returns no data) and mass assignment (`"isAdmin": true` in a payload is ignored).
 - Response over-exposure: fields the caller must not see are absent, not merely hidden by the UI.
-- Injection against the real database; size, depth and rate limits; secrets absent from logs and
+- Injection against the real engine; size, depth and rate limits; secrets absent from logs and
   responses.
 - Security tests use the real token validation or a test authentication handler — never a weakened
   production setting.
 - *UI:* XSS sinks, the content-security policy, and where tokens are stored.
 
-## Integration tests run against real infrastructure
+## Beyond the lenses: the flow's own risks
 
-Integration tests that touch a database, message broker, distributed cache, search engine or object
-store use **Testcontainers**, which exists for most major languages — for a stack it does not cover,
-the closest tool that runs the real engine in a throwaway container. The point is to test against the
-engine production runs: a substitute behaves differently exactly where bugs hide — transactions,
-locking, collation, JSON handling, constraint errors.
+The four lenses are the minimum, not the map. Every flow also depends on properties the lenses do not
+name; derive them from its requirements, NFRs, architecture, threat model and failure matrix, and test
+the ones that carry real risk. What that list holds depends on the system. Subjects that often matter —
+examples, not a checklist:
 
-- **Never substitute another engine** — an in-memory database, SQLite standing in for a different
-  database, an embedded fake broker — and never mock infrastructure you own.
+- **Concurrency** — lost updates and races. *Example:* release 50 bookings for the last seat at once
+  through a barrier against the real database, repeatedly: exactly one success, 49 conflicts, inventory
+  never below zero.
+- **Idempotency and duplicates** — the same request or idempotency key sent sequentially and
+  concurrently; the same message delivered twice; a crash between the side effect and the
+  acknowledgement.
+- **Resilience** — timeouts, retries, partial failure, a dependency that is slow or down, recovery.
+- **Data integrity and consistency** — transaction boundaries, constraints, eventual consistency
+  between parts that update separately.
+- **Compatibility** — schema migrations up and down, contract and API versioning, old clients.
+- **Time** — time zones, daylight-saving changes, calendars, ordering by timestamp.
+- **Configuration** — defaults, missing or invalid settings, feature flags in each state.
+- **Operability** — the logs, metrics and traces an operator needs are actually emitted; startup,
+  shutdown and degradation behave as specified.
+- **Localization and accessibility** — for anything a person reads or operates.
+
+Name, in the plan or the brief, which subjects a flow needs and why; a subject the system has and no
+test covers is a gap to state.
+
+## Integration tests run every external dependency for real
+
+Every integration test that crosses an external dependency runs it with **Testcontainers** — whatever
+the dependency is: a database, message broker, cache, search engine, object store, identity provider,
+mail or SMS gateway, another of your services, a third-party API. Those are examples; the rule covers
+every tool or service outside the process. Testcontainers exists for most major languages; for a stack
+it does not cover, use the closest tool that runs the dependency in a throwaway container.
+
+- **Choose the most real option that can run**: the production engine itself; otherwise the vendor's
+  official emulator; otherwise a containerized mock server for an API you cannot run — plus a contract
+  test wherever the provider's shape can drift independently of your release.
+- **Never substitute a different engine** — an in-memory database, SQLite standing in for another
+  database, an embedded fake broker — and never mock a dependency you can run. A substitute behaves
+  differently exactly where bugs hide: transactions, locking, collation, serialization, error codes.
 - **Pin each image to the production version**, from one place in the repository, by tag and ideally
   by digest.
 - **Start containers once per test run or per worker**, not per test, unless isolation demands it.
@@ -95,11 +122,12 @@ locking, collation, JSON handling, constraint errors.
   development only.
 - **One documented reset strategy per suite.** Rolling back a transaction per test isolates only code
   that shares the test's connection and never manages its own transactions; otherwise truncate or
-  snapshot-restore between tests. Parallel tests get unique tenants or ids, or a database per worker.
-  Flush caches and purge queues as well.
+  snapshot-restore between tests. Parallel tests get unique tenants or ids, or a dependency instance per
+  worker. Reset every stateful dependency — data, caches, queues, mailboxes.
 - **Shared fixtures are thread-safe**, or the tests that share them are serialized explicitly.
 - **CI runs them on runners that can run the containers** (typically Linux runners with Docker),
-  caches the images, and captures container logs on failure. If CI cannot run containers, say so — never let the suite be skipped quietly.
+  caches the images, and captures container logs on failure. If CI cannot run containers, say so —
+  never let the suite be skipped quietly.
 
 ## Writing a test worth having
 
@@ -118,8 +146,8 @@ locking, collation, JSON handling, constraint errors.
   their own containers. Inject the clock instead of reading it.
 - **Build the input in the test.** A shared mega-fixture hides which field actually mattered; the
   reader has to see the input that produces the expectation.
-- **Mock only at boundaries you do not own.** Over-mocking asserts that the code calls the methods you
-  wrote it to call — true by construction, and it locks the design in place.
+- **Mock only what you cannot run.** Over-mocking asserts that the code calls the methods you wrote it
+  to call — true by construction, and it locks the design in place.
 - **Worked examples are the best test data you will get** — real numbers someone already reasoned
   through, from the spec, an area record or ADR, or the ticket.
 - **Cover the boundary and the negative case**, not three variations of the happy path. Empty, zero,
@@ -144,9 +172,9 @@ locking, collation, JSON handling, constraint errors.
 
 - **Size the coverage to the consequence, not to how easy the test is to write.** The cheapest tests to
   write are usually the ones least worth having. A flow that moves money or data deserves step-by-step
-  coverage from every relevant lens; changing a default, a key, a literal or a field's presence
-  deserves none. Ask what breaks in production if this is wrong — if the answer is "someone notices
-  immediately and fixes it", that is not a test, that is a changed line.
+  coverage through every lens and every risk it carries; changing a default, a key, a literal or a
+  field's presence deserves none. Ask what breaks in production if this is wrong — if the answer is
+  "someone notices immediately and fixes it", that is not a test, that is a changed line.
 - **A "so it never drifts again" guard is still a test, and most are not worth it.** The genre is
   seductive because it feels like diligence rather than testing, so it escapes the judgement applied to
   everything above. It earns its place only when the drift would be **silent** *and* the consequence
@@ -162,8 +190,13 @@ locking, collation, JSON handling, constraint errors.
 
 ## Tools
 
-The project's stack playbook names the maintained tool for each kind — for example Stryker (.NET,
-JavaScript/TypeScript) or PIT (JVM) for mutation; FsCheck, jqwik, fast-check or Hypothesis for
-properties; ArchUnitNET, ArchUnit or dependency-cruiser for architecture tests; k6, Gatling or Locust
-for load; BenchmarkDotNet, JMH or Go's benchmarks for micro-benchmarks. Check maintenance and licence
-before adopting one — test libraries change licence too.
+- **.NET: xUnit is the test framework** — a standing default of the project owner. Other free libraries
+  sit alongside it where they help: Testcontainers modules, assertion, mocking, property-based,
+  mutation and benchmarking tools.
+- **Free and open-source only**, unless the user names a commercial tool. Check the licence of the exact
+  version you add — some widely used test libraries moved to commercial terms in a new major version.
+- The project's stack playbook names the maintained tool for each kind, for every stack. Examples of
+  the kinds, not a closed list: mutation (Stryker, PIT), property-based (FsCheck, jqwik, fast-check,
+  Hypothesis), architecture tests (ArchUnitNET, ArchUnit, dependency-cruiser), load (k6, Gatling,
+  Locust), micro-benchmarks (BenchmarkDotNet, JMH, Go's benchmarks). Check maintenance and licence
+  before adopting any of them.
