@@ -3,10 +3,11 @@
 How to shape a change so it is correct, testable, and hard to get silently wrong. Read before
 designing anything beyond a local change, and before reviewing a design.
 
-These are the principles most often at stake, not the complete set. Apply the wider body of design and
-architecture principles wherever they bear — separation of concerns, cohesion and coupling, DRY, KISS,
-YAGNI, encapsulation, composition over inheritance, and the rest (`review.md` lists their signals) — and
-weigh them against each other; "Balance" below settles the conflicts.
+The design principles are a deliberately small set: **the project's own declared rules first** — its
+architecture ADR, `AGENTS.md`, the area records — **then SOLID, DRY and KISS/YAGNI.** Do not reach
+beyond them: every extra principle is one more reason to add a layer, an interface or a split, and the
+sum is code a newcomer cannot follow. SOLID is below, as decisions; DRY and KISS/YAGNI are what
+"Balance" enforces. When principles pull apart, the simpler design wins.
 
 ## Contents
 - The dependency rule
@@ -177,6 +178,11 @@ Some information cannot be recovered later, and that is what deserves to be stor
 
 Failure has two directions, and over-engineering is the more common and the harder to see, because
 every individual piece looks defensible.
+
+**When in doubt, the simpler design wins.** A new abstraction, layer or interface names the concrete
+need it serves today — a second real case, a fake a test cannot do without, a boundary the architecture
+requires, a concept the code cannot otherwise name. "Cleaner", "more flexible" or "principle X says so"
+is not a need.
 
 **Too much.** Do not:
 

@@ -53,7 +53,7 @@ Then, in order:
 4. **Requirement verification, FR and NFR** — see below. The part most often skipped, and the part where
    a confident "verified" is most often unearned.
 5. **Design, domain and dependencies** — senior-engineering's `review.md`: the project's declared
-   principles first, then SOLID and the wider body of design and architecture principles; the rich
+   principles first, then SOLID, DRY and KISS/YAGNI, with over-engineering a finding too; the rich
    domain model; dependencies in the code and in the packages. Architecture tests present and passing
    where an ADR names them.
 6. **Algorithms and efficiency** — the same file: complexity at the spec's stated scale, data access,

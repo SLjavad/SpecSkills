@@ -169,10 +169,11 @@ Summary: The rules every agent follows on this project, whatever tool it runs in
 ## Non-negotiables            ask instead of guessing; no silent behaviour change; propose, never
                               smuggle; security is correctness; confidential data never goes to remote
                               tools; check the pinned versions; evidence before assertions; git and
-                              migration rules; examples are a floor, not a fence
+                              migration rules; risk lists are a floor, not a fence
 ## Standing defaults           no commercial tools unless named; the stack's version and test-framework
                               defaults (for .NET: latest stable release, xUnit)
-## Design                      dependency rule and the design principles that apply here; rich domain
+## Design                      dependency rule; SOLID, DRY and KISS/YAGNI only, the simpler design
+                              winning; over-engineering counts as a defect; rich domain
                               entities and what stays plain; failure design; the architecture tests
 ## Tests                       the four lenses — business, technical, performance, security — plus the
                               flow's other risks; Testcontainers for every external dependency; see it

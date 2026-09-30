@@ -6,7 +6,7 @@ these lenses too, after checking the code against the spec.
 ## Contents
 - Process
 - Lens: correctness
-- Lens: design and architecture principles
+- Lens: design principles
 - Lens: domain model
 - Lens: dependencies in the code
 - Lens: package dependencies
@@ -35,53 +35,31 @@ The rules and algorithms against their worked examples. The edge cases: empty, z
 tie, absent, negative, overflow. Off-by-one, rounding direction, null handling, ordering, tie-breaks,
 time zones. Every failure branch reachable, and handled the way the spec says.
 
-## Lens: design and architecture principles
+## Lens: design principles
 
 Judge the code against **the project's declared principles first** — its architecture ADRs, the
 architecture style in the tech spec, the rules in `AGENTS.md` and the area records — and then against
-the wider body of software design and architecture principles. The tables below name the ones most
-often at stake and the signals that reveal a violation; they are examples, not the boundary. Apply any
-other principle that bears on the code in front of you.
+SOLID, DRY and KISS/YAGNI. The set is small on purpose (`design.md`): do not review against principles
+beyond it, because each one added is another push toward layers and abstraction.
 
-Principles conflict — DRY against decoupling, open/closed against YAGNI, purity against simplicity — so
-a finding names the concrete consequence and says which principle yields and why; `design.md`'s
-"Balance" settles the trade. Raise a finding only with a concrete change scenario or defect risk —
-"could be cleaner" or "violates principle X" on its own is not a finding.
-
-**SOLID**
+Raise a finding only with a concrete change scenario or defect risk — "could be cleaner" or "violates
+principle X" on its own is not a finding. **Over-engineering is a finding with the same weight as a
+violation:** an abstraction, layer, interface or pattern with no present need behind it, a generic
+mechanism for one case, a chain of forwarding hops between the entry point and the decision. When
+principles pull apart, the simpler design wins.
 
 | Principle | Signals |
 |---|---|
 | Single responsibility | the file changes in history for unrelated reasons; a long list of injected dependencies or props; one unit that fetches, decides and renders |
-| Open/closed | the same `switch` or `if` chain on a type or kind in two or more places |
+| Open/closed | the same `switch` or `if` chain on a type or kind in three or more places, growing with each variant |
 | Liskov | overrides that throw "not supported" when the contract does not advertise the capability; callers downcasting; subtypes with stricter preconditions |
 | Interface segregation | implementers stubbing members; callers using a small slice of a wide interface or props object |
 | Dependency inversion | domain or application code constructing database, HTTP, clock or environment objects; UI components calling API clients directly |
-
-**Other design principles**
-
-| Principle | Signals |
-|---|---|
 | DRY — one source for each piece of knowledge | the same rule or constant decided in two places; but merge only true duplication, at the third occurrence, never coincidental similarity |
-| KISS and YAGNI | machinery with no requirement behind it; configuration nobody sets; a generic framework for one case |
-| Separation of concerns; high cohesion, low coupling | one change forcing edits across unrelated modules; a module mixing unrelated concerns |
-| Encapsulation and information hiding | internal state or representation exposed; callers depending on how, not what |
-| Law of Demeter | call chains reaching through several objects to get at a collaborator's collaborator |
-| Composition over inheritance | deep hierarchies built for code reuse rather than substitutability |
-| Command–query separation | queries that change state; commands whose return value callers depend on for data |
-| Fail fast and explicit dependencies | errors swallowed or deferred; hidden globals, ambient singletons, service locators |
-| Least astonishment | names, defaults or side effects a reader would not predict |
+| KISS and YAGNI | machinery with no requirement behind it; configuration nobody sets; a generic framework for one case; an interface with one implementation and no test that needs to fake it |
 
-**Architecture principles**
-
-| Principle | Signals |
-|---|---|
-| The dependency rule and layering | framework types in inner layers; wiring outside the composition root; a layer skipped |
-| Boundaries and bounded contexts | one module reaching into another's data or internals; a shared model stretched across contexts |
-| Stable dependencies and abstractions | stable, widely used code depending on volatile code; concrete modules everyone depends on |
-| Consistency of cross-cutting conventions | a second error model, logging style, configuration path or auth check beside the established one |
-| Contracts at boundaries | API shapes, versioning or error bodies that differ from the project's own contract rules |
-| Designed-for failure and operation | remote calls with no timeout or failure handling; state an operator cannot observe |
+Layering and module boundaries are not weighed here as principles: they are the project's chosen
+architecture, checked by its architecture tests and by the dependency lens below.
 
 Finally the balance test from `design.md`: read down from the entry point; four hops to the decision is
 over-fragmented, five unrelated things at once is under-decomposed.

@@ -1,6 +1,6 @@
 ---
 name: senior-engineering
-description: The engineering, product and security baseline for work on any codebase in any stack - understand the product and technical sides or ask, design by SOLID and the wider body of design and architecture principles with rich domain entities, write current idiomatic code for the project's pinned versions, treat security as part of correctness, keep confidential data out of external tool calls, test business rules, the technical solution, performance and security plus every other risk a flow carries, with every external dependency run for real via Testcontainers, review code against design principles, dependencies and efficiency, propose improvements for approval instead of applying them, and record decisions as ADRs. Use when starting work on a project, designing, implementing, testing or reviewing code, choosing between approaches, adding a dependency, or when a request could be read more than one way. Also the checklist to self-apply before reporting any task done.
+description: The engineering, product and security baseline for work on any codebase in any stack - understand the product and technical sides or ask, design by SOLID, DRY and KISS/YAGNI with rich domain entities and no abstraction without a present need, write current idiomatic code for the project's pinned versions, treat security as part of correctness, keep confidential data out of external tool calls, test business rules, the technical solution, performance and security plus every other risk a flow carries, with every external dependency run for real via Testcontainers, review code against design principles, dependencies and efficiency, propose improvements for approval instead of applying them, and record decisions as ADRs. Use when starting work on a project, designing, implementing, testing or reviewing code, choosing between approaches, adding a dependency, or when a request could be read more than one way. Also the checklist to self-apply before reporting any task done.
 ---
 
 # Senior engineering baseline
@@ -16,10 +16,12 @@ leaves the machine.
 The single duty that outranks the rest: **know the project, or ask.** Confident output built on an
 unverified assumption is the most expensive thing you can produce, because it looks finished.
 
-**Every list in these skills is a floor, not a fence.** The examples — principles, test subjects,
+**Every list of risks in these skills is a floor, not a fence.** The examples — test subjects,
 dependency types, threats, tools — name what is most often at stake so you do not miss it; they never
 mark the edge of what to consider. Derive the rest from the project's own domain, requirements, risks
-and architecture, and research what the examples do not cover.
+and architecture, and research what the examples do not cover. **Design principles are the opposite:
+a small, fixed set** — the project's own rules, then SOLID, DRY and KISS/YAGNI — because a missed risk
+is a defect, but an extra principle is cost: more layers, more abstraction, harder onboarding.
 
 ## Load what the task needs
 
@@ -28,7 +30,7 @@ the task touches, not all of them.
 
 | When you are | Read |
 |---|---|
-| Designing or implementing anything beyond a local change | `references/design.md` — dependency rule, design principles, rich domain model, failure design, balance |
+| Designing or implementing anything beyond a local change | `references/design.md` — dependency rule, SOLID, DRY and KISS/YAGNI, rich domain model, failure design, balance |
 | Writing, judging or planning tests | `references/testing.md` — four test lenses and the flow's other risks, Testcontainers for every external dependency, mutation testing |
 | Touching identity, input, secrets, personal data or external calls — and in every review | `references/security.md` |
 | Writing code in any stack, or adding or upgrading a library | `references/modern-practices.md` — versions, stay-current routine, stack playbook |

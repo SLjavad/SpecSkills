@@ -16,7 +16,7 @@ own refactoring or cleanup skill when one exists.
 
 Every checklist and example list here is a floor, not a fence: it names what is most often at stake,
 never the edge of what to consider. Each project adds what its own domain, risks and architecture
-demand.
+demand. Design principles are the one exception: senior-engineering keeps them a small, fixed set.
 
 ## The pipeline
 
