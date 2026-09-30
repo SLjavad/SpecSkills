@@ -1,0 +1,5 @@
+# Whitelist: only the owner's own skills are tracked; installed skills stay untracked unless added here.
+/*
+!/.gitignore
+!/spec-driven/
+!/senior-engineering/

@@ -1,0 +1,130 @@
+# Phase 0 — Setup
+
+**Goal:** before any spec is written, the project knows how it will be worked on, and has the skeleton
+every later document plugs into.
+
+## Contents
+- Ask the operating mode
+- AGENTS.md and CLAUDE.md
+- The docs skeleton
+- The indexes
+- Existing projects
+- Then stop
+
+## Ask the operating mode
+
+Ask once, early, with real options:
+
+- **Single agent** — one agent writes the specs, implements, and reviews. Prefer a fresh-context
+  session for the review; a reviewer with no memory of writing the code catches more.
+- **Lead and coder** — a lead agent (product manager, tech lead, architect, reviewer) writes specs,
+  ADRs, plans and task briefs, and reviews; a coder agent implements and reports. They communicate
+  only through files, and the user can step in at any point. Ask which tool each agent runs in: if any
+  of them is not Claude Code, everything the agents share must be written into the project, because
+  that agent cannot load these skills.
+- **Another split the user prefers** — a separate reviewer, several coders. Map it onto the same roles
+  and files.
+
+Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, read `multi-agent.md` and,
+before phase 1, set up `docs/handoff/` from `handoff-templates.md` — protocol, control (paused), board
+and templates — and, when any agent's tool cannot load these skills, `docs/engineering/principles.md`
+(senior-engineering `project-knowledge.md`).
+
+## AGENTS.md and CLAUDE.md
+
+Create or update both from the templates in senior-engineering's `references/project-knowledge.md`.
+
+- **An existing `AGENTS.md`** is updated, not replaced; show the user the diff.
+- **Instruction files for other tools** (`.cursorrules`, Copilot instructions and the like): fold their
+  content into `AGENTS.md`, and leave each as a short shim pointing to it.
+- **`CLAUDE.md` holds `@AGENTS.md`** plus Claude-only notes, and nothing else is imported — imports
+  load at startup, and the specs must load only on demand.
+- **Add each line of `AGENTS.md` when its target exists.** A link to a file nobody has written yet, or a
+  `Commands` section before the skeleton step has created the commands, is a placeholder — leave it out
+  until it is true.
+
+## The docs skeleton
+
+```
+docs/
+  specs/                  living specs: the system as it is (or, before release 1, as it is being built)
+    README.md             manifest: every spec file, one line each
+    glossary.md           every domain term, defined once
+    01-product/  02-requirements/  03-tech/
+  changes/                work in flight: one folder per change, then archive/
+    README.md
+  adr/                    decisions
+    README.md
+  discovery/
+    understanding.md      the confirmed playback of product and technical context
+    questions.md          gray-area register (Q-)
+    proposals.md          proposal register (P-)
+  engineering/            README.md index; stack playbooks, areas/ records, principles
+  handoff/                multi-agent only: PROTOCOL.md, CONTROL.md, BOARD.md, templates/
+```
+
+Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md` and `docs/discovery/` now; create each other
+folder when its phase starts, never as empty placeholders.
+
+**The initial build is change CH-001.** Its product, requirements and tech spec are written directly
+into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its plan, task
+files and reviews live in `docs/changes/CH-001-initial-build/`. Every later major change writes deltas
+instead (`changes.md`).
+
+## The indexes
+
+**`docs/specs/README.md`** — the manifest, under 150 lines:
+
+```markdown
+# <Project> — specifications
+Status: draft | approved · Updated: YYYY-MM-DD
+Summary: The living specification — what the system is, what it must do, how it is built. Start here.
+
+## Reading paths
+- New to the project: docs/specs/01-product/overview.md → docs/specs/02-requirements/overview.md →
+  docs/specs/03-tech/architecture.md
+- Implementing a task: the files your brief or plan step lists — nothing else by default.
+- Reviewing: the brief, the requirement files it cites, the tech files for the components it touches.
+
+## Files
+| File | Holds | IDs | Status |
+|---|---|---|---|
+| docs/specs/glossary.md | every domain term, defined once | — | approved |
+| docs/specs/01-product/overview.md | summary, problem, value, primary goal | — | approved |
+| docs/specs/02-requirements/functional/booking.md | booking capability requirements | FR-010–FR-021 | approved |
+```
+
+List every file, one line each, with its path from the repository root. Collections — flows, rules,
+aggregates — are listed file by file too, so any living document is two hops from `AGENTS.md`.
+
+**`docs/engineering/README.md`** — the same shape, listing the stack playbooks, the area records under
+`areas/`, and `principles.md` when it exists.
+
+**`docs/changes/README.md`**:
+
+```markdown
+| Change | Title | Status | Opened | Closed | Folder |
+|---|---|---|---|---|---|
+| CH-001 | Initial build | in progress | YYYY-MM-DD | — | CH-001-initial-build/ |
+```
+
+Statuses: proposed → approved → in progress → in review → merged → archived (or rejected).
+
+**`docs/adr/README.md`**:
+
+```markdown
+| ADR | Title | Status | Date | Supersedes / superseded by |
+|---|---|---|---|---|
+```
+
+## Existing projects
+
+A project with code but no specs does not get a reverse-engineered bundle of everything. Write
+`AGENTS.md`, a short product overview and the glossary, and the living specs for the area the first
+change touches; the specs grow change by change. Backfill ADRs only for decisions that matter now.
+
+## Then stop
+
+Continue straight into discovery (`discovery.md`): the sweep, the playback and the first batch of
+questions. Then stop at gate 0 — present the mode recorded, the files created, the playback and the
+questions — and wait for the user's corrections before writing the product spec.
