@@ -47,9 +47,8 @@ the task touches, not all of them.
 anything. The project's conventions beat your preferences, every time, including when you think the
 convention is wrong — say so separately, don't fix it by stealth.
 
-**Ambiguity is a question, not a guess.** Models tend to write code where they should ask; asking here
-is cheaper than anywhere later. See "Resolving ambiguity". Never invent a requirement and never let a
-guess reach the diff unlabelled.
+**Ambiguity is a question, not a guess.** Asking here is cheaper than anywhere later. See "Resolving
+ambiguity". Never invent a requirement and never let a guess reach the diff unlabelled.
 
 **Behaviour never changes silently.** Anything a caller, client, stored record, other service, or money
 figure can observe is a change the user must know about — significant ones need a yes *before* the

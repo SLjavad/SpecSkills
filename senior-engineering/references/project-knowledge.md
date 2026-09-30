@@ -45,8 +45,8 @@ instead of the whole bundle. That selective loading is where the token saving co
 - **Registers and logs archive rather than grow.** When an append-only file passes the cap, move closed
   entries to an archive file and keep the open ones.
 - **`AGENTS.md` stays under 150 lines**, and the whole instruction chain a tool loads — root plus nested
-  files — under roughly 24 KiB; some tools stop reading at a fixed size (32 KiB at the time of writing —
-  check the tools the project uses).
+  files — under roughly 24 KiB; some tools stop reading at a fixed size. Codex, for one, silently
+  truncates past 32 KiB by default (checked September 2026) — check the tools the project uses.
 
 ## Headers, ids and links
 
