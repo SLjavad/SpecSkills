@@ -140,6 +140,9 @@ non-functional**. An unverified requirement is reported as unverified, never as 
 - **Non-functional requirements: produce the number.** A probe or load test that measures, compared
   against the target — a loop timing a query, a capture of the emitted SQL and its plan, a payload
   measured after a serializer round-trip, a run at 10× volume to see whether the algorithm stays linear.
+- **Evaluation.** Run it on the pinned dataset and record the score, the dataset version, and the model
+  or configuration it ran against. A score below the threshold is a missed requirement; a score from
+  another version of the dataset is not evidence.
 - **For either kind, say what the probe ran against.** A probe over fabricated data proves less than one
   over real data, and the difference belongs in the finding. Keep the probe out of the deliverable tree.
 - **Structural check.** Where nothing above reaches the outcome, confirm the mechanism exists — the index,
