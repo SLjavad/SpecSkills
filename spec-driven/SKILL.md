@@ -1,6 +1,6 @@
 ---
 name: spec-driven
-description: Runs a project spec-first as small, linked, agent-readable files - discovery of every product and technical gray area, a product spec, numbered FR/NFR requirements in EARS form with a traceability matrix, a technical spec with ADRs and a researched stack playbook, a stepwise plan, then review with findings recorded in files. Keeps the specs living (later features are change folders merged on release), makes AGENTS.md - imported by CLAUDE.md - the entry point, and runs either one agent or a lead/coder loop that communicates through files, with the user approving every decision beyond the approved spec. Use when starting a new project or major feature, writing product or technical specs, requirements or ADRs, planning an implementation, setting up multi-agent or cross-tool work, handing work to another agent, or reviewing an implementation against its spec.
+description: Runs a project spec-first as small, linked, agent-readable files - discovery of every product and technical gray area, a product spec, numbered, testable FR/NFR requirements with a traceability matrix, a technical spec with ADRs and a researched stack playbook, a stepwise plan, then review with findings recorded in files, with a lighter small track for small projects. Keeps the specs living (later features are change folders merged on release), makes AGENTS.md - imported by CLAUDE.md - the entry point, and runs either one agent or a lead/coder loop that communicates through files, with the user approving every decision beyond the approved spec. Use when starting a new project or major feature, writing product or technical specs, requirements or ADRs, planning an implementation, setting up multi-agent or cross-tool work, handing work to another agent, or reviewing an implementation against its spec.
 ---
 
 # Spec-driven development
@@ -42,10 +42,12 @@ it ships (`references/changes.md`).
 
 **Scale the ceremony to the change.** The full pipeline is for a new project or a major feature. A small
 change needs no change folder and no separate plan: run senior-engineering's product pass, add or amend
-the affected requirements and design items in the living specs — ids, EARS statements, the traceability
+the affected requirements and design items in the living specs — ids, statements, the traceability
 row — in the same edit as the code, and report it as one step. Heavy process on small work is how
 spec-driven development gets abandoned. The project's own weight — its size, architecture and the
-practices it uses — is decided once, at setup, with the user.
+practices it uses — is decided once, at setup, with the user. A small project usually takes the
+**small track** (`references/small-track.md`): the same phases and rules in three spec files, one change
+file, and two approval stops instead of five.
 
 ## Ask the operating mode first
 
@@ -90,6 +92,7 @@ Read the files for the current phase, not all of them.
 
 | Phase | Read |
 |---|---|
+| Small track, any phase | `references/small-track.md` first; it says which parts of each phase file apply |
 | 0 — Setup | `references/setup.md`, `../senior-engineering/references/project-knowledge.md`, `../senior-engineering/references/decision-records.md` for the architecture ADR |
 | 0 — Discovery, and at every gate | `references/discovery.md` |
 | 1 — Product spec | `references/product-spec.md` |
@@ -177,6 +180,9 @@ going back one document is trivial compared with discovering it during implement
 
 ## Gates
 
+Under the small track, gate 0 and the gates after phases 1 and 2 merge into one stop, and the gates
+after phases 3 and 4 into another (`references/small-track.md`); everything else here holds.
+
 **Gate 0 — after setup and the first discovery pass:** present the operating mode, the size,
 architecture and practices proposed, the files created, the playback of your understanding, the
 `assumed` entries, and the first batch of questions. Wait for the user's corrections
@@ -231,6 +237,8 @@ document is now actively misleading — worse than having no document.
 |---|---|
 | Spec full of `TBD` | Decisions deferred to whoever is least equipped to make them |
 | One 900-line spec file | Every task pays to load all of it; split it by topic |
+| The full pipeline on a weekend tool | The weight gets the method abandoned; propose the small track |
+| Ten scenarios on one requirement | The spec enumerating what the tests should; keep the examples to the edges |
 | A monolith chopped into parts afterwards | Fragments that cut across topics; design files for how they are loaded |
 | `AGENTS.md` importing specs, or restating the directory tree | Everything loads at startup, and the tree was derivable anyway |
 | A brief that says "see the tech spec" | The implementer reads everything; name the files |

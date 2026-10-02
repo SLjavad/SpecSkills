@@ -63,19 +63,17 @@ Bring the user a recommendation with reasons and real alternatives — researche
 (`discovery.md`, "Research"). What to weigh:
 
 - **The architecture decided at setup** — its shape and the size it was chosen for.
-- **What the team already runs.** An unfamiliar-but-better stack is usually worse. Ask what they operate
-  today, and what they are willing to operate.
 - **Fit to the problem.** Heavy concurrency, heavy data, heavy UI, scheduled batch, real-time — these
   point different ways.
 - **The scale numbers from the product spec.** Do not choose for a scale nobody stated.
 - **Obligatory integrations.** An SDK that exists for one ecosystem and not another decides more than
   taste does.
-- **Deployment and operational reality.** Where does this run, who watches it, what does the team
-  already have for logs, metrics, CI, secrets.
+- **Deployment and runtime environment.** Where does this run, and what already exists there for logs,
+  metrics, CI and secrets.
 - **Persistence shape.** Relational, document, key-value, search, time-series, or several — driven by the
   access patterns, not by preference.
-- **Team size and lifespan.** A one-person tool and a system a team maintains for five years justify
-  different structure.
+- **Lifespan.** A tool used for one season and a system maintained for five years justify different
+  structure.
 - **Support horizon and licences.** How long each pinned version is supported. Every component is free
   and open-source unless the user names a commercial one.
 

@@ -9,7 +9,7 @@ format (`SKILL.md` folders), and they fall back to plain project files for tools
 | Skill | What it does |
 |---|---|
 | `senior-engineering` | The baseline for any code work: ask instead of guessing; design with the project's own rules plus SOLID, DRY and KISS/YAGNI, and no abstraction without a present need; rich domain entities; security as part of correctness; no confidential data in remote tool calls; tests that challenge business rules, the technical solution, performance and security, with every external dependency run for real through Testcontainers; code review; ADRs. |
-| `spec-driven` | Runs a project spec-first as small, linked files: discovery, product spec, numbered EARS requirements with a traceability matrix, a tech spec with ADRs and a stack playbook, a stepwise plan, and review. Size, architecture and practices are decided with you at setup; later features are change folders merged into living specs; one agent, or a lead and a coder working through files. |
+| `spec-driven` | Runs a project spec-first as small, linked files: discovery, product spec, numbered, testable requirements with a traceability matrix, a tech spec with ADRs and a stack playbook, a stepwise plan, and review. Size, architecture and practices are decided with you at setup; later features are change folders merged into living specs; one agent, or a lead and a coder working through files. |
 
 `spec-driven` builds on `senior-engineering`. Install both, and keep them side by side in the same
 folder: `spec-driven` links to `../senior-engineering/`.
@@ -83,7 +83,8 @@ any agent that works on it without the skills installed.
   name: "Use the spec-driven skill to start this project."
 - **A new project or a major feature: `spec-driven`.** It first asks whether you work with one agent or
   several, proposes the project's size, architecture and practices for you to decide, then works phase
-  by phase and stops for your approval at each gate. No code is written until the plan is approved.
+  by phase and stops for your approval at each gate. A small project takes the small track: the same
+  phases in three spec files and two approval stops. No code is written until the plan is approved.
 - **Everyday work** — designing, coding, testing, reviewing: `senior-engineering` applies throughout.
 - **Ideas beyond the task are proposals.** Nothing outside the approved scope is built without your yes.
 

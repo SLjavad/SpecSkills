@@ -57,7 +57,7 @@ the work (`discovery.md`).
 - In scope, out of scope, and explicitly later. The "out" list is what prevents scope creep, so it must
   be written down even when it feels obvious.
 - What must this integrate with, and is that an obligation or a preference?
-- What are the real constraints — legal, regulatory, contractual, deadline, budget, existing systems?
+- What are the real constraints — legal, regulatory, contractual, existing systems?
   Mark each as constraint or preference; a preference can be traded, a constraint cannot.
 - What data does it handle that is personal, financial or confidential? The tech spec's security design
   starts from this list.

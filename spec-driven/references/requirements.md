@@ -11,7 +11,8 @@ product spec is incomplete — go back and amend it — or you are inventing sco
 requirement. "Store nationality as a two-character column" is a tech-spec decision. If a requirement
 names a table, framework or algorithm, it is in the wrong document.
 
-Write to `docs/specs/02-requirements/` — or, for a later change, as requirement deltas (`changes.md`).
+Write to `docs/specs/02-requirements/` — or, for a later change, as requirement deltas (`changes.md`);
+under the small track, to `docs/specs/requirements.md` (`small-track.md`).
 
 ## Contents
 - The files
@@ -42,8 +43,8 @@ requirement that is dropped keeps its id and is marked `retired`, with the reaso
 ## Functional requirements
 
 One block each. Priority is MoSCoW — `Must`, `Should`, `Could`, `Won't` — and `Must` is the set the plan
-is obliged to cover. The statement follows an EARS pattern; the acceptance criteria follow
-Given/When/Then. EARS states the rule; the scenarios are its examples.
+is obliged to cover. The statement is one testable sentence that states the rule; the acceptance
+criteria are its key examples.
 
 ```markdown
 ### FR-014 — Free cancellation window
@@ -64,11 +65,15 @@ refund the full amount.
 **Failure behaviour.** What happens when it cannot be satisfied: what the actor sees and what they can
 do next. A requirement with no failure behaviour is half specified.
 
-**Verification.** test | probe | exercise | structural check | dedicated plan | not verified — the
-mechanism that will show the acceptance criteria actually hold (see "How requirements get verified").
+**Verification.** test | evaluation | probe | exercise | structural check | dedicated plan | not
+verified — the mechanism that will show the acceptance criteria actually hold (see "How requirements
+get verified").
 ```
 
-**EARS patterns** — one trigger per statement:
+**Writing the statement.** The EARS patterns below are a checklist, not a required syntax: a statement
+that names its trigger or state and its response, and nothing else, passes whatever its wording. Use
+them to ask whether there is exactly one trigger, whether it is an event or a state, and whether the
+unwanted case has a statement of its own.
 
 | Pattern | Form | Use for |
 |---|---|---|
@@ -92,6 +97,27 @@ What makes one testable:
 - **The negative case is stated** — usually as an unwanted-behaviour statement — not left to the
   implementer's judgement.
 
+**Acceptance criteria are examples, not an enumeration.** One to three per requirement: the boundary,
+the failure case, and the worked example where one exists. The statement fixes the rule, the examples
+fix its edges, and the tests enumerate the cases — a spec that lists every state duplicates the test
+suite and drifts from it. Given/When/Then is one format; `input → outcome` in a bullet, or a table row,
+serves as well. Needing more than three means the rule is a decision table, or two requirements.
+
+**Requirements on outputs that vary.** Some behaviour is judged over many cases, not case by case —
+search relevance, ranking, recommendations, classification, extraction from documents, text generated
+by a language model. No single correct output exists per input, so the target is a rate over a named
+evaluation set:
+
+> When an invoice is uploaded, the system shall extract its total and due date — target: ≥ 98% of
+> fields correct over the 300 invoices in `<path to the evaluation set>`, against hand-checked values.
+
+- **The evaluation set is part of the spec**: versioned in the repository, with its size, how it was
+  built, and who judged the expected outcomes.
+- **The deterministic parts around the varying core stay ordinary requirements** — what happens when
+  nothing is found, the limits on input, that every reference in the output points at something real.
+- **The acceptance criteria are the threshold** plus two or three illustrative cases from the set, and
+  the verification is `evaluation`.
+
 ## Non-functional requirements
 
 Work the categories below. For each, either write requirements or write "not applicable" with a
@@ -113,7 +139,8 @@ system>, it shall <response>, measured as <number, unit, condition>.
 
 **Measurement.** How it is measured, with what, observed where.
 
-**Verification.** test | probe | exercise | structural check | dedicated plan | not verified — see below.
+**Verification.** test | evaluation | probe | exercise | structural check | dedicated plan | not
+verified — see below.
 
 **Consequence if missed.** What actually goes wrong for whom. If you cannot name one, this is not a
 requirement; delete it.
@@ -155,7 +182,11 @@ evidence first:
    with Testcontainers wherever the behaviour crosses an external dependency; the four test lenses and
    the flow's other risks from senior-engineering's `testing.md` for significant flows; mutation testing
    on the core rules.
-2. **Probe — a throwaway project or script whose only job is to exercise the thing and report.** Use it
+2. **Evaluation — for an output judged over many cases.** A versioned dataset of inputs with expected
+   outcomes, a scoring method, and the requirement's threshold; automated and re-run like a test. Record
+   the score with the dataset version and the model or configuration it ran against. A score below the
+   threshold fails, like a red test.
+3. **Probe — a throwaway project or script whose only job is to exercise the thing and report.** Use it
    when there is no suite to add to, or when the answer is a measurement rather than a pass/fail.
    - **For an FR:** drive the flow end to end and check the acceptance criteria against the real
      database, the real provider, the real bus — that the row is actually written, the message actually
@@ -165,16 +196,16 @@ evidence first:
    - **The probe is disposable; its output is not.** The result goes into the requirement and the
      review, with what it ran against — a probe against fabricated data proves less than one against real
      data. Keep probes out of the deliverable tree.
-3. **Exercise — call the running system and check the result by hand.** Weaker than a probe only
+4. **Exercise — call the running system and check the result by hand.** Weaker than a probe only
    because nothing captures it for next time; record the request and the response.
-4. **Structural check — where nothing above can reach the outcome, confirm the mechanism exists.** The
+5. **Structural check — where nothing above can reach the outcome, confirm the mechanism exists.** The
    index is present, the timeout configured, the bound enforced. Record that the *mechanism* was
    checked and the *outcome* was not. **These are not the same claim and must never be reported as if
    they were.** For an FR it is almost always a sign the requirement is not testable as written.
-5. **Dedicated verification plan — for a requirement important enough that none of the above is honest
+6. **Dedicated verification plan — for a requirement important enough that none of the above is honest
    enough.** Real load profile, soak, failover drill, penetration test. Reserve it for the
    architecturally significant ones.
-6. **Not verified — allowed, but only out loud.** An explicit entry saying so, why, and what would be
+7. **Not verified — allowed, but only out loud.** An explicit entry saying so, why, and what would be
    needed. Never a silent gap.
 
 **An FR whose only verification is "the code looks right" is unverified.** Reading an implementation and
@@ -209,7 +240,7 @@ status and its verification *mechanism*; the matrix holds its progress and the v
 ## Done when
 
 - Every product-spec capability maps to at least one FR, and every FR traces back to one.
-- Every FR has an EARS statement, Given/When/Then acceptance criteria, a stated failure behaviour, and
+- Every FR has a testable statement, one to three acceptance criteria, a stated failure behaviour, and
   a verification mechanism.
 - Every NFR has a target number, a measurement method, a verification approach and a named consequence.
 - The security level is chosen and the applicable security requirements are listed.

@@ -23,6 +23,7 @@ Match the method to what is being verified, and state which you used.
 | Pure logic — rules, arithmetic, parsing, mapping, state transitions | Unit test: fast, no I/O, no clock |
 | Anything that crosses an external dependency — any tool, engine or service outside the process | Integration test with Testcontainers: the real engine, the vendor's emulator, or a containerized mock server |
 | A behaviour-preserving change | Characterization: capture the current output, change, re-run, **diff** |
+| An output judged over many cases — ranking, classification, extraction, generated text | Evaluation: a versioned dataset, a scoring method and a threshold, run like a test; record the score with the dataset and model versions |
 | A number — latency, throughput, allocations, a query plan — or a one-off exploration | A benchmark, load test or throwaway probe; record the result and what it ran against |
 | A project with no test suite yet | A probe now — and say plainly what that leaves unprotected next month |
 

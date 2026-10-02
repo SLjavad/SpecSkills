@@ -36,22 +36,34 @@ and templates — and, when any agent works without these skills installed,
 
 Every later phase depends on how heavy this project should be, so it is decided once, here — never
 re-guessed by each session. The inputs come from discovery's technical sweep (`discovery.md`): expected
-scale and growth, team size, lifespan, what the team already runs, where it will be deployed, and
-whether any part must scale, deploy or be owned separately. Propose, with your reasons; the user decides.
+scale and growth, lifespan, the existing systems it must run alongside, where it will be deployed,
+whether any part must scale or deploy separately, and the obligations the product sweep found. Propose, with your
+reasons; the user decides.
 
-- **Size — small or standard.** Small: a few people, one deployable, a handful of capabilities, no
-  stated need to scale far. Standard: anything more. Size is not stakes — a small tool that moves money
-  still gets full tests on its money rules and a security review.
+- **Size — small or standard.** Propose small when all of these hold; otherwise standard:
+  - one deployable, and no stated need to scale or deploy any part separately;
+  - about five capabilities or fewer — the distinct things users can do, counted from discovery's
+    product sweep;
+  - no regulatory, contractual or audit obligation that needs a formal record of decisions and
+    traceability;
+  - no stated growth that would break the points above within the expected lifespan.
+
+  Size is a property of the software, never of the people building it. Where the user has
+  already stated the size, use it and record it as `answered`. Where a point is open, ask it in the first
+  batch of questions. On the border, propose small and record it as `assumed` — growing out of it is
+  cheap by design (`small-track.md`), shrinking from standard is not. Size is not stakes either: a small
+  tool that moves money still gets full tests on its money rules and a security review.
 - **The architecture shape — the lightest one the stated scale needs.** A monolith is the usual start.
   A modular monolith — one deployable whose modules own their data and talk through explicit
   interfaces — where the domain has clear boundaries and a later split is plausible: it keeps that split
-  open without paying for it now. Separate services only for a stated need — independent scaling,
-  deployment or team ownership.
+  open without paying for it now. Separate services only for a stated need — independent scaling
+  or deployment.
 - **The internal style**: plain layers or vertical slices, or clean or hexagonal where the business
   rules are complex and long-lived.
 - **The practices this project uses**, recommended from its size: how far the spec phases merge their
   files, short or full ADRs, when a change gets its own folder, and where mutation, architecture and
-  load tests apply. A small project usually merges files and writes short ADRs.
+  load tests apply. A small project usually takes the **small track** (`small-track.md`): three spec
+  files, one change file per change, short ADRs, and two approval stops instead of five.
 
 Record the size, shape and style as one decision in the first ADR (senior-engineering
 `decision-records.md`) — `proposed`, citing the discovery answers and any open or `assumed` entries it
@@ -102,6 +114,7 @@ docs/
 
 Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/` and `docs/adr/` (for the
 architecture ADR) now; create each other folder when its phase starts, never as empty placeholders.
+Under the small track the layout is the one in `small-track.md`.
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly
 into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its plan, task
@@ -169,4 +182,5 @@ system as it is, and the first change writes deltas against them, like any later
 Continue straight into discovery (`discovery.md`): the sweep, the playback and the first batch of
 questions. Then stop at gate 0 — present the mode recorded, the size, architecture and practices
 proposed, the files created, the playback, the `assumed` entries and the questions — and wait for the
-user's decisions and corrections before writing the product spec.
+user's decisions and corrections before writing the product spec. When proposing the small track, draft
+through to its first stop instead (`small-track.md`).
