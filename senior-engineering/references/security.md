@@ -88,6 +88,24 @@ Stack-neutral; the project's stack playbook names the concrete API for each.
   and known vulnerabilities (`modern-practices.md`). A known-vulnerable or abandoned package is a
   review finding.
 
+**Model and agent features** — any feature where a language model reads content or calls tools
+- Content the model reads is untrusted input, whoever wrote it — documents, email, web pages, tickets,
+  other users' text, tool results. Unlike SQL or HTML it cannot be escaped or validated into safety,
+  and no filter or prompt wording makes it safe: contain it by design.
+- Retrieval applies the asking user's permissions before content reaches the model, never after.
+- Every tool call is handled like an API request: its arguments validated against a schema and
+  authorized in the tool handler, never trusted because the model produced them.
+- Model output is untrusted too: validated before the code acts on it, encoded before it is rendered,
+  and links or images in it never loaded automatically.
+- No secrets in the prompt or the context. Anything the model can see can appear in its output.
+- **Each tool's capability is decided once, in the design — never asked per action.** One table: the
+  tool, its side effect, who may trigger it, and whether the user confirms. Apply these defaults without
+  asking: read-only — no confirmation; a reversible change to the user's own data — none; anything
+  irreversible, sent outside the system, or moving money — the user confirms. Ask only where the
+  product needs a different answer; the table is approved with the rest of the design.
+- Every boundary the model crosses gets a row in the threat model, with a test that plays the attacker:
+  content carrying instructions, which the feature must not follow.
+
 ## Keeping confidential data off external tools
 
 Your own tool calls are an exfiltration path. Whatever goes into a query, URL or argument of a remote
@@ -176,7 +194,7 @@ The table is the minimum; the threat model and the change itself decide what els
 | Exceptional conditions | failure paths that fail open; swallowed errors; partial writes left behind |
 | Dependencies | known-vulnerable, abandoned or unexpectedly re-licensed packages |
 | Logging and alerting | security events not logged; sensitive data logged |
-| AI features and agents | prompt-injection paths, tools with excessive privilege, model output used unvalidated |
+| AI features and agents | prompt-injection paths, tools with excessive privilege, tool calls not authorized in the handler, retrieval that ignores the asking user's permissions, model output used unvalidated |
 
 **Each security finding records** the location, the evidence (the request or input that exploits it),
 the impact, the rating, the fix, the regression test that proves the fix, and the OWASP/ASVS/CWE
