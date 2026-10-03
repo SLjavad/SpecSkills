@@ -3,5 +3,8 @@
 !/.gitignore
 !/README.md
 !/LICENSE
+!/.claude/
+/.claude/*
+!/.claude/settings.json
 !/spec-driven/
 !/senior-engineering/
