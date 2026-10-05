@@ -23,7 +23,8 @@ these lenses too, after checking the code against the spec.
    touches dependencies. Do not spend review attention on what a tool already enforces, and name any
    gate that did not run.
 3. **Run the lenses at the scale of the change** — beyond a local change, as separate passes or
-   parallel sub-reviews where the tooling allows, so one concern does not crowd out the others. The
+   parallel sub-reviews where the tooling allows and the user agrees, so one concern does not crowd out
+   the others. The
    lenses below are the minimum; add whatever further lens the change calls for — data migration,
    accessibility, operability, compatibility, and so on.
 4. **Verify every candidate finding** against the code before reporting it — reproduce it, trace it, or

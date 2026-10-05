@@ -54,8 +54,9 @@ file, and two approval stops instead of five.
 Before phase 1, ask the user whether the project runs with **one agent** or **several** — for example a
 lead that acts as product manager, tech lead, architect and reviewer, plus a coder that implements —
 and which tool each agent runs in. Record the answer in `AGENTS.md`. In multi-agent mode the agents
-communicate only through files, the user can step in at any point, and `references/multi-agent.md`
-governs the loop.
+communicate only through files, and `references/multi-agent.md` governs the loop. Each agent is a
+separate session the user starts, and the user carries every handoff by pasting the prompt the last
+agent wrote. **Never launch a subagent to write code**, and never offer to.
 
 Then, from discovery's answers, propose the project's **size, architecture and practices** — a
 monolith is the usual start, a modular monolith where a later split is plausible, services only for a

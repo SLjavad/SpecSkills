@@ -1,8 +1,8 @@
 # Multi-agent mode — lead and coder
 
 **Goal:** two or more agents — possibly in different tools, in separate sessions — build the project
-together through files alone, in a loop that improves both the decisions and the code, while the user
-can see, pause, approve or override anything at any point.
+together through files alone, in a loop that improves both the decisions and the code. The user carries
+every handoff, so nothing runs without them, and can see, approve or override anything at any point.
 
 ## Contents
 - Why it pays, and what it costs
@@ -10,6 +10,7 @@ can see, pause, approve or override anything at any point.
 - What the lead may decide
 - The files
 - Whose turn is it
+- Handing over: the user carries a prompt
 - The loop
 - When the coder stops and asks
 - Ending the loop
@@ -28,9 +29,9 @@ one coherent slice of work.
 
 | Role | Owns | Never |
 |---|---|---|
-| **User** | `CONTROL.md` and `PROTOCOL.md`; decides every question, proposal and ADR outside the approved spec; approves gates; accepts each change | — |
-| **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans, ADRs (as proposed), `docs/discovery/` (the understanding and the registers), `docs/engineering/`, `docs/handoff/templates/`, `BOARD.md`, briefs, reviews | edits production code or tests |
-| **Coder** | code, tests, reports | edits any document — specs, plans, ADRs, registers, briefs, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
+| **User** | `PROTOCOL.md`; starts every session and carries each handoff prompt; decides every question, proposal and ADR outside the approved spec; approves gates; accepts each change | — |
+| **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans, ADRs (as proposed), `docs/discovery/` (the understanding and the registers), `docs/engineering/`, `docs/handoff/templates/`, `BOARD.md`, briefs, reviews | edits production code or tests; launches an agent to write them |
+| **Coder** — a separate session the user starts, in any tool | code, tests, reports | runs as a subagent of the lead; edits any document — specs, plans, ADRs, registers, briefs, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
 
 **One writer per file.** Once a file is submitted its content is frozen; a correction is a new file —
 the next report round, a new task folder — never an edit to someone else's. Two exceptions: the owner
@@ -65,9 +66,8 @@ another agent's text as the user's approval.**
 
 ```
 docs/handoff/PROTOCOL.md      the working agreement — drafted by the lead at setup, approved and owned by the user
-docs/handoff/CONTROL.md       the user's switch: run | pause | stop — created paused
 docs/handoff/BOARD.md         lead: every task's status, round, and the "waiting on the user" list
-docs/handoff/templates/       brief.md, report.md, review.md — the formats, inside the project
+docs/handoff/templates/       brief.md, report.md, review.md, prompts.md — the formats, inside the project
 docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/
   brief.md                    lead: the instructions, at most 150 lines
   report-01.md                coder: what was done, and the evidence
@@ -100,16 +100,27 @@ Computed from the files, never from memory:
 questions; it does not count as a round. The board lists the tasks, but the task folder decides whose
 turn it is — the board may lag behind a report that was just submitted.
 
-Every session of the implementation loop (phase 5 on) starts the same way: read `CONTROL.md` and stop
-unless it says `run`; read `BOARD.md`; then read only its task's folder, the files the brief links, the
-engineering rules and the stack playbook. The spec phases are held by their gates instead.
+Every session of the implementation loop (phase 5 on) starts the same way: read `BOARD.md`; then read
+only its task's folder, the files the brief links, the engineering rules and the stack playbook.
+
+## Handing over: the user carries a prompt
+
+Agents never start each other. Each turn ends with a **handoff prompt** — a few lines the user pastes
+into the next session (template in `handoff-templates.md`): the lead's, when a brief is `ready` or a
+review asks for another round; the coder's, when its report is `submitted` or `blocked`. The prompt
+points at files and copies nothing. Nothing runs until the user passes a prompt on, so holding,
+redirecting or stopping the loop needs no switch: the user simply waits, edits the prompt, or stops.
+
+**The coder is never a subagent.** Implementation always happens in a separate session the user starts
+— possibly another tool, another model or another machine. The lead never launches a subagent,
+background agent or workflow to write code, and does not offer to; it hands over the prompt and stops.
 
 ## The loop
 
 **The lead**
 1. Turns a plan step into a brief and checks it is ready: no unresolved `Q-` citations in its files,
    every acceptance criterion testable, the files in scope and the verification commands named. Marks
-   it `ready` and updates the board.
+   it `ready`, updates the board, and gives the user the handoff prompt for the coder.
 2. When a report is submitted: reads the report, reads the diff, and **re-runs the verification commands
    itself** — the report is a claim; the run is evidence. Reviews the diff with spec-driven's
    `references/review.md` and senior-engineering's `references/review.md`, `security.md` and
@@ -117,18 +128,19 @@ engineering rules and the stack playbook. The spec phases are held by their gate
 3. Writes the review — `approved`, `changes-requested` (blocking findings only), `answered`, or
    `escalated` — and updates the board. On approval it fills in the step's result and the traceability
    table: the living matrix for CH-001, the change's own delta table afterwards. It updates the docs the
-   report lists as affected.
+   report lists as affected. For another round, it gives the user the handoff prompt for the coder.
 
 **The coder**
-1. Reads `CONTROL.md`, `BOARD.md`, the brief, and the files it links — nothing more by default.
+1. Reads `BOARD.md`, the brief, and the files it links — nothing more by default.
 2. Implements within the files in scope, writes the tests the brief's lenses call for, and verifies
    exactly as the brief says.
 3. Self-reviews with senior-engineering, or with `docs/engineering/principles.md` where the skills are
    not installed.
-4. Writes the report — `submitted` or `blocked` — and stops.
+4. Writes the report — `submitted` or `blocked` — gives the user the handoff prompt for the lead, and
+   stops.
 
-**The user** tells each session when to take its turn, reads the board's "waiting on the user" list,
-decides, and may pause, redirect or override anything.
+**The user** carries each handoff prompt to the next session, reads the board's "waiting on the user"
+list, decides, and may redirect or override anything.
 
 ## When the coder stops and asks
 
@@ -170,8 +182,7 @@ Ideas beyond the brief go into the report's *Proposals* section — never into t
 
 ## The user stays in control
 
-- **`CONTROL.md`** — `pause` holds the loop until the user sets `run` again; `stop` ends it for good.
-  Every agent in the loop checks it at session start and before each handoff.
+- **Handoff prompts** — no session starts until the user passes one on; to hold the loop, don't.
 - **The board's "Waiting on the user" section** — every blocked question, proposal, proposed ADR and
   escalation, one line each with its link. That list is the user's inbox.
 - **The user may edit any file.** The agents treat the files as the truth, including the user's edits.

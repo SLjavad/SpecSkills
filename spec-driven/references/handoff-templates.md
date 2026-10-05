@@ -2,17 +2,16 @@
 
 The files of the multi-agent loop. At setup, write into the project, adjusted to it:
 
-- `docs/handoff/PROTOCOL.md`, `docs/handoff/BOARD.md`, and `docs/handoff/CONTROL.md` — created with
-  `Mode: pause`; only the user switches it to `run`;
-- `docs/handoff/templates/brief.md`, `report.md` and `review.md` — the shape of every file of that kind
-  in a change's `tasks/` folder.
+- `docs/handoff/PROTOCOL.md` and `docs/handoff/BOARD.md`;
+- `docs/handoff/templates/brief.md`, `report.md`, `review.md` and `prompts.md` — the shape of every file
+  of that kind in a change's `tasks/` folder, and the handoff prompts.
 
 `PROTOCOL.md` links the templates, so an agent in any tool finds every rule and format inside the
 project. Plain Markdown, no tool-specific syntax, and every path written from the repository root.
 
 ## Contents
 - PROTOCOL.md
-- CONTROL.md
+- Handoff prompts
 - BOARD.md
 - brief.md
 - report.md
@@ -33,14 +32,18 @@ this first.
 - **Coder** (<tool>): implements briefs; writes code, tests and reports. Never edits any document —
   specs, plans, ADRs, registers, briefs, reviews, BOARD.md, AGENTS.md, docs/engineering/ — and lists
   the ones a change affects in its report.
-- **User**: owns this file and CONTROL.md, decides everything outside the approved spec, accepts each
-  change.
+- **User**: owns this file, starts every session and carries each handoff prompt, decides everything
+  outside the approved spec, accepts each change.
+
+## Handoffs
+Agents never start each other. Each turn ends with a handoff prompt for the user to paste into the next
+session (docs/handoff/templates/prompts.md). The coder is always a separate session the user starts —
+never a subagent, background agent or workflow launched by the lead.
 
 ## Start of every session in the implementation loop (phase 5 on)
-1. Read docs/handoff/CONTROL.md. Unless it says `run`, stop and say why.
-2. Read docs/handoff/BOARD.md for the list of tasks. The task folder, not the board, decides whose turn
+1. Read docs/handoff/BOARD.md for the list of tasks. The task folder, not the board, decides whose turn
    it is — the board may lag behind a report that was just submitted.
-3. Read the task folder, the files its brief links, the engineering rules (<the senior-engineering
+2. Read the task folder, the files its brief links, the engineering rules (<the senior-engineering
    skill | docs/engineering/principles.md>) and the stack playbook (docs/engineering/stack-<name>.md).
 
 ## Whose turn
@@ -86,20 +89,28 @@ criteria, contracts or schemas, and security-posture changes wait for the user.
   is written as `escalated`, or the lead splits or rewrites the step — new task folders, the old brief
   marked `superseded`.
 - A finding that reopens, or is disputed twice, escalates to the user.
-- Check CONTROL.md again before every handoff.
+- End every turn with the handoff prompt, then stop.
 - Never put secrets, personal data, internal hostnames or proprietary code in these files, or in any web
   search, web fetch or remote tool call.
 - No git writes, no migrations applied to a persistent database, no deploys and no destructive commands
   without the user's yes. Reading history and diffs is fine.
 ```
 
-## CONTROL.md
+## Handoff prompts
+
+`docs/handoff/templates/prompts.md` — the agent fills in the paths and prints the prompt for the user
+to paste into a new session. It points at files and copies nothing.
 
 ```markdown
-# Control
-Mode: pause                     (run | pause: hold the loop | stop: end it — created paused; only the user changes it)
-Note: <optional instruction from the user to every agent>
-Updated: YYYY-MM-DD by <the user>
+## To the coder
+You are the coder on <project>. Read docs/handoff/PROTOCOL.md, then the brief
+<task folder>/brief.md and the files it links. Implement it within its scope, verify it as it says,
+write <task folder>/report-NN.md, give me the handoff prompt for the lead, and stop.
+
+## To the lead
+You are the lead on <project>. Read docs/handoff/PROTOCOL.md, then <task folder>/report-NN.md.
+Re-run its verification, review the diff, write <task folder>/review-NN.md, update docs/handoff/BOARD.md,
+give me the next handoff prompt if there is one, and stop.
 ```
 
 ## BOARD.md

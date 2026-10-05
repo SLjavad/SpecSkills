@@ -28,8 +28,8 @@ Ask once, early, with real options:
   and files.
 
 Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, read `multi-agent.md` and,
-before phase 1, set up `docs/handoff/` from `handoff-templates.md` — protocol, control (paused), board
-and templates — and, when any agent works without these skills installed,
+before phase 1, set up `docs/handoff/` from `handoff-templates.md` — protocol, board and
+templates, including the handoff prompts — and, when any agent works without these skills installed,
 `docs/engineering/principles.md` (senior-engineering `project-knowledge.md`).
 
 ## Decide the size and the architecture, with the user
@@ -109,7 +109,7 @@ docs/
     questions.md          gray-area register (Q-)
     proposals.md          proposal register (P-)
   engineering/            README.md index; stack playbooks, areas/ records, principles
-  handoff/                multi-agent only: PROTOCOL.md, CONTROL.md, BOARD.md, templates/
+  handoff/                multi-agent only: PROTOCOL.md, BOARD.md, templates/
 ```
 
 Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/` and `docs/adr/` (for the
