@@ -97,7 +97,7 @@ examples, not a checklist:
   shutdown and degradation behave as specified.
 - **Localization and accessibility** — for anything a person reads or operates.
 
-Name, in the plan or the brief, which subjects a flow needs and why; a subject the system has and no
+Name, in the plan step, which subjects a flow needs and why; a subject the system has and no
 test covers is a gap to state.
 
 ## Integration tests run every external dependency for real

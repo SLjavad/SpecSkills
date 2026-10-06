@@ -38,7 +38,7 @@ docs/changes/CH-007-peak-pricing/
   requirements.md    requirement deltas — split into requirements/<capability>.md past 300 lines
   tech.md            design deltas — split into tech/<topic>.md past 300 lines
   plan/              README.md (the plan index) and steps/ — see plan.md
-  tasks/             multi-agent task folders — see multi-agent.md
+  tasks/             multi-agent task folders: reports and reviews — see multi-agent.md
   reviews/           review files — see review.md
 ```
 
@@ -87,7 +87,7 @@ FR-011: "Booking hold" → "Tentative booking"
 - **The same four sections work for every kind of item** — capabilities and journeys, glossary terms,
   flows, rules, aggregates, tables, contracts, components.
 - **Each delta file keeps its own small traceability table** for the items it adds or modifies; the
-  plan and review fill it in, and it is merged into the living matrix at close.
+  tech-spec deltas and the plan fill it in, and it is merged into the living matrix at close.
 - **From CH-002 on, nothing this change adds or modifies is written to `docs/specs/` while it is
   open** — only the merge at close writes there. (CH-001 writes the first living specs directly; see
   above.) A small fix made meanwhile amends the living specs directly, and the change reconciles
@@ -103,13 +103,14 @@ parallel changes cannot collide. An id is never reused, not even from a rejected
 
 This is phase 7, and it runs in this order — never before the review:
 
-1. Every task is approved, the change's review (phase 6) is closed, and the user has accepted the
+1. Every step is done, the change's review (phase 6) is closed, and the user has accepted the
    change.
 2. Apply each delta to the living specs: ADDED items go where their topic lives; MODIFIED items replace
    the original; REMOVED items stay with status `retired` and the reason; RENAMED items are updated
    everywhere — search for the old name.
-3. Merge the change's traceability rows into the living matrix (implemented by `CH-NNN`), and update
-   the glossary, the manifest and the ADR index.
+3. Merge the change's traceability rows into the living matrix — their plan-step cells
+   (`CH-NNN/S-NN`) record which change implemented each — and update the glossary, the manifest and
+   the ADR index.
 4. Re-check the merged files against the "Done when" lists in `product-spec.md`, `requirements.md` and
    `tech-spec-behaviour.md` ("Quality bars") — nothing may still point at the change as pending.
 5. Move the folder to `docs/changes/archive/YYYY-MM-DD-CH-NNN-<slug>/` and update

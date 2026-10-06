@@ -73,14 +73,17 @@ Every phase, in every pipeline stage, writes **a folder of topic files**, never 
   contents list.
 - **Author topic files from the start** — never a monolith chopped up afterwards.
 - **Every file opens with a header** — status, a one-line summary, ids, related files — so its first
-  lines tell a reader whether to read on.
+  lines tell a reader whether to read on. A plan step is the exception for status: its plan's progress
+  table holds it.
 - **Every living document is reachable from `AGENTS.md` in two hops**: `AGENTS.md` → an index (the specs
   manifest, the ADR index, the engineering index) → the file. A change folder is reached through the
   changes index, and inside it the plan index lists its steps and tasks.
 - **Stable ids in headings** — `FR-`, `NFR-`, `ADR-`, `Q-`, `P-`, `C-`, `J-`, `FL-`, `RL-`, `TH-`,
   `CH-`, plus ids scoped to a change such as `CH-007/S-02` — and cross-references by id plus the path
   from the repository root.
-- **Every plan step and task brief names the exact files it needs**, so nobody reads the whole bundle.
+- **Every plan step names the exact files it needs**, so nobody reads the whole bundle.
+- **Each fact is written once; everything else links to it.** A result, a status or a decision copied
+  into a second file drifts, and costs an edit every time it changes.
 
 `AGENTS.md` describes the project and points into the specs; the specs point into their sub-files; a new
 agent understands the whole project by following the links instead of reading everything. The full
@@ -126,7 +129,7 @@ it is.
   what is stored.
 - **Terms are defined once, in the glossary, and used consistently.** Two words for one concept is how two
   implementations of it get built.
-- **Everything downstream of phase 2 cites requirement ids.** Components, flows, plan steps, briefs and
+- **Everything downstream of phase 2 cites requirement ids.** Components, flows, plan steps and
   review findings name the `FR-`/`NFR-` they serve, and the traceability matrix is the one place coverage
   is recorded.
 - **Small and findable.** Within the size budget, opening with its header, listed in its index.
@@ -198,10 +201,11 @@ list with the summary.
 
 **After phase 4: hand off.** State that the specs and plan are complete, where they are — the manifest and
 the change folder — and what an implementing agent should read first. In multi-agent mode, the lead now
-writes the first briefs. Do not begin implementing unless the user asks you to.
+hands the first step to the coder. Do not begin implementing unless the user asks you to.
 
 **During implementation (phase 5):** work the plan step by step, in order. After each step, verify it as
-the plan specifies, record the result in the step file, and fill in its traceability cells. Do not batch
+the plan specifies, record the result in the step's *Result*, and mark it done in the progress table —
+nothing else changes. Do not batch
 several steps and verify at the end, and do not improvise work that is not in the plan — if the plan is
 wrong, say so and amend it. In multi-agent mode the loop in `references/multi-agent.md` does this.
 
@@ -242,8 +246,8 @@ document is now actively misleading — worse than having no document.
 | Ten scenarios on one requirement | The spec enumerating what the tests should; keep the examples to the edges |
 | A monolith chopped into parts afterwards | Fragments that cut across topics; design files for how they are loaded |
 | `AGENTS.md` importing specs, or restating the directory tree | Everything loads at startup, and the tree was derivable anyway |
-| A brief that says "see the tech spec" | The implementer reads everything; name the files |
-| A brief that copies spec text | Two sources of truth; the copy drifts |
+| A step that says "see the tech spec" | The implementer reads everything; name the files |
+| A step that copies spec text, or a result copied into a second table | Two sources of truth; the copy drifts |
 | Tech spec naming no versions | "Latest" is not reproducible |
 | Decision rationale in the tech spec as well as the ADR | Two places to update; one will be stale |
 | An accepted ADR edited in place | The rejected reasoning is lost; supersede it instead |

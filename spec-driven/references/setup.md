@@ -20,7 +20,7 @@ Ask once, early, with real options:
   project. Prefer a fresh-context session for the review; a reviewer with no memory of writing the code
   catches more.
 - **Lead and coder** — a lead agent (product manager, tech lead, architect, reviewer) writes specs,
-  ADRs, plans and task briefs, and reviews; a coder agent implements and reports. They communicate
+  ADRs and plans, and reviews; a coder agent implements and reports. They communicate
   only through files, and the user can step in at any point. Ask which tool each agent runs in, and on
   whose machine: everything the agents share must be written into the project, because these skills
   live in one user's skills folder, not in the project.
@@ -133,8 +133,8 @@ Summary: The living specification — what the system is, what it must do, how i
 ## Reading paths
 - New to the project: docs/specs/01-product/overview.md → docs/specs/02-requirements/overview.md →
   docs/specs/03-tech/architecture.md
-- Implementing a task: the files your brief or plan step lists — nothing else by default.
-- Reviewing: the brief, the requirement files it cites, the tech files for the components it touches.
+- Implementing a task: the files your plan step lists — nothing else by default.
+- Reviewing: the plan step, the requirement files it cites, the tech files for the components it touches.
 
 ## Files
 | File | Holds | IDs | Status |

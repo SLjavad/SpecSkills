@@ -42,7 +42,8 @@ secondary capabilities; then hardening.
 boundaries are wrong. Merge them or move the verification.
 
 **One session per step.** A step should be completable and verifiable in one focused sitting — and, in
-multi-agent mode, it is exactly one task brief. A step estimated at several days is several steps.
+multi-agent mode, it is exactly one task: the step is the coder's instruction, and its task folder holds
+the reports and reviews. A step estimated at several days is several steps.
 
 **No step contains "and also".** A step that implements a feature and refactors something else and adds
 logging is three steps, and its verification cannot fail cleanly.
@@ -57,11 +58,12 @@ archive the folder. The plan's last step leaves everything the review needs in p
 
 ## Step template
 
-Every step, in its own file or its own section:
+Every step, in its own file or its own section. Its status lives only in the progress table, so the
+step itself has none, and the step does not change during development except by a logged amendment.
 
 ```markdown
 # S-NN — <imperative title>
-Status: not started | in progress | done | blocked | superseded · Depends on: <S-NN, or none> · Parallel: yes | no
+Depends on: <S-NN, or none> · Parallel: yes | no
 Implements: <FR/NFR ids> · Spec: <tech spec files this builds>
 Summary: <one line: what this step delivers>
 
@@ -77,6 +79,9 @@ whole bundle.
 **Details.** What specifically to build, referencing spec files rather than restating them. Anything the
 implementer would otherwise have to infer.
 
+**Latitude.** What the implementer decides itself — internal structure, naming, local algorithm
+choices that satisfy the contracts. Everything else is decided by the spec, or asked.
+
 **Tests.** Per lens that applies — business, technical, performance, security — and per other risk the
 step carries (concurrency, idempotency, resilience, …), what the tests must try to break. Integration
 tests with Testcontainers wherever the step crosses an external dependency.
@@ -88,7 +93,8 @@ that pass by name, the request and its expected response, the row that appears, 
 
 **Notes.** Traps, ordering constraints, anything easy to get wrong here.
 
-**Result.** Filled in when done: what was run, what it showed.
+**Result.** Single-agent mode, filled in once when done: what was run, what it showed. In multi-agent
+mode the task's report holds it instead.
 ```
 
 ## Verification is per step and must be real
@@ -103,8 +109,8 @@ a manual procedure written out precisely enough that someone else would perform 
 
 A probe verifies functional requirements as readily as non-functional ones — for an FR it checks the
 acceptance criteria end to end, for an NFR it produces the number. State what the probe exercises and
-what result counts as a pass, and record its output in the step; the probe itself is disposable and
-does not belong in the deliverable tree.
+what result counts as a pass, and record its output with the step's result; the probe itself is
+disposable and does not belong in the deliverable tree.
 
 State the **expected** result, not just the action. "Run the tests" is an instruction; "all tests pass,
 including the three new ones named X, Y, Z" is a verification.
@@ -130,8 +136,8 @@ Build, test, integration-test, run and migration commands, and any project rules
 follow.
 
 ## Progress
-| Step | Title | Implements | Depends on | Parallel | Status | Verified |
-|---|---|---|---|---|---|---|
+| Step | Title | Implements | Depends on | Parallel | Status |
+|---|---|---|---|---|---|
 
 ## Deferred
 Work deliberately out of this plan, and why.
@@ -145,10 +151,14 @@ Work deliberately out of this plan, and why.
 
 The plan is a working document, not a snapshot.
 
-- **Update the step status and the progress table as you go**, in the files. An implementer resuming after
-  a break — or a different agent picking it up — must see where things stand without reading the code or
-  the chat.
-- **Record the verification result** in the step's *Result*, not just that it was run.
+- **Status lives in one place: the progress table's Status column** — `planned`, `in progress`,
+  `blocked`, `done YYYY-MM-DD` or `superseded by S-NN`; in multi-agent mode also `ready` and
+  `escalated` (`multi-agent.md`). Update it as each step moves. An implementer resuming after a break —
+  or a different agent picking it up — sees where things stand from that table alone, without the code
+  or the chat.
+- **Record the result once.** One agent: in the step's *Result* — what ran and what it showed, not just
+  that it ran. Multi-agent: in the coder's report, which the lead's `done` cell confirms. The
+  traceability matrix and the progress table never copy it.
 - **When a step turns out wrong, amend the plan and log it.** Never silently do something different; the
   next reader will trust the document.
 - **If implementation reveals the tech spec is wrong**, stop, say what is wrong, and propose the
@@ -175,4 +185,4 @@ is complete, list the plan index and the specs it builds, and say what an implem
 read first. Report the matrix coverage — how many `Must` requirements have steps, and any that do not
 — present the `assumed` entries, open questions and proposals, and ask for approval. Do not start implementing unless asked — the user may hand this to a
 different agent, model or tool, and that is the point of writing it this way. In multi-agent mode, the
-lead now turns the first steps into briefs (`multi-agent.md`).
+lead now marks the first step `ready` and hands it to the coder (`multi-agent.md`).

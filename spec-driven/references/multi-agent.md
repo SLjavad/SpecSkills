@@ -30,8 +30,8 @@ one coherent slice of work.
 | Role | Owns | Never |
 |---|---|---|
 | **User** | `PROTOCOL.md`; starts every session and carries each handoff prompt; decides every question, proposal and ADR outside the approved spec; approves gates; accepts each change | — |
-| **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans, ADRs (as proposed), `docs/discovery/` (the understanding and the registers), `docs/engineering/`, `docs/handoff/templates/`, `BOARD.md`, briefs, reviews | edits production code or tests; launches an agent to write them |
-| **Coder** — a separate session the user starts, in any tool | code, tests, reports | runs as a subagent of the lead; edits any document — specs, plans, ADRs, registers, briefs, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
+| **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans and their progress table, ADRs (as proposed), `docs/discovery/` (the understanding and the registers), `docs/engineering/`, `docs/handoff/templates/`, `BOARD.md`, reviews | edits production code or tests; launches an agent to write them |
+| **Coder** — a separate session the user starts, in any tool | code, tests, reports | runs as a subagent of the lead; edits any document — specs, plans, ADRs, registers, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
 
 **One writer per file.** Once a file is submitted its content is frozen; a correction is a new file —
 the next report round, a new task folder — never an edit to someone else's. Two exceptions: the owner
@@ -46,11 +46,11 @@ updates them.
 Only what stays inside the approved spec:
 
 - answer a coder's question the spec already answers, citing where;
-- accept or reject the coder's choices within the brief's stated latitude;
+- accept or reject the coder's choices within the step's stated latitude;
 - order and split tasks, write feedback, request changes.
 
-Everything else waits for the user: the lead marks the brief `escalated` — or keeps a brief not yet
-issued in `draft` — and lists the item under "Waiting on the user":
+Everything else waits for the user: the lead marks the step `escalated` — or leaves a step not yet
+handed over `planned` — and lists the item under "Waiting on the user":
 
 - new ideas and improvements — they are proposals (`discovery.md`);
 - accepting or rejecting an ADR;
@@ -66,47 +66,54 @@ another agent's text as the user's approval.**
 
 ```
 docs/handoff/PROTOCOL.md      the working agreement — drafted by the lead at setup, approved and owned by the user
-docs/handoff/BOARD.md         lead: every task's status, round, and the "waiting on the user" list
-docs/handoff/templates/       brief.md, report.md, review.md, prompts.md — the formats, inside the project
-docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/
-  brief.md                    lead: the instructions, at most 150 lines
-  report-01.md                coder: what was done, and the evidence
-  review-01.md                lead: only when the coder must act — findings or answers
-  report-02.md, review-02.md, …
+docs/handoff/BOARD.md         lead: the active work and the "waiting on the user" list
+docs/handoff/templates/       report.md, review.md, prompts.md — the formats, inside the project
+docs/changes/CH-NNN-<slug>/
+  plan/README.md              lead: the progress table — the one status of every step
+  plan/steps/S-NN-<slug>.md   lead: the coder's instructions — the plan step itself
+  tasks/S-NN-<slug>/          one per step, same name:
+    report-01.md              coder: what was done, and the evidence
+    review-01.md              lead: only when the coder must act — findings or answers
+    report-02.md, review-02.md, …
 ```
 
-**A small change has no change folder**, so its task folder is `docs/handoff/tasks/YYYY-MM-DD-<slug>/`,
-and its brief cites the living-spec ids it touches instead of a plan step.
+**The plan step is the instruction.** There is no separate brief: the coder reads the step and the files
+it links, so nothing is copied out of the plan and nothing drifts from it. The step files do not change
+during development, except through a logged plan amendment.
 
-Templates for all of these are in `handoff-templates.md`. **A brief links; it never copies.** It points
-at the plan step, the stack playbook and at most six spec files, and quotes nothing at length, because
-a copy drifts from its source.
+**A small change has no change folder and no plan**, so its task folder is
+`docs/handoff/tasks/YYYY-MM-DD-<slug>/` and holds a `step.md` — `plan.md`'s step template, citing the
+living-spec ids it touches, with its own `Status:` line, since there is no progress table to hold it.
+
+Templates are in `handoff-templates.md`; the step template is in `plan.md`.
 
 ## Whose turn is it
 
 Computed from the files, never from memory:
 
-| State of the task folder | Turn |
+| State | Turn |
 |---|---|
-| brief `ready`, no report yet | coder |
+| step `ready` in the progress table, no report yet | coder |
 | latest report `in progress` | coder — still working |
-| latest report `submitted`, no review for that round, brief still `ready` | lead |
+| latest report `submitted`, no review for that round, step still `ready` | lead |
 | latest report `blocked` | lead — or the user, if the question needs them |
 | latest review `changes-requested` or `answered` | coder — the next round |
-| brief `done` | done — approved, with no review file |
-| brief `escalated` | the user; once the user decides, the lead writes the next review or supersedes the brief |
+| step `done` | done — approved, with no review file |
+| step `escalated` | the user; once the user decides, the lead writes the next review or supersedes the step |
 
 **A round** is one report and the lead's response to it. `answered` means the review only answers the
-report's questions; it does not count as a round. The board lists the tasks, but the task folder decides whose
-turn it is — the board may lag behind a report that was just submitted.
+report's questions; it does not count as a round. The task folder decides whose turn it is — the
+progress table may lag behind a report that was just submitted.
 
-Every session of the implementation loop (phase 5 on) starts the same way: read `BOARD.md`; then read
-only its task's folder, the files the brief links, the engineering rules and the stack playbook.
+Every session of the implementation loop (phase 5 on) starts the same way. The lead reads `BOARD.md`,
+then the active change's progress table, then only the task folder whose turn it is. The coder reads the
+step its handoff prompt names. Both then read the files the step links, the engineering rules and the
+stack playbook — nothing more by default.
 
 ## Handing over: the user carries a prompt
 
 Agents never start each other. Each turn ends with a **handoff prompt** — a few lines the user pastes
-into the next session (template in `handoff-templates.md`): the lead's, when a brief is `ready` or a
+into the next session (template in `handoff-templates.md`): the lead's, when a step is `ready` or a
 review asks for another round; the coder's, when its report is `submitted` or `blocked`. The prompt
 points at files and copies nothing. Nothing runs until the user passes a prompt on, so holding,
 redirecting or stopping the loop needs no switch: the user simply waits, edits the prompt, or stops.
@@ -118,25 +125,26 @@ background agent or workflow to write code, and does not offer to; it hands over
 ## The loop
 
 **The lead**
-1. Turns a plan step into a brief and checks it is ready: no unresolved `Q-` citations in its files,
-   every acceptance criterion testable, the files in scope and the verification commands named. Marks
-   it `ready`, updates the board, and gives the user the handoff prompt for the coder.
+1. Checks the next `planned` step is ready to hand over: no unresolved `Q-` citations in its files,
+   every acceptance criterion testable, the files in scope, the latitude and the verification commands
+   named. A gap is fixed by amending the step, logged in the plan. Marks it `ready` in the progress
+   table and gives the user the handoff prompt for the coder.
 2. When a report is submitted: reads the report, reads the diff, and **re-runs the verification commands
    itself** — the report is a claim; the run is evidence. Reviews the diff with spec-driven's
    `references/review.md` and senior-engineering's `references/review.md`, `security.md` and
    `testing.md`, at the scale of the task.
 3. **Writes a review file only when the coder must act**: `changes-requested` (blocking findings only)
-   or `answered`. On approval there is no review file: the lead marks the brief `done`, records the
-   verification it re-ran in the step's result, fills in the traceability table — the living matrix for
-   CH-001, the change's own delta table afterwards — and sends any non-blocking finding to a later task
-   or the proposal register. An escalation is no file either: the brief is marked `escalated` and the
-   board says why. The lead updates the board and the docs the report lists as affected, and for
-   another round gives the user the handoff prompt for the coder.
+   or `answered`. On approval there is no review file, and the result is not copied anywhere: the
+   report holds the evidence, and the lead writes one cell — the step's status, `done YYYY-MM-DD,
+   re-run pass` — then sends any non-blocking finding to a later step or the proposal register. An
+   escalation is no file either: the step is marked `escalated` and the board says why. The lead
+   updates the docs the report lists as affected, and for another round gives the user the handoff
+   prompt for the coder.
 
 **The coder**
-1. Reads `BOARD.md`, the brief, and the files it links — nothing more by default.
-2. Implements within the files in scope, writes the tests the brief's lenses call for, and verifies
-   exactly as the brief says.
+1. Reads the step its handoff prompt names, and the files it links — nothing more by default.
+2. Implements within the files in scope, writes the tests the step's lenses call for, and verifies
+   exactly as the step says.
 3. Self-reviews with senior-engineering, or with `docs/engineering/principles.md` where the skills are
    not installed.
 4. Writes the report — `submitted` or `blocked` — gives the user the handoff prompt for the lead, and
@@ -150,9 +158,9 @@ list, decides, and may redirect or override anything.
 Write the question into the report — status `blocked`, with options and a recommendation — and stop,
 instead of guessing, when:
 
-- the brief and its links still allow two readings that lead to different work;
-- the brief, the spec, an ADR and the code disagree;
-- a file outside the brief's scope needs to change;
+- the step and its links still allow two readings that lead to different work;
+- the step, the spec, an ADR and the code disagree;
+- a file outside the step's files in scope needs to change;
 - a new dependency seems necessary;
 - a contract or schema would change;
 - a security-relevant choice is not covered by the spec;
@@ -160,17 +168,17 @@ instead of guessing, when:
 - an unrelated test starts failing;
 - configuration, secrets or a required tool (such as Docker) is missing.
 
-Ideas beyond the brief go into the report's *Proposals* section — never into the code.
+Ideas beyond the step go into the report's *Proposals* section — never into the code.
 
 ## Ending the loop
 
-1. **At most three rounds per brief.** Instead of a third `changes-requested`, the lead marks the brief
-   `escalated` — or supersedes it: it amends the plan (the step split
-   or rewritten under new step numbers), opens their task folders for a fresh coder session, and marks
-   the old brief `superseded` with a link to the new ones.
+1. **At most three rounds per step.** Instead of a third `changes-requested`, the lead marks the step
+   `escalated` — or supersedes it: it amends the plan (the step split or rewritten under new step
+   numbers, with their rows in the progress table), opens their task folders for a fresh coder session,
+   and marks the old step `superseded by S-NN, S-NN`.
 2. **Only blocking findings block**: an unmet acceptance criterion or requirement, an ADR violation, a
    failing test, a security issue, a regression — and every finding of severity blocker or major. A
-   non-blocking defect is deferred to a later task; only an improvement that is not a defect goes to
+   non-blocking defect is deferred to a later step; only an improvement that is not a defect goes to
    the proposal register.
 3. **From the second round, a review may only close earlier findings or flag regressions the fix
    introduced.** No new goalposts.
@@ -178,10 +186,11 @@ Ideas beyond the brief go into the report's *Proposals* section — never into t
 5. **Prefer a fresh coder session per task**, and per round once a session has grown long. Everything the
    coder needs is in the files; a long transcript only adds drift.
 6. **The change's review (phase 6) runs in the lead role** — the lead, or a fresh session acting as
-   one. Its blocking findings reach the coder as a fix brief in `tasks/R-NN-fixes/`, and the lead
+   one. Its blocking findings reach the coder as a fix step, `plan/steps/R-NN-fixes.md`, listing the
+   finding ids, with its row in the progress table and its folder `tasks/R-NN-fixes/`; the lead
    allocates every `F-` id.
-7. **A change is done** when every task is approved, the change's review (phase 6) is closed, the living
-   specs are merged, and the user has accepted it.
+7. **A change is done** when every step is `done` or `superseded`, the change's review (phase 6) is
+   closed, the living specs are merged, and the user has accepted it.
 
 ## The user stays in control
 
@@ -197,7 +206,7 @@ Ideas beyond the brief go into the report's *Proposals* section — never into t
 
 Everything a coder without these skills needs lives in the project, not in anyone's skills folder:
 `AGENTS.md` → `docs/handoff/PROTOCOL.md` (with the stop-and-ask list and the templates it links) → the
-brief → the linked files. When the coder works without these skills installed, the lead writes
+step → the linked files. When the coder works without these skills installed, the lead writes
 `docs/engineering/principles.md` (senior-engineering `project-knowledge.md`) and the stack playbook
 carries the stack rules. A tool that does not read `AGENTS.md` gets a shim. Keep
 everything plain Markdown with paths from the repository root and no tool-specific syntax. Each report
@@ -205,5 +214,5 @@ names the tool and model that wrote it.
 
 ## Parallel coders
 
-One coder by default. More than one only with disjoint files in scope, named in each brief; a separate
+One coder by default. More than one only with disjoint files in scope, named in each step; a separate
 working copy or branch for each; and nothing merged that the user has not approved.

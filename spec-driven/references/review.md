@@ -7,7 +7,7 @@ file, and close the loop so the same correction is never needed twice.
 written to work from the artifacts alone: the living specs, the change folder, and the code. Never assume
 the reviewer remembers the conversation, and never assume the fixer does either. A reviewer with no
 memory of writing the code catches more than one that has; if the user has a choice, prefer that one.
-In multi-agent mode it runs in the lead role, and its blocking findings reach the coder as a fix brief
+In multi-agent mode it runs in the lead role, and its blocking findings reach the coder as a fix step
 (`multi-agent.md`, "Ending the loop").
 
 Write findings to `docs/changes/CH-NNN-<slug>/reviews/R-NN/`: a `README.md` summary, plus one file per
@@ -46,10 +46,11 @@ trust it.
 
 Then, in order:
 
-1. **Requirement coverage — start at the matrix, not the code.** Every `Must` with no plan step, no
-   component, or an empty verification cell is a finding before you have opened a single source file —
-   the cheapest finding you will ever raise. Then check the claims: a row saying `implemented` whose
-   acceptance criteria are not actually met is worse than an empty row.
+1. **Requirement coverage — start at the matrix, not the code.** Every `Must` with no plan step or no
+   component is a finding before you have opened a single source file — the cheapest finding you will
+   ever raise. Then follow each plan step to its result — the step's *Result*, or in multi-agent mode
+   the task's report — and check the claim: a step marked `done` whose acceptance criteria are not
+   actually met is worse than one still open.
 2. **Spec conformance.** Does what was built match the files it claims to implement? Are all the
    inventory's components present, with the responsibilities described?
 3. **Correctness.** The rules and algorithms against their worked examples. The edge cases the spec
@@ -205,8 +206,8 @@ The point of recording feedback is that the correction is not needed a second ti
 
 - Every blocker and major is fixed, or rejected with a written reason.
 - Every fix has been verified against the finding that prompted it.
-- Every `Must` requirement has been checked against its acceptance criteria, not just against the matrix
-  saying `implemented`.
+- Every `Must` requirement has been checked against its acceptance criteria, not just against its step
+  being `done`.
 - Every requirement — FR and NFR — has a verification outcome recorded: the test that ran, the probe
   result and what it ran against, an explicit "mechanism checked, outcome not measured", or an explicit
   "not verified, needs X". No blanks.

@@ -193,9 +193,9 @@ evidence first:
      published, the endpoint actually returns the documented shape.
    - **For an NFR:** produce the number. Query timing and emitted plans, index use, behaviour at 10×
      volume, payload size, cold-start time, bound enforcement.
-   - **The probe is disposable; its output is not.** The result goes into the requirement and the
-     review, with what it ran against — a probe against fabricated data proves less than one against real
-     data. Keep probes out of the deliverable tree.
+   - **The probe is disposable; its output is not.** The result is recorded once, with the step that
+     ran it (`plan.md`), with what it ran against — a probe against fabricated data proves less than
+     one against real data. Keep probes out of the deliverable tree.
 4. **Exercise — call the running system and check the result by hand.** Weaker than a probe only
    because nothing captures it for next time; record the request and the response.
 5. **Structural check — where nothing above can reach the outcome, confirm the mechanism exists.** The
@@ -213,29 +213,34 @@ agreeing with it is not evidence about behaviour.
 
 ## The traceability matrix
 
-`traceability.md`, initialised here with every requirement; the tech spec, the plan and each review
-fill in their columns. From CH-002 on, each change keeps the same table for the items it adds or
-modifies in its own delta file, and merges those rows here at close.
+`traceability.md`, initialised here with every requirement; the tech spec and the plan fill in their
+columns, and nothing changes it during implementation. From CH-002 on, each change keeps the same table
+for the items it adds or modifies in its own delta file, and merges those rows here at close.
 
 ```markdown
-| ID | Requirement | Priority | Status | Tech spec | Components | Plan step | Verification | Implemented by |
-|---|---|---|---|---|---|---|---|---|
-| FR-001 | Guest can book a stay | Must | implemented | docs/specs/03-tech/flows/FL-01-book-stay.md | BookingService | CH-001/S-04 | test: BooksStay_… | CH-001 |
-| NFR-003 | p95 ≤ 300 ms @ 50 rps | Must | implemented | docs/specs/03-tech/performance.md | search query, index IX_… | CH-001/S-09 | probe: 214 ms | CH-001 |
+| ID | Requirement | Priority | Tech spec | Components | Plan step |
+|---|---|---|---|---|---|
+| FR-001 | Guest can book a stay | Must | docs/specs/03-tech/flows/FL-01-book-stay.md | BookingService | CH-001/S-04 |
+| NFR-003 | p95 ≤ 300 ms @ 50 rps | Must | docs/specs/03-tech/performance.md | search query, index IX_… | CH-001/S-09 |
 ```
+
+The plan-step cell is the link to everything after planning: the step's status in its plan's progress
+table, its result, and — by the `CH-` prefix — the change that implemented it.
 
 What the matrix is *for* — read it, do not just maintain it:
 
 - **A `Must` with no plan step is unimplemented.** The single most valuable thing this table tells you,
   and it is invisible in prose.
 - **A requirement with no component is unassigned** — nothing owns it.
-- **An NFR with an empty verification cell is unproven**, whatever the code looks like.
 - **A component satisfying no requirement is scope creep**, and worth asking about.
 - **A plan step citing no requirement is work nobody asked for.**
 
-Each row lives in one place. Copies drift, and a drifted coverage matrix is worse than none because it
+Each fact lives in one place. Copies drift, and a drifted coverage matrix is worse than none because it
 reports coverage that does not exist. So nothing is recorded twice: the requirement holds its lifecycle
-status and its verification *mechanism*; the matrix holds its progress and the verification *result*.
+status and its verification *mechanism*; the matrix holds where it is designed and planned; the progress
+table holds the step's status; the verification *result* is recorded once, with the step (`plan.md`).
+A requirement whose step is done but whose result does not show its criteria met is unproven, whatever
+the code looks like.
 
 ## Done when
 

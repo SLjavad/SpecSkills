@@ -67,7 +67,7 @@ never scrutiny.
 AGENTS.md, CLAUDE.md                  senior-engineering project-knowledge.md templates
 docs/specs/product.md                 context, overview, users, capabilities, journeys, scope,
                                       success, scale, risks, glossary — one section each
-docs/specs/requirements.md            FRs, NFRs, and the progress table
+docs/specs/requirements.md            FRs, NFRs, and the coverage table
 docs/specs/tech.md                    stack, architecture, domain and data, contracts, flows and
                                       rules, cross-cutting, how NFRs are met, tests, security
 docs/changes/CH-001-initial-build.md  the plan, then the review
@@ -107,12 +107,13 @@ Fails: refund provider down → booking stays Paid; the guest sees "try again la
 NFRs take the same shape with a target number, a measurement and a consequence if missed — only for the
 categories with a real target. The rest go on one line, each with its reason: `Not applicable:
 Scalability — one office, 20 users; Internationalisation — English only; …`. The ASVS level is still
-chosen with the user. The file ends with the **progress table**, which replaces the traceability matrix:
+chosen with the user. The file ends with the **coverage table**, which replaces the traceability matrix
+and, like it, is filled in at planning and not touched during implementation:
 
 ```markdown
-| ID | Priority | Plan step | Verified |
-|---|---|---|---|
-| FR-014 | Must | CH-001/S-03 | test: CancelsWithinFreeWindow |
+| ID | Priority | Plan step |
+|---|---|---|
+| FR-014 | Must | CH-001/S-03 |
 ```
 
 **Tech — `tech.md`** (`tech-spec-structure.md`, `tech-spec-behaviour.md`).
@@ -143,17 +144,22 @@ first, each step verifiable on its own, no decisions. One compact block per step
 
 ```markdown
 ### S-03 — Cancel within the free window
-Implements: FR-014, FR-015 · Depends on: S-02 · Status: not started
+Implements: FR-014, FR-015 · Depends on: S-02 · Status: planned
 Files: src/Booking/… · tests/Booking/… · Read first: tech.md (Booking, FL-02), requirements.md (C-03)
+Latitude: internal structure and naming within Booking
 Tests: business — the 24 h boundary, both sides; failure — refund provider down (Testcontainers mock)
 Verification: `<test command>` → the six cancellation tests pass, including WindowBoundaryAt24h
 Result:
 ```
 
+With every step in one file there is no separate progress table: each block's `Status:` line is the
+step's one status, and its `Result:` the one record of what ran — in multi-agent mode, the task's report
+instead, as `multi-agent.md` describes.
+
 The pre-mortem runs once, at stop 2.
 
 **Implementation, review and close.** The step loop is unchanged. The review runs every lens in
-`review.md` — security always — starting at the progress table, and writes its findings in that
+`review.md` — security always — starting at the coverage table, and writes its findings in that
 file's format into a *Review* section of the change file, split into `CH-001-review.md` past the cap.
 When the user accepts, the change file moves to `docs/changes/archive/YYYY-MM-DD-CH-001-initial-build.md`.
 

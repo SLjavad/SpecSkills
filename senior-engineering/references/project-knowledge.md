@@ -29,7 +29,7 @@ docs/handoff/              multi-agent protocol, board and templates (only when 
 
 Every living document is reachable from `AGENTS.md` in two hops: `AGENTS.md` → an index → the file.
 A change folder is reached through the changes index, and its plan index lists its steps and tasks. A
-task brief links the exact files the task needs, so an implementer reads a handful of small files
+plan step links the exact files the task needs, so an implementer reads a handful of small files
 instead of the whole bundle. That selective loading is where the token saving comes from.
 
 ## Size and sharding rules
