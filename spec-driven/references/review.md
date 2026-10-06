@@ -23,8 +23,9 @@ group of lenses that produced findings:
 | `tests.md` | verification |
 
 A small review keeps everything in `README.md`, and so does any lens added for the change
-(`other: <name>`). In multi-agent mode each task also gets a per-task
-review in its folder (`handoff-templates.md`); this phase reviews the whole change before it closes.
+(`other: <name>`). **A review with no findings writes no files**: one line on the change's status in
+`proposal.md` records the date and what was checked. In multi-agent mode a task gets a review file only
+when its coder must act (`handoff-templates.md`); this phase reviews the whole change before it closes.
 
 ## Contents
 - What to review against

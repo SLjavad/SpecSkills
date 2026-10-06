@@ -49,7 +49,7 @@ Only what stays inside the approved spec:
 - accept or reject the coder's choices within the brief's stated latitude;
 - order and split tasks, write feedback, request changes.
 
-Everything else waits for the user: the lead writes an `escalated` review — or keeps a brief not yet
+Everything else waits for the user: the lead marks the brief `escalated` — or keeps a brief not yet
 issued in `draft` — and lists the item under "Waiting on the user":
 
 - new ideas and improvements — they are proposals (`discovery.md`);
@@ -71,7 +71,7 @@ docs/handoff/templates/       brief.md, report.md, review.md, prompts.md — the
 docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/
   brief.md                    lead: the instructions, at most 150 lines
   report-01.md                coder: what was done, and the evidence
-  review-01.md                lead: the verdict and findings
+  review-01.md                lead: only when the coder must act — findings or answers
   report-02.md, review-02.md, …
 ```
 
@@ -90,14 +90,14 @@ Computed from the files, never from memory:
 |---|---|
 | brief `ready`, no report yet | coder |
 | latest report `in progress` | coder — still working |
-| latest report `submitted`, no review for that round | lead |
+| latest report `submitted`, no review for that round, brief still `ready` | lead |
 | latest report `blocked` | lead — or the user, if the question needs them |
 | latest review `changes-requested` or `answered` | coder — the next round |
-| latest review `approved` | done — the lead updates the board and the traceability table |
-| latest review `escalated` | the user; once the user decides, the lead writes the next review or supersedes the brief |
+| brief `done` | done — approved, with no review file |
+| brief `escalated` | the user; once the user decides, the lead writes the next review or supersedes the brief |
 
-**A round** is one report and the review of it. `answered` means the review only answers the report's
-questions; it does not count as a round. The board lists the tasks, but the task folder decides whose
+**A round** is one report and the lead's response to it. `answered` means the review only answers the
+report's questions; it does not count as a round. The board lists the tasks, but the task folder decides whose
 turn it is — the board may lag behind a report that was just submitted.
 
 Every session of the implementation loop (phase 5 on) starts the same way: read `BOARD.md`; then read
@@ -125,10 +125,13 @@ background agent or workflow to write code, and does not offer to; it hands over
    itself** — the report is a claim; the run is evidence. Reviews the diff with spec-driven's
    `references/review.md` and senior-engineering's `references/review.md`, `security.md` and
    `testing.md`, at the scale of the task.
-3. Writes the review — `approved`, `changes-requested` (blocking findings only), `answered`, or
-   `escalated` — and updates the board. On approval it fills in the step's result and the traceability
-   table: the living matrix for CH-001, the change's own delta table afterwards. It updates the docs the
-   report lists as affected. For another round, it gives the user the handoff prompt for the coder.
+3. **Writes a review file only when the coder must act**: `changes-requested` (blocking findings only)
+   or `answered`. On approval there is no review file: the lead marks the brief `done`, records the
+   verification it re-ran in the step's result, fills in the traceability table — the living matrix for
+   CH-001, the change's own delta table afterwards — and sends any non-blocking finding to a later task
+   or the proposal register. An escalation is no file either: the brief is marked `escalated` and the
+   board says why. The lead updates the board and the docs the report lists as affected, and for
+   another round gives the user the handoff prompt for the coder.
 
 **The coder**
 1. Reads `BOARD.md`, the brief, and the files it links — nothing more by default.
@@ -161,8 +164,8 @@ Ideas beyond the brief go into the report's *Proposals* section — never into t
 
 ## Ending the loop
 
-1. **At most three rounds per brief.** The review that would be the third `changes-requested` is
-   written as `escalated` instead — or the lead supersedes the brief: it amends the plan (the step split
+1. **At most three rounds per brief.** Instead of a third `changes-requested`, the lead marks the brief
+   `escalated` — or supersedes it: it amends the plan (the step split
    or rewritten under new step numbers), opens their task folders for a fresh coder session, and marks
    the old brief `superseded` with a link to the new ones.
 2. **Only blocking findings block**: an unmet acceptance criterion or requirement, an ADR violation, a
