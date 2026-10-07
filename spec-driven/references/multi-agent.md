@@ -14,10 +14,14 @@ positive. It costs tokens and handoffs, so a task is one plan step: one coherent
 
 At setup (`setup.md`) the lead writes two files into the project, adjusted to it:
 
-- **`docs/handoff/PROTOCOL.md`** — the protocol below, approved and owned by the user. It is the only
-  copy of the rules, the handoff prompts and the report and review formats. Every agent reads it
-  first, so a coder in any tool, with or without these skills, finds everything inside the project.
+- **`docs/handoff/PROTOCOL.md`** — the protocol below. It is the only copy of the rules, the handoff
+  prompts and the report and review formats. Every agent reads it first, so a coder in any tool, with
+  or without these skills, finds everything inside the project.
 - **`docs/handoff/BOARD.md`** — the active work and the user's inbox.
+
+Both are the agents' own working files: the lead fits them to the project and changes them as the work
+needs, without asking. The user steers by decisions and outcomes — the gates, ADRs, proposals, the
+project's rules, acceptance — not by the agents' internal contracts.
 
 A coder without these skills follows `docs/engineering/principles.md`, written at setup; a tool that
 does not read `AGENTS.md` gets a shim. Plain Markdown, paths from the repository root, no tool-specific
@@ -30,16 +34,17 @@ folder holds a `step.md` written from the same template, with a `Status:` line.
 
 ```markdown
 # Handoff protocol
-Status: approved by <the user>, YYYY-MM-DD · Owner: the user
+Status: current, YYYY-MM-DD · Owner: the lead
 Summary: How the lead and coder agents build this project through files. Every agent reads this first.
 
 ## Roles
-- **User**: owns this file; starts every session and carries each handoff prompt; decides everything
-  outside the approved spec; accepts each change. May edit any file — the files, including the
-  user's edits, are the truth.
+- **User**: starts every session and carries each handoff prompt; decides everything outside the
+  approved spec; accepts each change. May edit any file — the files, including the user's edits, are
+  the truth.
 - **Lead** (<tool>): product manager, tech lead, architect, reviewer. Writes the specs, ADRs (as
-  proposed), docs/discovery/, plans and steps, step status, reviews, BOARD.md, docs/engineering/ and
-  AGENTS.md (with the user's approval), and updates the docs a change affects. Never edits production
+  proposed), docs/discovery/, plans and steps, step status, reviews, this file, BOARD.md,
+  docs/engineering/ and AGENTS.md — its project rules only as the user sets them — and updates the
+  docs a change affects. Never edits production
   code or tests, and never launches a subagent, background agent or workflow to write them.
 - **Coder** (<tool>): a separate session the user starts — never a subagent. Writes code, tests and
   reports. Never edits a document — specs, plans, steps, ADRs, registers, reviews, BOARD.md, AGENTS.md,

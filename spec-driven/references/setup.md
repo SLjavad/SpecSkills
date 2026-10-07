@@ -86,7 +86,7 @@ and write `docs/engineering/principles.md` from the same file, for any agent wit
   under "Rules for this project" — and record each there, with its reason. The skills set none of
   them.
 
-- **An existing `AGENTS.md`** is updated, not replaced; show the user the diff.
+- **An existing `AGENTS.md`** is updated, not replaced.
 - **Instruction files for other tools** (`.cursorrules`, Copilot instructions and the like): fold their
   content into `AGENTS.md`, and leave each as a short shim pointing to it.
 - **`CLAUDE.md` holds `@AGENTS.md`** plus Claude-only notes, and nothing else is imported — imports
