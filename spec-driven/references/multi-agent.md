@@ -43,7 +43,11 @@ Summary: How the lead and coder agents build this project through files. Every a
   code or tests, and never launches a subagent, background agent or workflow to write them.
 - **Coder** (<tool>): a separate session the user starts — never a subagent. Writes code, tests and
   reports. Never edits a document — specs, plans, steps, ADRs, registers, reviews, BOARD.md, AGENTS.md,
-  docs/engineering/ — and lists the ones a change affects in its report, for the lead to update.
+  docs/engineering/ — and lists the ones a change affects in its report, for the lead to update. One
+  coder by default; more only with disjoint files in scope, a separate working copy each, and nothing
+  merged without the user's yes.
+- Every agent also follows the engineering rules (see "Start of every session"): secrets, tests, git
+  and the rest are there, not repeated here.
 
 ## Files
 - Instructions: the plan step, docs/changes/CH-NNN-<slug>/plan/steps/S-NN-<slug>.md.
@@ -138,15 +142,6 @@ Ideas beyond the step go in the report's Proposals — never into the code.
 - The change's review (phase 6) runs in the lead role. Its blocking findings reach the coder as a fix
   step, plan/steps/R-NN-fixes.md; the lead allocates every F- id. A change is done when every step is
   done or superseded, that review is closed, the specs are merged, and the user accepts it.
-
-## Always
-- Never delete or weaken a test to make work pass; every changed test states its reason.
-- Never put secrets, personal data, internal hostnames or proprietary code in these files, or in any
-  web search, web fetch or remote tool call.
-- No git writes, no migrations on a persistent database, no deploys and no destructive commands without
-  the user's yes. Reading history and diffs is fine.
-- One coder by default. More only with disjoint files in scope, a separate working copy each, and
-  nothing merged without the user's yes.
 
 ## report-NN.md — the coder
 ~~~markdown

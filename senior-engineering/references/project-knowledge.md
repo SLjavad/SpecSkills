@@ -41,7 +41,8 @@ instead of the whole bundle. That selective loading is where the token saving co
   across topics; design the files for how they will be loaded.
 - **Split by sub-topic when a file passes the cap**, and update its index in the same edit. Merge two
   tiny files that are always read together.
-- **Indexes stay under 150 lines.** An index lists; it never restates content.
+- **Indexes stay under 150 lines.** An index lists a path and one line; it never restates content —
+  not even a file's status, which lives only in that file's header.
 - **Registers and logs archive rather than grow.** When an append-only file passes the cap, move closed
   entries to an archive file and keep the open ones.
 - **`AGENTS.md` stays under 150 lines**, and the whole instruction chain a tool loads — root plus nested
@@ -51,7 +52,7 @@ instead of the whole bundle. That selective loading is where the token saving co
 ## Headers, ids and links
 
 Every document opens with its title and a short header, so its first lines tell a reader whether to
-read on:
+read on. A plan step is the one exception for status: its plan's progress table holds it.
 
 ```markdown
 # Booking — functional requirements
@@ -102,33 +103,23 @@ Integration tests need: <e.g. Docker running>
 - Product and technical context: docs/discovery/understanding.md
 - Open questions and proposals: docs/discovery/questions.md, docs/discovery/proposals.md
 - How we write code here — stack playbooks, area records: docs/engineering/README.md
-- Multi-agent work: docs/handoff/PROTOCOL.md          (only if used)
 
 ## Working mode
 <single agent | lead + coder> · Lead: <tool> · Coder: <tool>
 Size: <small | standard> · Track: <small | standard> · Architecture: <shape, style> — docs/adr/0001-<slug>.md
 Practices: <file merging, ADR form, when a change gets its own folder, mutation / architecture / load tests>
-Every agent in multi-agent mode starts at docs/handoff/PROTOCOL.md.
+Multi-agent: every agent starts at docs/handoff/PROTOCOL.md.
 
-## Rules for every change
-- <the project's non-obvious conventions, one line each>
-- Ask instead of guessing when two readings lead to different work.
-- Improvements beyond the task are proposals the user approves — never applied silently.
-- Never put secrets, personal data, internal hostnames or proprietary code into a web search, a web
-  fetch or any remote tool call.
-- Tests challenge business rules, the technical solution, performance and security, plus every other
-  risk a flow carries; integration tests run every external dependency with Testcontainers; never
-  weaken a test to make it pass.
-- No commercial tools or libraries unless the user names them.
-- Update the affected docs in the same change as the code (lead/coder mode: the coder lists them in its
-  report and the lead updates them).
-- No state-changing git operations, migrations applied to a database, deploys or destructive commands
-  without the user's yes.
+## Rules for this project
+- <the project's own non-obvious conventions, one line each>
 
 ## Engineering baseline
 Agents with the senior-engineering and spec-driven skills installed: use them.
-Every other agent: docs/engineering/principles.md.
+Every other agent: read docs/engineering/principles.md before changing anything.
 ```
+
+The baseline rules — asking, proposals, data egress, tests, standing defaults, git — live in the
+skills, or in `principles.md` for agents without them; `AGENTS.md` does not repeat them.
 
 Add each line when its target exists — no links to files nobody has written, and no `Commands` section
 until the commands exist.

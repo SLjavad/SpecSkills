@@ -77,73 +77,25 @@ operability, compatibility with existing clients.
 
 ## Finding format
 
-The one format for every finding — in this phase's review and in a multi-agent task's review alike:
-
-```markdown
-### F-NN — <short title>
-Severity: blocker | major | minor | note · Blocking: yes | no · Introduced by this change: yes | no
-Lens: requirement-gap | conformance | correctness | unverified | design | domain | dependency |
-      performance | security | silent-risk | failure-path | verification | readability | leftover |
-      spec-defect | other: <name>
-Against: <the AC, FR/NFR or ADR id, where the finding is against one>
-Location: <path>:<line>  (or the spec file and id, for a spec defect)
-Status: open | fixed | rejected | deferred
-
-**What.** The defect, in one or two sentences.
-
-**Why it matters.** The concrete consequence — the input, state or sequence that produces a wrong
-result. If you cannot name one, downgrade to note.
-
-**Evidence.** What you ran or read that shows it: the test, the request and response, the measurement.
-
-**Suggested fix.** What to change. Not a rewrite of the whole area.
-
-**Outcome.** Filled in by whoever acts on it: what was done, or the written reason for rejecting it.
-```
-
-A **security** finding also records the exploit input, the impact, the OWASP/ASVS/CWE reference, the
-regression test that proves the fix, and a `Rating:` line — a CVSS vector for a concrete vulnerability
-rated high or critical, likelihood × impact otherwise. A critical or high rating is always severity
-`blocker`.
-
-`F-` ids are scoped to the change and allocated in one sequence across the change's task reviews and
-phase-6 reviews — by the lead in multi-agent mode, by the reviewer otherwise. Cite them as
-`CH-007/F-12`.
-
-**Severity means something.** A blocker produces wrong data, loses money, breaks a contract, or opens a
-security hole. A major is a real defect on a reachable path. A minor is a defect on an unlikely path or a
-genuine readability problem. A note is an observation with no defect behind it — keep these few, or they
-train the reader to skim. A blocker or major is always `Blocking: yes`.
-
-**No finding without a consequence.** "This could be cleaner" is not reviewable. Name the input that
-breaks it, or the specific thing a reader misunderstands. And **do not manufacture findings** — a
-reviewer told to find problems finds some; a clean lens is a valid result, with what you checked.
+Every finding — in this phase's review and in a multi-agent task's review alike — uses the one finding
+format in senior-engineering's `references/review.md` ("Writing findings"), with this phase's lenses:
+requirement-gap, conformance, unverified, silent-risk, failure-path and spec-defect. `F-` ids are
+scoped to the change and allocated in one sequence across its task reviews and phase-6 reviews — by the
+lead in multi-agent mode, by the reviewer otherwise. Cite them as `CH-007/F-12`.
 
 ## Verifying the requirements
 
-Take each requirement's `Verification` field and actually do it — **functional as well as
-non-functional**. An unverified requirement is reported as unverified, never as met.
+Take each requirement's `Verification` field and actually do it, by its method in senior-engineering's
+`testing.md` — **functional as well as non-functional**. An unverified requirement is reported as
+unverified, never as met.
 
-- **Functional requirements: exercise the acceptance criteria, do not read them.** Where a test covers a
-  criterion, run it and name it. Where none does, a probe is the cheap answer — drive the flow against the
-  real database, provider and bus, and check each criterion including the stated failure behaviour.
-  Record the request and what came back. **"The implementation looks correct" is not verification of an
-  FR** and must not be recorded as one.
-- **Non-functional requirements: produce the number.** A probe or load test that measures, compared
-  against the target — a loop timing a query, a capture of the emitted SQL and its plan, a payload
-  measured after a serializer round-trip, a run at 10× volume to see whether the algorithm stays linear.
-- **Evaluation.** Run it on the pinned dataset and record the score, the dataset version, and the model
-  or configuration it ran against. A score below the threshold is a missed requirement; a score from
-  another version of the dataset is not evidence.
-- **For either kind, say what the probe ran against.** A probe over fabricated data proves less than one
-  over real data, and the difference belongs in the finding. Keep the probe out of the deliverable tree.
-- **Structural check.** Where nothing above reaches the outcome, confirm the mechanism exists — the index,
-  the timeout, the bound, the exclusion — then write down that the mechanism was checked and the outcome
-  was not. Reporting a structural check as a measurement is the specific dishonesty this section exists
-  to prevent.
-- **Dedicated plan.** If the tech spec specified one and it was not run, that is an open finding, not a
-  footnote.
-- **Not verified.** Fine, if the entry says so and says what would be needed. A blank cell is not this.
+- **Functional requirements: exercise the acceptance criteria, do not read them** — run the test that
+  covers each and name it, or probe it, the stated failure behaviour included. **"The implementation
+  looks correct" is not verification of an FR** and must not be recorded as one.
+- **Non-functional requirements: produce the number** and compare it with the target.
+- **Record what each ran against.** A structural check is recorded as one, never as a measurement; a
+  dedicated plan the tech spec specified and nobody ran is an open finding; a blank is never "not
+  verified".
 
 A requirement whose criteria were checked and **missed** is a finding at the severity its consequence
 deserves — for an NFR, read the `Consequence if missed` field it already carries rather than guessing.
@@ -161,7 +113,7 @@ working code is worse than no spec: it actively misleads everyone who reads it n
 ## Improvements are proposals
 
 An optimization, a refactor, an upgrade or a better design that is not a defect is **not a finding**. It
-goes to the proposal register (`discovery.md`) in that register's format — with its evidence, expected
+goes to the proposal register (`discovery.md`) in the one proposal format — with its evidence, expected
 gain, cost, risk and verification — and waits for the user. Nothing is changed because a reviewer preferred it.
 
 ## The loop

@@ -178,8 +178,8 @@ threat model still match the code?
 **Automated evidence next.** Security analyzers, dependency audit, secret scan and the security tests.
 Do not spend review attention on what a tool already checks — and name any tool that did not run.
 
-**Then the manual checklist.** Map each finding to the current OWASP Top 10 or ASVS category and CWE.
-The table is the minimum; the threat model and the change itself decide what else to examine.
+**Then the manual checklist.** The table is the minimum; the threat model and the change itself decide
+what else to examine.
 
 | Concern | Look for |
 |---|---|
@@ -196,7 +196,5 @@ The table is the minimum; the threat model and the change itself decide what els
 | Logging and alerting | security events not logged; sensitive data logged |
 | AI features and agents | prompt-injection paths, tools with excessive privilege, tool calls not authorized in the handler, retrieval that ignores the asking user's permissions, model output used unvalidated |
 
-**Each security finding records** the location, the evidence (the request or input that exploits it),
-the impact, the rating, the fix, the regression test that proves the fix, and the OWASP/ASVS/CWE
-reference. Rating: a CVSS vector for a concrete vulnerability rated high or critical; likelihood ×
-impact otherwise. Critical and high ratings block release.
+**Record each finding** in the finding format, with its security fields (`review.md`, "Writing
+findings").

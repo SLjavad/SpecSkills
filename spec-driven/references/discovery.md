@@ -22,21 +22,12 @@ costs a paragraph; the same assumption in code costs a rewrite.
 
 ## Sweep both sides
 
-Work through both lists against everything you have been told and everything already in the repository,
-and extend them with whatever this domain adds — the lists are where to start, not where to stop.
-Every item ends up **known** (with its source), **assumed** (your stated default, flagged for
-confirmation), or **asked**.
-
-**Product side** — the roles and the job each is trying to get done; the problem today and what it
-costs; the business rules and their exceptions; edge cases; what users see when something fails;
-volumes and growth; money, time and units; legal, regulatory and contractual constraints; obligatory
-integrations; how success is measured; what is out of scope.
-
-**Technical side** — existing systems, code and data (migration?); integrations and their real
-contracts; environments and hosting, and the logging, metrics, CI and secret storage already there; the
-expected lifespan; whether any part must scale or deploy separately; quality targets — latency,
-availability, scale; security and privacy — data classes, identity, authorization model; constraints on
-the stack.
+Run senior-engineering's sweep ("Resolving ambiguity") against everything you have been told and
+everything already in the repository. For a whole project, also cover: on the product side, the
+problem today and what it costs, money, time and units, and how success is measured; on the technical
+side, the logging, metrics, CI and secret storage already there, the expected lifespan, and whether any
+part must scale or deploy separately. Every item ends up **known** (with its source), **assumed** (your
+stated default, flagged for confirmation), or **asked**.
 
 ## Play back your understanding
 
@@ -71,13 +62,9 @@ Applied to: <FR-/ADR-/file>
 
 ## How to ask
 
-- **Draft, then ask.** Write the first pass from what you have, marking every inference, then ask about
-  the gaps that actually matter. Never interrogate from a blank page.
-- **Batch per round**: at most four questions — the ones with the most impact — each with real
-  options, the trade-off, and your recommendation. Use the tool's question mechanism.
-- **Ask when two readings lead to materially different work.** Decide the routine points yourself and
-  record them as `assumed`.
-- **Record every answer immediately**, in the register and in the documents it changes.
+As senior-engineering's "Resolving ambiguity" describes, with three additions: draft first — never
+interrogate from a blank page; ask at most four questions per round, the ones with the most impact;
+and record every answer immediately, in the register and in the documents it changes.
 
 ## Techniques that surface what nobody said
 
@@ -92,11 +79,9 @@ Applied to: <FR-/ADR-/file>
 
 ## Research
 
-When a question is a design or solution choice, research it across several kinds of source — vendor
-documentation, standards, mature implementations in other ecosystems, issue trackers, package
-registries, practitioner write-ups — and synthesize rather than list. Record the sources, what each
-contributed and the date, in the ADR or the understanding file. Queries stay generic: no project
-names, code or identifiers (senior-engineering `security.md`).
+A design or solution choice is researched as senior-engineering's "Thinking beyond the ask" says, with
+queries kept generic (`security.md`). Record the sources, what each contributed and the date, in the
+ADR or the understanding file.
 
 ## The proposal register
 

@@ -27,23 +27,11 @@ under "Working mode" (`Size: small · Track: small`).
 **Re-check at stop 1.** Count the capabilities in the drafted `product.md` against the checklist, and
 name any mismatch with the size proposed.
 
-Size is not stakes. A small tool that moves money, holds personal data or acts on untrusted content
-still gets full tests on those rules and a full security pass. The track removes documents and stops,
-never scrutiny.
-
 ## What never relaxes
 
-- senior-engineering's non-negotiables and standing defaults, the data-egress rules, Testcontainers for
-  every external dependency, and tests on every rule that was hard to get right.
-- The handoff contract in the skill: self-contained, every decision with its reason, no `TBD`, terms
-  from the glossary, everything downstream citing requirement ids, and the competent-stranger test.
-- The separation between phases. The product file names no technology, the requirements contain no
-  solution language, the plan makes no decisions. Merging files merges sections, never their content.
-- The registers: every gray area a `Q-` entry, every idea beyond scope a `P-` entry, every `assumed`
-  entry listed at the next stop, and nothing in the proposal register built without the user's yes.
-- Stable ids in headings — `C-`, `J-`, `FR-`, `NFR-`, `AC-`, `FL-`, `RL-`, `TH-`, `ADR-`, `S-`, `F-`.
-- No implementation code before the plan is approved; then step by step, each verified and recorded.
-- Amending an approved spec, as the skill describes.
+Everything else — the skill, senior-engineering and each phase file — applies unchanged; size is not
+stakes (`setup.md`). Merging files merges sections, never their content: the product file still names
+no technology, the requirements no solution, and the plan makes no decisions.
 
 ## Two stops instead of five
 

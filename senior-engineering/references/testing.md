@@ -16,23 +16,30 @@ they fail for the wrong reasons, get muted, and then everything around them is a
 
 ## Choosing the verification method
 
-Match the method to what is being verified, and state which you used.
+The one list of verification methods, for code and for requirements alike — strongest first. Use the
+strongest that can run, and state which you used. Reading the code and agreeing with it is never
+verification.
 
-| What is being verified | Method |
-|---|---|
-| Pure logic — rules, arithmetic, parsing, mapping, state transitions | Unit test: fast, no I/O, no clock |
-| Anything that crosses an external dependency — any tool, engine or service outside the process | Integration test with Testcontainers: the real engine, the vendor's emulator, or a containerized mock server |
-| A behaviour-preserving change | Characterization: capture the current output, change, re-run, **diff** |
-| An output judged over many cases — ranking, classification, extraction, generated text | Evaluation: a versioned dataset, a scoring method and a threshold, run like a test; record the score with the dataset and model versions |
-| A number — latency, throughput, allocations, a query plan — or a one-off exploration | A benchmark, load test or throwaway probe; record the result and what it ran against |
-| A project with no test suite yet | A probe now — and say plainly what that leaves unprotected next month |
+| Method | For | Record |
+|---|---|---|
+| Unit test | pure logic — rules, arithmetic, parsing, mapping, state transitions; fast, no I/O, no clock | the test |
+| Integration test with Testcontainers | anything that crosses an external dependency: the real engine, the vendor's emulator, or a containerized mock server | the test |
+| Characterization | a behaviour-preserving change: capture the current output, change, re-run, **diff** | the diff |
+| Evaluation | an output judged over many cases — ranking, classification, extraction, generated text: a versioned dataset, a scoring method and a threshold, run like a test | the score, the dataset and model versions; below the threshold fails |
+| Benchmark, load test or probe | a number — latency, throughput, allocations, a query plan — or behaviour where there is no suite to add to | the result, and what it ran against |
+| Exercise | calling the running system by hand | the request and the response |
+| Structural check | where nothing above reaches the outcome: confirm the mechanism exists — the index, the timeout, the bound | that the mechanism was checked and the outcome was not — never as a measurement |
+| Dedicated plan | a requirement important enough that nothing above is honest enough: real load profile, soak, failover drill, penetration test | its report |
+| Not verified | nothing above was possible | why, and what would be needed — said out loud, never a blank |
 
 A **probe** — a throwaway script or project that drives the real path and reports what happened —
-verifies behaviour as readily as it measures performance: that the row is written, the message
-published, the response shaped as documented, the query plan what you expected. Record its output;
-throw the probe away. A probe verifies once; only a test verifies next month, so prefer the permanent
-form wherever the project has a place to put it. Reading the code and agreeing with it is not
-verification.
+verifies behaviour as readily as it measures performance. For a functional requirement it drives the
+flow end to end against the real database, provider and bus and checks each acceptance criterion; for
+a non-functional one it produces the number. A probe over fabricated data proves less than one over
+real data, so say what it ran against. Record its output and keep the probe out of the deliverable
+tree. A probe verifies once; only a test verifies next month, so prefer the permanent form wherever
+the project has a place to put it — and in a project with no suite yet, say what that leaves
+unprotected.
 
 ## Four lenses on every significant flow
 
@@ -192,11 +199,9 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
 
 ## Tools
 
-- **.NET: xUnit is the test framework** — a standing default of the project owner. Other free libraries
-  sit alongside it where they help: Testcontainers modules, assertion, mocking, property-based,
-  mutation and benchmarking tools.
-- **Free and open-source only**, unless the user names a commercial tool. Check the licence of the exact
-  version you add — some widely used test libraries moved to commercial terms in a new major version.
+- **The standing defaults apply** (`SKILL.md`) — for .NET, xUnit — with other free libraries alongside
+  where they help: Testcontainers modules, assertion, mocking, property-based, mutation and
+  benchmarking tools.
 - The project's stack playbook names the maintained tool for each kind, for every stack. Examples of
   the kinds, not a closed list: mutation (Stryker, PIT), property-based (FsCheck, jqwik, fast-check,
   Hypothesis), architecture tests (ArchUnitNET, ArchUnit, dependency-cruiser), load (k6, Gatling,

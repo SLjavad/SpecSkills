@@ -3,11 +3,8 @@
 How to shape a change so it is correct, testable, and hard to get silently wrong. Read before
 designing anything beyond a local change, and before reviewing a design.
 
-The design principles are a deliberately small set: **the project's own declared rules first** — its
-architecture ADR, `AGENTS.md`, the area records — **then SOLID, DRY and KISS/YAGNI.** Do not reach
-beyond them: every extra principle is one more reason to add a layer, an interface or a split, and the
-sum is code a newcomer cannot follow. SOLID is below, as decisions; DRY and KISS/YAGNI are what
-"Balance" enforces. When principles pull apart, the simpler design wins.
+Design by the fixed set of principles in `SKILL.md` and no others. SOLID is below, as decisions with the
+signals a review looks for; DRY and KISS/YAGNI are what "Balance" enforces.
 
 ## Contents
 - The dependency rule
@@ -46,20 +43,24 @@ the chosen style, and add no layer it did not choose.
 
 - **Single responsibility — one reason to change.** Name the change that would force you to edit this
   class. If you can name two unrelated ones ("the tax rules moved" and "the client contract moved"),
-  split along that line. Split by *reason to change*, never by line count.
+  split along that line. Split by *reason to change*, never by line count. Signals: the file changes in
+  history for unrelated reasons; a long list of injected dependencies or props; one unit that fetches,
+  decides and renders.
 - **Open/closed — extend at the seam you already have.** If adding the fourth variant means editing
   the same three `switch` statements, the variance wants a type. If it is the *second* variant, a
   branch is still cheaper than a hierarchy. Do not build the seam before the second case.
 - **Liskov — a subtype that throws on a base member is lying.** So is one that tightens a
-  precondition. If an implementation cannot honour the contract, the contract is wrong or the
-  hierarchy is.
+  precondition, and a caller that downcasts is the symptom. If an implementation cannot honour the
+  contract, the contract is wrong or the hierarchy is.
 - **Interface segregation — no consumer should depend on members it never calls.** A twelve-member
-  interface where each caller uses two is four interfaces wearing one name. This matters most for
-  test doubles and for reading: a narrow port tells you what the collaborator is *for*.
+  interface where each caller uses two is four interfaces wearing one name; implementers stubbing
+  members is the signal. This matters most for test doubles and for reading: a narrow port tells you
+  what the collaborator is *for*.
 - **Dependency inversion — depend on abstractions you own.** Wrapping a stable library in your own
   interface for purity's sake is cost with no benefit; wrapping the thing that will change, or that
   you must fake to test, is the whole point. Decide by "will this change independently of me", not
-  by category.
+  by category. Signal: domain or application code constructing database, HTTP, clock or environment
+  objects, or UI components calling API clients directly.
 
 ## Rich domain model
 
@@ -202,8 +203,8 @@ is not a need.
 
 - Add an abstraction, interface, or pattern for a single case. One handler needs no handler
   framework; one implementation needs no strategy.
-- Build for a requirement nobody has stated. "We might need to swap the database" has cost today and
-  benefit never.
+- Build for a requirement nobody has stated, or add configuration nobody sets. "We might need to swap
+  the database" has cost today and benefit never.
 - Split one decision across several methods, so no single place answers "what does this return and
   why".
 - Leave a chain of one-line helpers between the entry point and the code that actually decides.

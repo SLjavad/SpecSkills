@@ -176,40 +176,12 @@ stack ADRs have to cite them by id — that is what stops the stack being chosen
 
 ## How requirements get verified
 
-**Every requirement carries a `Verification` field — functional and non-functional alike.** A
-requirement nobody can show is met is indistinguishable from one that is not. The mechanisms, strongest
-evidence first:
-
-1. **Automated test — the best answer wherever the project has a place for one.** Permanent, runs again
-   next month, fails loudly when someone breaks the rule. Unit tests for pure logic; integration tests
-   with Testcontainers wherever the behaviour crosses an external dependency; the four test lenses and
-   the flow's other risks from senior-engineering's `testing.md` for significant flows; mutation testing
-   on the core rules.
-2. **Evaluation — for an output judged over many cases.** A versioned dataset of inputs with expected
-   outcomes, a scoring method, and the requirement's threshold; automated and re-run like a test. Record
-   the score with the dataset version and the model or configuration it ran against. A score below the
-   threshold fails, like a red test.
-3. **Probe — a throwaway project or script whose only job is to exercise the thing and report.** Use it
-   when there is no suite to add to, or when the answer is a measurement rather than a pass/fail.
-   - **For an FR:** drive the flow end to end and check the acceptance criteria against the real
-     database, the real provider, the real bus — that the row is actually written, the message actually
-     published, the endpoint actually returns the documented shape.
-   - **For an NFR:** produce the number. Query timing and emitted plans, index use, behaviour at 10×
-     volume, payload size, cold-start time, bound enforcement.
-   - **The probe is disposable; its output is not.** The result is recorded once, with the step that
-     ran it (`plan.md`), with what it ran against — a probe against fabricated data proves less than
-     one against real data. Keep probes out of the deliverable tree.
-4. **Exercise — call the running system and check the result by hand.** Weaker than a probe only
-   because nothing captures it for next time; record the request and the response.
-5. **Structural check — where nothing above can reach the outcome, confirm the mechanism exists.** The
-   index is present, the timeout configured, the bound enforced. Record that the *mechanism* was
-   checked and the *outcome* was not. **These are not the same claim and must never be reported as if
-   they were.** For an FR it is almost always a sign the requirement is not testable as written.
-6. **Dedicated verification plan — for a requirement important enough that none of the above is honest
-   enough.** Real load profile, soak, failover drill, penetration test. Reserve it for the
-   architecturally significant ones.
-7. **Not verified — allowed, but only out loud.** An explicit entry saying so, why, and what would be
-   needed. Never a silent gap.
+**Every requirement carries a `Verification` field — functional and non-functional alike** — naming
+one method: test | evaluation | probe | exercise | structural check | dedicated plan | not verified.
+What each proves and what it records is in senior-engineering's `references/testing.md` ("Choosing the
+verification method"); choose the strongest that can run. A requirement nobody can show is met is
+indistinguishable from one that is not, and a structural check on an FR usually means the requirement
+is not testable as written.
 
 **An FR whose only verification is "the code looks right" is unverified.** Reading an implementation and
 agreeing with it is not evidence about behaviour.

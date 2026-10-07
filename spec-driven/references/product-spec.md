@@ -75,21 +75,17 @@ One topic per file, each opening with the standard header (status, summary, ids,
 
 | File | Holds |
 |---|---|
-| `overview.md` | Summary in one paragraph; the problem today and its cost; the value and who receives it; the single primary success outcome |
+| `overview.md` | Summary in one paragraph; the problem today and its cost; the value and who receives it; the single primary success outcome; measurable success criteria — metric, target, where observed; scale — users, transactions, data size, growth, retention |
 | `users.md` | Each role: name, what they are trying to do, primary or secondary, what they use today; the people affected without using it |
 | `capabilities.md` | One `C-NN` block per capability: one line in user language, the role, frequency, impact if unavailable, core or supporting |
 | `journeys/J-NN-<slug>.md` | One journey per file: numbered steps in user language, what the user sees when each step goes wrong, and what they can do next |
-| `scope.md` | In / Out / Later as three lists; each constraint marked CONSTRAINT or PREFERENCE with its source; obligatory integrations; sensitive data handled |
-| `success.md` | Measurable success criteria: metric, target, where it is observed |
-| `scale.md` | Users, transactions, data size, growth, retention |
-| `risks.md` | Risk, likelihood, impact, response |
+| `scope.md` | In / Out / Later as three lists; each constraint marked CONSTRAINT or PREFERENCE with its source; obligatory integrations; sensitive data handled; risks — likelihood, impact, response |
 | `docs/specs/glossary.md` | Every domain term used anywhere in the bundle, defined once |
 
 - **Assumptions and open questions are not sections.** They are entries in `docs/discovery/questions.md`,
   cited by id where they apply.
-- **Where the project's practices merge files**, `overview.md`, `success.md` and `scale.md` may share
-  one file, and the journeys may live in a single `journeys.md` — as long as no file passes 300 lines
-  and each still holds one coherent topic.
+- **Where the project's practices merge files**, the journeys may live in a single `journeys.md`; past
+  300 lines, a section of `overview.md` or `scope.md` moves into its own file.
 - **Add every file to the manifest** (`docs/specs/README.md`) as you create it.
 
 ## The glossary is not optional

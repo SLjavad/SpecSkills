@@ -14,10 +14,6 @@ That constraint is what makes this method worth the effort, and it is the bar ev
 to. This skill builds on `senior-engineering`, which applies throughout; load both. Use the project's
 own refactoring or cleanup skill when one exists.
 
-Every checklist and example list here is a floor, not a fence: it names what is most often at stake,
-never the edge of what to consider. Each project adds what its own domain, risks and architecture
-demand. Design principles are the one exception: senior-engineering keeps them a small, fixed set.
-
 ## The pipeline
 
 ```
@@ -52,44 +48,22 @@ file, and two approval stops instead of five.
 
 ## Ask the operating mode first
 
-Before phase 1, ask the user whether the project runs with **one agent** or **several** — for example a
-lead that acts as product manager, tech lead, architect and reviewer, plus a coder that implements —
-and which tool each agent runs in. Record the answer in `AGENTS.md`. In multi-agent mode the agents
-communicate only through files, and `references/multi-agent.md` governs the loop. Each agent is a
-separate session the user starts, and the user carries every handoff by pasting the prompt the last
-agent wrote. **Never launch a subagent to write code**, and never offer to.
-
-Then, from discovery's answers, propose the project's **size, architecture and practices** — a
-monolith is the usual start, a modular monolith where a later split is plausible, services only for a
-stated need (`references/setup.md`). The size, shape and style go in the first ADR, the practices in
-`AGENTS.md`; the user decides at gate 0, or once the questions it rests on are answered, and every later
-phase follows it.
+Before phase 1, ask whether the project runs with **one agent** or a **lead and a coder**, and in which
+tools; then, from discovery's answers, propose its **size, architecture and practices**. Both are in
+`references/setup.md`, and the user decides at gate 0. In multi-agent mode `references/multi-agent.md`
+governs the loop: each agent is a separate session the user starts. **Never launch a subagent to write
+code**, and never offer to.
 
 ## Every document is small, focused and linked
 
 A single long specification is expensive for an agent to load and mostly irrelevant to any one task.
-Every phase, in every pipeline stage, writes **a folder of topic files**, never one big document:
+Every phase writes **a folder of small topic files**, authored that way from the start — each opening
+with its header, cited by stable id, and reachable from `AGENTS.md` in two hops. The rules and the
+`AGENTS.md` and `CLAUDE.md` templates are in `../senior-engineering/references/project-knowledge.md`.
 
-- **One topic per file.** Target 80–200 lines; **hard cap 300**. A file over 100 lines opens with a
-  contents list.
-- **Author topic files from the start** — never a monolith chopped up afterwards.
-- **Every file opens with a header** — status, a one-line summary, ids, related files — so its first
-  lines tell a reader whether to read on. A plan step is the exception for status: its plan's progress
-  table holds it.
-- **Every living document is reachable from `AGENTS.md` in two hops**: `AGENTS.md` → an index (the specs
-  manifest, the ADR index, the engineering index) → the file. A change folder is reached through the
-  changes index, and inside it the plan index lists its steps and tasks.
-- **Stable ids in headings** — `FR-`, `NFR-`, `ADR-`, `Q-`, `P-`, `C-`, `J-`, `FL-`, `RL-`, `TH-`,
-  `CH-`, plus ids scoped to a change such as `CH-007/S-02` — and cross-references by id plus the path
-  from the repository root.
 - **Every plan step names the exact files it needs**, so nobody reads the whole bundle.
-- **Each fact is written once; everything else links to it.** A result, a status or a decision copied
-  into a second file drifts, and costs an edit every time it changes.
-
-`AGENTS.md` describes the project and points into the specs; the specs point into their sub-files; a new
-agent understands the whole project by following the links instead of reading everything. The full
-rules, and the `AGENTS.md` and `CLAUDE.md` templates, are in
-`../senior-engineering/references/project-knowledge.md`.
+- **Each fact is written once; everything else links to it.** A result, a status, a rule or a decision
+  copied into a second file drifts, and costs an edit every time it changes.
 
 ## Load the phase you are in
 
@@ -141,25 +115,13 @@ register.
 
 ## Working method for the spec phases
 
-**Understand both sides completely.** Sweep the product side and the technical side, play your
-understanding back to the user, and keep every ambiguity in the gray-area register until it is resolved
-(`references/discovery.md`). Ask about every gray area whose answer changes the work.
+**Understand, then ask — as senior-engineering's "Resolving ambiguity" describes, run as discovery**
+(`references/discovery.md`): draft first and mark every inference, never invent a requirement to fill
+silence, keep every gray area in the register until it is resolved, and list every `assumed` entry at
+the next gate.
 
-**Draft, then challenge.** Do not interrogate the user from a blank page, and do not invent requirements
-to fill silence. Write a first pass from what you have been told, marking every inference, then come back
-with targeted questions on the gaps that actually matter.
-
-**Batch questions.** Do the whole draft, collect what is genuinely unresolved, and ask the few that matter
-most at once, each with real options, trade-offs and your recommendation. Decide the routine points
-yourself, record them as `assumed`, and list them at the gate. A question per paragraph is exhausting and
-trains the user to stop reading.
-
-**Separate what you know from what you assumed.** Every assumption is an `assumed` entry in the
-register, listed at the next gate — a thing the user can correct cheaply before anything depends on it.
-
-**Research, think, propose.** For design and solution choices, research current practice across several
-kinds of source and synthesize. Bring better approaches and creative alternatives — as entries in the
-proposal register. **Hard rule: a proposal is never built until the user accepts it.**
+**Research, think, propose** — senior-engineering's "Thinking beyond the ask". Ideas go to the proposal
+register. **Hard rule: a proposal is never built until the user accepts it.**
 
 **Write no implementation code during phases 1-4.** Sketching a type signature or a schema fragment
 inside the tech spec is the spec; creating project files is not. Research is the exception: to check a

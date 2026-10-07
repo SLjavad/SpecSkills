@@ -40,32 +40,11 @@ time zones. Every failure branch reachable, and handled the way the spec says.
 
 ## Lens: design principles
 
-Judge the code against **the project's declared principles first** — the rules in `AGENTS.md`, the
-area records and the ADRs that set conventions — and then against SOLID, DRY and KISS/YAGNI. The set
-is small on purpose (`design.md`): do not review against principles beyond it, because each one added
-is another push toward layers and abstraction.
-
-Raise a finding only with a concrete change scenario or defect risk — "could be cleaner" or "violates
-principle X" on its own is not a finding. **Over-engineering is a finding with the same weight as a
-violation:** an abstraction, layer, interface or pattern with no present need behind it, a generic
-mechanism for one case, a chain of forwarding hops between the entry point and the decision. When
-principles pull apart, the simpler design wins.
-
-| Principle | Signals |
-|---|---|
-| Single responsibility | the file changes in history for unrelated reasons; a long list of injected dependencies or props; one unit that fetches, decides and renders |
-| Open/closed | the same `switch` or `if` chain on a type or kind in three or more places, growing with each variant |
-| Liskov | overrides that throw "not supported" when the contract does not advertise the capability; callers downcasting; subtypes with stricter preconditions |
-| Interface segregation | implementers stubbing members; callers using a small slice of a wide interface or props object |
-| Dependency inversion | domain or application code constructing database, HTTP, clock or environment objects; UI components calling API clients directly |
-| DRY — one source for each piece of knowledge | the same rule or constant decided in two places; but merge only true duplication, at the third occurrence, never coincidental similarity |
-| KISS and YAGNI | machinery with no requirement behind it; configuration nobody sets; a generic framework for one case; an interface with one implementation and no test that needs to fake it |
-
-Layering and module boundaries are not weighed here as principles: they are the project's chosen
-architecture, checked by its architecture tests and by the dependency lens below.
-
-Finally the entry-point test from `design.md`: read down from the entry point; four hops to the
-decision is over-fragmented, five unrelated things at once is under-decomposed.
+Judge the code by the fixed set of principles in `SKILL.md` — the project's declared rules first —
+using the signals in `design.md`: SOLID, "Balance" and the entry-point test. Raise a finding only with a
+concrete change scenario or defect risk; "violates principle X" on its own is not a finding.
+**Over-engineering is a finding with the same weight as a violation.** Layering and module boundaries
+are the project's chosen architecture, checked by its architecture tests and the dependency lens below.
 
 ## Lens: domain model
 
@@ -99,18 +78,15 @@ upgrade or removal is a proposal, like any other change.
 ## Lens: algorithms and efficiency
 
 Every finding here carries evidence — a measurement, a query plan, or a complexity estimate at the
-realistic size the spec states.
+realistic size the spec states. Check the code against `modern-practices.md` ("Efficiency principles")
+and the stack playbook, and look too for what they do not list:
 
-- Complexity at realistic N: nested scans, and lookups or sorts inside loops. Small N rarely matters.
-- Data access: N+1 queries, unbounded result sets, over-fetching, cartesian explosions, and missing
-  indexes for the queries actually issued.
-- Lazy sequences enumerated twice; blocking on asynchronous work; lock contention on common paths.
-- Hot-path allocation: boxing, large temporary buffers, serializer or option objects rebuilt per call,
-  strings built in loops, expensive log arguments evaluated when the level is off.
-- Exceptions used for control flow on hot paths.
-- Regular expressions on untrusted input with a backtracking engine and no timeout.
-- UI: derived state synchronized through side effects (React effects, for example), re-render storms,
-  slow interactions.
+- complexity at realistic N — nested scans, lookups or sorts inside loops; small N rarely matters;
+- cartesian explosions, and missing indexes for the queries actually issued;
+- lazy sequences enumerated twice; lock contention on common paths;
+- serializer or option objects rebuilt per call; expensive log arguments evaluated when the level is
+  off; exceptions used for control flow on hot paths;
+- regular expressions on untrusted input with a backtracking engine and no timeout.
 
 ## Lens: security, tests, readability
 
@@ -124,13 +100,32 @@ realistic size the spec states.
 
 ## Writing findings
 
-- **No finding without a consequence**: the input, state or sequence that produces a wrong result, or
-  the specific thing a reader will misunderstand. Otherwise it is a note — and notes stay few, or they
-  train the reader to skim.
-- **Label each one**: blocking or non-blocking, and introduced by this change or already there.
+The one finding format, for every review — in a report, or in a spec-driven review file:
+
+```markdown
+### F-NN — <short title>
+Severity: blocker | major | minor | note · Blocking: yes | no · Introduced by this change: yes | no
+Lens: <the lens that found it, or other: <name>> · Against: <AC, FR/NFR or ADR id, where it is against one>
+Location: <path>:<line>  (or the spec file and id, for a spec defect) · Status: open | fixed | rejected | deferred
+
+**What.** The defect, in one or two sentences.
+**Why it matters.** The input, state or sequence that produces a wrong result, or the specific thing a
+reader will misunderstand. If you cannot name one, it is a note.
+**Evidence.** What you ran or read that shows it: the test, the request and response, the measurement.
+**Suggested fix.** The smallest change, not a rewrite of the area.
+**Outcome.** Filled in by whoever acts on it: what was done, or the written reason for rejecting it.
+```
+
+- **A security finding** also records the exploit input, the impact, the regression test that proves
+  the fix, its OWASP Top 10 or ASVS category and CWE, and a `Rating:` — a CVSS vector for a concrete
+  vulnerability rated high or critical, likelihood × impact otherwise. Critical and high are always
+  `blocker`, and block release.
+- **Severity means something.** A blocker produces wrong data, loses money, breaks a contract, or opens
+  a security hole. A major is a real defect on a reachable path. A minor is a defect on an unlikely path
+  or a genuine readability problem. A note has no defect behind it — keep notes few, or they train the
+  reader to skim. A blocker or major is always blocking.
 - **Do not manufacture findings.** A reviewer told to find problems finds some, and fixing invented ones
   breeds over-engineering. A clean review is a valid outcome — say exactly what you checked.
-- **Suggest the smallest fix**, not a rewrite of the area.
 
 ## Improvements are proposals
 

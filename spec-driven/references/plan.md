@@ -99,18 +99,10 @@ mode the task's report holds it instead.
 
 ## Verification is per step and must be real
 
-A step whose verification is "the project compiles" is unverified. Compilation proves syntax.
-
-Acceptable verification, in rough order of strength: an automated test that fails before and passes
-after; a **probe** — a throwaway script or project that drives the thing and reports what happened, the
-answer wherever there is no suite to add to or the answer is a measurement; a request against the running
-system with a stated expected response; a database row read back and compared; a log or metric observed;
-a manual procedure written out precisely enough that someone else would perform it identically.
-
-A probe verifies functional requirements as readily as non-functional ones — for an FR it checks the
-acceptance criteria end to end, for an NFR it produces the number. State what the probe exercises and
-what result counts as a pass, and record its output with the step's result; the probe itself is
-disposable and does not belong in the deliverable tree.
+A step whose verification is "the project compiles" is unverified. Compilation proves syntax. Choose
+the method from senior-engineering's `testing.md` ("Choosing the verification method"), strongest
+first; a manual procedure is written precisely enough that someone else would perform it identically,
+and a probe's output goes into the step's result.
 
 State the **expected** result, not just the action. "Run the tests" is an instruction; "all tests pass,
 including the three new ones named X, Y, Z" is a verification.

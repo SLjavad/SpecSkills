@@ -100,7 +100,8 @@ The condition that would reopen this decision.
   one is marked `superseded by`. The rejected reasoning is what stops the same debate recurring.
 - **One decision per ADR.** Numbers are sequential and never reused; one writer allocates them — the
   lead agent, in a multi-agent project — so parallel work cannot collide.
-- **Index**: `docs/adr/README.md` lists every ADR with its number, title, status and date.
+- **Index**: `docs/adr/README.md` lists every ADR by number and title; its status lives only in its
+  header.
 - **Reference, never copy.** A tech spec states the choice in one line and links the ADR; the
   rationale lives only in the ADR.
 

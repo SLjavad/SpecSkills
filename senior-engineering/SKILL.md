@@ -20,8 +20,10 @@ unverified assumption is the most expensive thing you can produce, because it lo
 dependency types, threats, tools — name what is most often at stake so you do not miss it; they never
 mark the edge of what to consider. Derive the rest from the project's own domain, requirements, risks
 and architecture, and research what the examples do not cover. **Design principles are the opposite:
-a small, fixed set** — the project's own rules, then SOLID, DRY and KISS/YAGNI — because a missed risk
-is a defect, but an extra principle is cost: more layers, more abstraction, harder onboarding.
+a small, fixed set** — the project's own rules (its architecture ADR, `AGENTS.md`, the area records),
+then SOLID, DRY and KISS/YAGNI, and no others — because a missed risk is a defect, but an extra
+principle is cost: more layers, more abstraction, harder onboarding. When they pull apart, the simpler
+design wins.
 
 ## Load what the task needs
 
@@ -146,17 +148,8 @@ Before planning a change in an area, build an accurate picture of it. Cheapest f
 
 ## Design
 
-Read `references/design.md` for anything beyond a local change. In short:
-
-- Dependencies point inward, through only the layers the project's architecture chose; framework and
-  vendor types stay at the edge.
-- Domain entities are rich — state changes through intention-revealing methods that protect
-  invariants; plain data carriers only at the boundaries.
-- Design against silent wrongness: make the mistake impossible, then loud, then documented.
-- Decide failure direction, idempotency and concurrency on purpose; keep what cannot be recovered
-  later.
-- Threat-model any new trust boundary (`security.md`).
-- Neither over- nor under-engineer — the entry-point test in `design.md` settles it.
+Read `references/design.md` for anything beyond a local change, and `references/security.md` for any
+new trust boundary.
 
 ## Implement
 
@@ -177,23 +170,11 @@ Read `references/design.md` for anything beyond a local change. In short:
 
 ## Verify
 
-Match the method to what the project supports, and state which you used — `references/testing.md`
-holds the method table, the four test lenses, and the Testcontainers rules.
-
-- **Pure logic**: a unit test — cheapest and permanent. Arithmetic, parsing, mapping, and any rule
-  that was hard to get right should end up with one; that is where a regression is both most likely
-  and least visible.
-- **Anything crossing an external dependency** — any tool or service outside the process: an
-  integration test with Testcontainers, running the real engine, the vendor's emulator, or a
-  containerized mock server — never an in-memory substitute.
-- **Behaviour-preserving change**: capture the current output first, change, re-run, and **diff**. A
-  rewrite that "looks equivalent" is worth nothing without the comparison.
-- **A significant flow**: challenged through four lenses — business rules, the technical solution,
-  performance, security — and tested for every other risk it carries: concurrency, idempotency,
-  resilience, data integrity, compatibility, or whatever else its requirements and design expose.
-- **Negative cases**: the invalid input, the absent value, the failure branch. A change verified only
-  on the happy path is verified for the case that was never in doubt.
-- **A test exists to fail**: see it fail first; never weaken one to make the change pass.
+Choose the method from `references/testing.md` — the method table, the four test lenses, the
+Testcontainers rules — and state which you used. Any rule that was hard to get right ends up with a
+unit test; anything crossing an external dependency runs it for real with Testcontainers; the negative
+case is tested, not only the happy path; and a test exists to fail — see it fail first, never weaken
+one to make the change pass.
 
 Then say plainly what you verified, what you could not, and what remains assumed. If you found a
 result that contradicts something you said earlier, lead with the correction.
@@ -215,9 +196,10 @@ cheap-to-reverse change needs none of what follows: the obvious design is usuall
 analysis only pulls attention off the task. A decision that is expensive to reverse, touches money,
 data or security, or that others will build on gets all of it:
 
-- **Research how current practice solves it** — across several kinds of source, never one vendor's
-  documentation or your memory alone — and synthesize. The best answer often combines strengths from
-  several sources.
+- **Research how current practice solves it** — across several kinds of source (vendor documentation,
+  standards, mature implementations in other ecosystems, issue trackers, package registries,
+  practitioner write-ups), never one vendor's documentation or your memory alone — and synthesize.
+  The best answer often combines strengths from several sources.
 - **Generate at least one real alternative**, and say why you would pick one over the other.
 - **Run a quick pre-mortem on anything risky**: assume it failed in production; what is the likeliest
   cause?

@@ -74,12 +74,10 @@ Bring the user a recommendation with reasons and real alternatives — researche
   access patterns, not by preference.
 - **Lifespan.** A tool used for one season and a system maintained for five years justify different
   structure.
-- **Support horizon and licences.** How long each pinned version is supported. Every component is free
-  and open-source unless the user names a commercial one.
+- **Support horizon and licences.** How long each pinned version is supported, and each licence.
 
-**Apply the standing defaults** from senior-engineering's `SKILL.md` — no commercial tools unless
-named; for .NET, the latest stable release and xUnit. They are the user's decisions already: record
-them in the stack ADRs rather than asking again, and ask only to deviate.
+**Apply the standing defaults** in senior-engineering's `SKILL.md` without asking — they are the user's
+decisions already. Ask only to deviate.
 
 Record each significant choice as an ADR (senior-engineering `decision-records.md`) with status
 `proposed`, and get the user's decision before writing the rest of this phase — the playbook and every

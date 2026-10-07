@@ -49,8 +49,7 @@ reasons; the user decides.
   Size is a property of the software, never of the people building it. Where the user has
   already stated the size, use it and record it as `answered`. Where a point is open, ask it in the first
   batch of questions. On the border, propose small and record it as `assumed` — growing out of it is
-  cheap by design (`small-track.md`), shrinking from standard is not. Size is not stakes either: a small
-  tool that moves money still gets full tests on its money rules and a security review.
+  cheap by design (`small-track.md`), shrinking from standard is not.
 - **The architecture shape — the lightest one the stated scale needs.** A monolith is the usual start.
   A modular monolith — one deployable whose modules own their data and talk through explicit
   interfaces — where the domain has clear boundaries and a later split is plausible: it keeps that split
@@ -74,8 +73,9 @@ growing from small to standard included — is a superseding ADR with the user's
 applies forward: merged files split when next touched or at the cap, accepted ADRs stay as written,
 and new practices start with the next change.
 
-No size changes senior-engineering's non-negotiables and standing defaults, the data-egress rules,
-Testcontainers for real dependencies, or tests on every rule that was hard to get right.
+**Size is not stakes.** Size removes documents and stops, never scrutiny: no size changes
+senior-engineering's rules, and a small tool that moves money still gets full tests on its money rules
+and a security review.
 
 ## AGENTS.md and CLAUDE.md
 
@@ -135,11 +135,11 @@ Summary: The living specification — what the system is, what it must do, how i
 - Reviewing: the plan step, the requirement files it cites, the tech files for the components it touches.
 
 ## Files
-| File | Holds | IDs | Status |
-|---|---|---|---|
-| docs/specs/glossary.md | every domain term, defined once | — | approved |
-| docs/specs/01-product/overview.md | summary, problem, value, primary goal | — | approved |
-| docs/specs/02-requirements/functional/booking.md | booking capability requirements | FR-010–FR-021 | approved |
+| File | Holds | IDs |
+|---|---|---|
+| docs/specs/glossary.md | every domain term, defined once | — |
+| docs/specs/01-product/overview.md | summary, problem, value, success, scale | — |
+| docs/specs/02-requirements/functional/booking.md | booking capability requirements | FR-010–FR-021 |
 ```
 
 List every file, one line each, with its path from the repository root. Collections — flows, rules,
@@ -151,19 +151,14 @@ aggregates — are listed file by file too, so any living document is two hops f
 **`docs/changes/README.md`**:
 
 ```markdown
-| Change | Title | Status | Opened | Closed | Folder |
-|---|---|---|---|---|---|
-| CH-001 | Initial build | in progress | YYYY-MM-DD | — | CH-001-initial-build/ |
+| Change | Title | Folder |
+|---|---|---|
+| CH-001 | Initial build | CH-001-initial-build/ |
 ```
 
-Statuses: proposed → approved → in progress → in review → merged → archived (or rejected).
+**`docs/adr/README.md`**: `| ADR | Title |`, one row each.
 
-**`docs/adr/README.md`**:
-
-```markdown
-| ADR | Title | Status | Date | Supersedes / superseded by |
-|---|---|---|---|---|
-```
+Statuses live in each change's `proposal.md` and each ADR's header, never in these indexes.
 
 ## Existing projects
 
