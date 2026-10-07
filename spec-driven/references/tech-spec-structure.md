@@ -76,8 +76,8 @@ Bring the user a recommendation with reasons and real alternatives — researche
   structure.
 - **Support horizon and licences.** How long each pinned version is supported, and each licence.
 
-**Apply the standing defaults** in senior-engineering's `SKILL.md` without asking — they are the user's
-decisions already. Ask only to deviate.
+**Apply the project's rules** from `AGENTS.md` — licences, version policy, tools — without asking
+again; they are the user's decisions already.
 
 Record each significant choice as an ADR (senior-engineering `decision-records.md`) with status
 `proposed`, and get the user's decision before writing the rest of this phase — the playbook and every

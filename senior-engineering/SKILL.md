@@ -81,23 +81,9 @@ and why.
 don't widen it because you spotted something adjacent. Flag what you left out and why; propose what
 you would add.
 
-**No git operations that change state, no migrations applied to a database, no deploys, and no
-destructive commands without an explicit yes** — even when they are the obvious next step, and even in
-a dev environment. The decision is about the action, not its blast radius. Reading history and diffs,
-writing a migration for review, and the schema a test suite creates in its own throwaway containers
-are not such actions.
-
-## Standing defaults
-
-The owner's decisions for every project, so they are applied, not re-asked. A project deviates only
-with the user's explicit yes, recorded in an ADR.
-
-- **No commercial tools or libraries** unless the user names one. Check the licence of the exact
-  version before adding anything — some widely used libraries moved to commercial terms in a new major
-  version. An existing project that already uses a commercial dependency keeps it; flag it.
-- **.NET: the latest stable release** — never a preview. For an existing project, a newer stable
-  release is an upgrade proposal.
-- **.NET tests: xUnit** is the test framework; other free libraries may sit alongside it.
+**The project's own rules bind.** Its `AGENTS.md` ("Rules for this project") and its ADRs set what is
+specific to it — `references/project-knowledge.md` lists what belongs there. Follow them exactly; where
+a project sets none on something risky or hard to undo, ask before doing it.
 
 ## The product pass
 
@@ -268,7 +254,6 @@ These thoughts mean stop:
 | "Tests would take longer than the fix" | True for the fix, false for the third regression. |
 | "The probe passed, so it's covered" | A probe verifies once; only a test verifies next month. |
 | "This project doesn't have tests" | Then say what replaces them, and whether that is enough. |
-| "It's just a dev database" | The rule is about the action, not the blast radius. |
 | "I'll mention the caveat at the end" | Caveats that change a decision go first. |
 
 ## Precedence

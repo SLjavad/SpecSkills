@@ -44,10 +44,9 @@ Summary: How the lead and coder agents build this project through files. Every a
 - **Coder** (<tool>): a separate session the user starts — never a subagent. Writes code, tests and
   reports. Never edits a document — specs, plans, steps, ADRs, registers, reviews, BOARD.md, AGENTS.md,
   docs/engineering/ — and lists the ones a change affects in its report, for the lead to update. One
-  coder by default; more only with disjoint files in scope, a separate working copy each, and nothing
-  merged without the user's yes.
-- Every agent also follows the engineering rules (see "Start of every session"): secrets, tests, git
-  and the rest are there, not repeated here.
+  coder by default; more only with disjoint files in scope and a separate working copy each.
+- Every agent also follows the engineering rules and AGENTS.md's project rules (see "Start of every
+  session"); they are not repeated here.
 
 ## Files
 - Instructions: the plan step, docs/changes/CH-NNN-<slug>/plan/steps/S-NN-<slug>.md.

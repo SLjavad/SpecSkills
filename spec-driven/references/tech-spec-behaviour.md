@@ -155,8 +155,7 @@ is crossed, rather than aiming at coverage.
 - **Integration infrastructure**: every external dependency and the container that stands in for it —
   the real engine, the vendor's emulator or a mock server — pinned to the production versions; the reset
   strategy between tests; and what CI needs to run the containers.
-- **Test framework and tools**: the standing defaults' framework plus the libraries chosen for the
-  other kinds of test.
+- **Test framework and tools**: the framework, and the libraries chosen for the other kinds of test.
 - **Mutation testing**: which modules, which tool, the break threshold, and when it runs.
 - **Which requirement ids are covered by a test**, and which rely on a probe, a structural check or
   nothing — this is each requirement's `Verification` field, and the strategy has to agree with it.

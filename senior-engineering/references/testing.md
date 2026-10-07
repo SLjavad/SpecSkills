@@ -199,9 +199,8 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
 
 ## Tools
 
-- **The standing defaults apply** (`SKILL.md`) — for .NET, xUnit — with other free libraries alongside
-  where they help: Testcontainers modules, assertion, mocking, property-based, mutation and
-  benchmarking tools.
+- **The project's test framework**, chosen in its stack ADR, with other libraries alongside where they
+  help: Testcontainers modules, assertion, mocking, property-based, mutation and benchmarking tools.
 - The project's stack playbook names the maintained tool for each kind, for every stack. Examples of
   the kinds, not a closed list: mutation (Stryker, PIT), property-based (FsCheck, jqwik, fast-check,
   Hypothesis), architecture tests (ArchUnitNET, ArchUnit, dependency-cruiser), load (k6, Gatling,

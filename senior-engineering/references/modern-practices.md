@@ -27,8 +27,7 @@ its end of support.
    configured, the official documentation site otherwise. Confirm the minimum version on the API page.
 2. **Before recommending or adding a library or tool**, check its registry page: latest version and
    date, maintenance activity, deprecation, licence of that exact version, supported runtimes, and known
-   vulnerabilities, against the standing defaults (`SKILL.md`). Adding a dependency is a proposal the
-   user approves.
+   vulnerabilities, against the project's rules. Adding a dependency is a proposal the user approves.
 3. **Before an upgrade**, read the breaking-changes pages for every component that moves.
 4. **Keep analyzers and linters at a pinned level** and raise it deliberately; treat their warnings
    about outdated or slow patterns as findings.
@@ -52,9 +51,6 @@ something to say in: a small project's playbook is often a page, and none passes
 # <Stack> playbook
 Status: current · Last verified: YYYY-MM-DD · Pinned by: ADR-NNNN
 Summary: How <project> writes <stack>: versions, idioms, performance practice, what not to use.
-
-## Deviations from the standing defaults
-Each with its ADR — usually none.
 
 ## Versions and support
 | Component | Pinned | Support ends | Source |

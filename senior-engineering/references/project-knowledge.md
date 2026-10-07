@@ -118,8 +118,10 @@ Agents with the senior-engineering and spec-driven skills installed: use them.
 Every other agent: read docs/engineering/principles.md before changing anything.
 ```
 
-The baseline rules — asking, proposals, data egress, tests, standing defaults, git — live in the
-skills, or in `principles.md` for agents without them; `AGENTS.md` does not repeat them.
+The baseline — asking, proposals, data egress, tests and the rest — lives in the skills, or in
+`principles.md` for agents without them; `AGENTS.md` does not repeat it. "Rules for this project" is
+where the project's own rules go: what agents may do in git or against a database, which licences are
+allowed, the runtime and test-framework choices, and any convention a reader cannot derive.
 
 Add each line when its target exists — no links to files nobody has written, and no `Commands` section
 until the commands exist.
@@ -163,10 +165,8 @@ Summary: The rules every agent follows on this project, whatever tool it runs in
 
 ## Non-negotiables            ask instead of guessing; no silent behaviour change; propose, never
                               smuggle; security is correctness; confidential data never goes to remote
-                              tools; check the pinned versions; evidence before assertions; git and
-                              migration rules; risk lists are a floor, not a fence
-## Standing defaults           no commercial tools unless named; the stack's version and test-framework
-                              defaults (for .NET: latest stable release, xUnit)
+                              tools; check the pinned versions; evidence before assertions; the
+                              project's own rules bind; risk lists are a floor, not a fence
 ## Design                      dependency rule; SOLID, DRY and KISS/YAGNI only, the simpler design
                               winning; over-engineering counts as a defect; rich domain
                               entities and what stays plain; failure design; the architecture tests
