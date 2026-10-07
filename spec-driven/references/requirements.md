@@ -227,16 +227,9 @@ for the items it adds or modifies in its own delta file, and merges those rows h
 | NFR-003 | p95 ≤ 300 ms @ 50 rps | Must | docs/specs/03-tech/performance.md | search query, index IX_… | CH-001/S-09 |
 ```
 
-The plan-step cell is the link to everything after planning: the step's status in its plan's progress
-table, its result, and — by the `CH-` prefix — the change that implemented it. It holds one of:
-
-- `CH-NNN/S-NN` — the step that implements it;
-- `YYYY-MM-DD-<slug>` — the small change that last implemented it: its task id in multi-agent mode,
-  the same form otherwise;
-- `existing` — code that predates the specs implements it (`setup.md`, "Existing projects");
-- `— (retired)` — a retired requirement, so the coverage check skips it;
-- empty — not implemented yet. The reason, if known, is the requirement's *Known defect* or a `Q-` id
-  on the requirement, never a copy in this cell.
+The plan-step cell links to everything after planning — the step's status, its result, and by its id
+the change that built it. It holds the step id (`CH-NNN/S-NN`, or a small change's
+`YYYY-MM-DD-<slug>`), `existing` for code that predates the specs, `retired`, or nothing yet.
 
 What the matrix is *for* — read it, do not just maintain it:
 

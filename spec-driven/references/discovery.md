@@ -102,23 +102,8 @@ names, code or identifiers (senior-engineering `security.md`).
 
 `docs/discovery/proposals.md` holds every idea that goes beyond the approved scope — a product
 improvement, a creative alternative, an optimization, a refactor, a new dependency, a better process —
-from any agent, at any phase.
-
-```markdown
-### P-007 — <title>
-Status: idea | proposed | accepted | rejected | deferred | withdrawn | implemented | superseded
-Raised: YYYY-MM-DD by <agent/role> · Type: product | architecture | optimization | refactor | dependency | process
-Problem and evidence: <…>
-Proposal: <…> · Alternatives: <…, including doing nothing>
-Benefit: <…> · Cost: <…> · Risk: <…> · Reversibility: <…> · Confidence: <…>
-Spec impact: <the documents, requirements and ADRs that would change>
-Decision: <accepted | rejected | deferred> — by the user, YYYY-MM-DD — <reason>
-Implemented through: <FR-/ADR-/CH-> · Revisit when: <…>
-```
-
-An optimization or refactor adds three lines: **Where** (file and symbol) and **Found by** (the review
-lens), and **Verification** — the equivalence tests, the before-and-after measurement, and how to roll
-back. Its evidence is a measurement or an estimate at a stated data size, never a hunch.
+from any agent, at any phase. Each entry, `### P-NNN — <title>`, uses the one proposal format in
+senior-engineering's `references/review.md` ("Improvements are proposals").
 
 - **`idea`** is noted but not yet worked up; it becomes `proposed` once its fields are filled in.
 - **Hard rule: nothing in this register is built until the user accepts it.** An accepted proposal

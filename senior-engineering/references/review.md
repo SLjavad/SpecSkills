@@ -141,17 +141,17 @@ Anything beyond fixing a defect — an optimization, a refactor, an upgrade, a b
 ### P-NNN — <title>
 Status: idea | proposed | accepted | rejected | deferred | withdrawn | implemented | superseded
 Raised: YYYY-MM-DD by <agent/role> · Type: product | architecture | optimization | refactor | dependency | process
-Where: <file / symbol> · Found by: <lens>
+Where: <file / symbol> · Found by: <lens>   (optimization or refactor only)
 Problem and evidence: <measurement or estimate; data size; environment; tool; the cause>
 Proposal: <the minimal change> · Alternatives: <…, including doing nothing>
 Benefit: <metric and target> · Cost: <…> · Risk: <behaviour or API change, memory against CPU, concurrency>
 Reversibility: <…> · Confidence: <…>
 Spec impact: <the documents, requirements and ADRs that would change>
-Verification: <equivalence tests; before/after benchmark or profile; how to roll back>
+Verification: <equivalence tests; before/after measurement; how to roll back>   (optimization or refactor only)
 Decision: <accepted | rejected | deferred> — by the user, YYYY-MM-DD — <reason>
 Implemented through: <FR-/ADR-/CH-> · Revisit when: <…>
 ```
 
-This is the proposal register's format (spec-driven `discovery.md`) with the three optimization lines
-added. In a spec-driven project the proposal goes into `docs/discovery/proposals.md`; elsewhere, into
-the report.
+This is the one proposal format, for every kind of proposal. An optimization's evidence is a
+measurement or an estimate at a stated data size, never a hunch. In a spec-driven project the proposal
+goes into the register, `docs/discovery/proposals.md`; elsewhere, into the report.

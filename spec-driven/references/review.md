@@ -8,24 +8,14 @@ written to work from the artifacts alone: the living specs, the change folder, a
 the reviewer remembers the conversation, and never assume the fixer does either. A reviewer with no
 memory of writing the code catches more than one that has; if the user has a choice, prefer that one.
 In multi-agent mode it runs in the lead role, and its blocking findings reach the coder as a fix step
-(`multi-agent.md`, "Ending the loop").
+(`multi-agent.md`, the protocol's "Rounds and findings").
 
-Write findings to `docs/changes/CH-NNN-<slug>/reviews/R-NN/`: a `README.md` summary, plus one file per
-group of lenses that produced findings:
-
-| File | Lenses |
-|---|---|
-| `conformance.md` | requirement-gap, conformance, unverified, spec-defect |
-| `correctness.md` | correctness, silent-risk, failure-path |
-| `design.md` | design, domain, dependency, readability, leftover |
-| `performance.md` | performance |
-| `security.md` | security |
-| `tests.md` | verification |
-
-A small review keeps everything in `README.md`, and so does any lens added for the change
-(`other: <name>`). **A review with no findings writes no files**: one line on the change's status in
-`proposal.md` records the date and what was checked. In multi-agent mode a task gets a review file only
-when its coder must act (`handoff-templates.md`); this phase reviews the whole change before it closes.
+Write the review to one file, `docs/changes/CH-NNN-<slug>/reviews/R-NN.md`: a short summary first —
+counts by severity, blockers by name, what was checked — then the findings, grouped by lens. Only past
+the 300-line cap does it split into `reviews/R-NN/`, by lens group, with the summary in `README.md`.
+**A review with no findings writes no file**: one line on the change's status in `proposal.md` records
+the date and what was checked. A task's review in multi-agent mode uses the same finding format, and is
+written only when its coder must act; this phase reviews the whole change before it closes.
 
 ## Contents
 - What to review against
@@ -87,7 +77,7 @@ operability, compatibility with existing clients.
 
 ## Finding format
 
-Every finding, in the file:
+The one format for every finding — in this phase's review and in a multi-agent task's review alike:
 
 ```markdown
 ### F-NN — <short title>
@@ -95,7 +85,7 @@ Severity: blocker | major | minor | note · Blocking: yes | no · Introduced by 
 Lens: requirement-gap | conformance | correctness | unverified | design | domain | dependency |
       performance | security | silent-risk | failure-path | verification | readability | leftover |
       spec-defect | other: <name>
-Requirement: <FR/NFR id, where the finding is against one>
+Against: <the AC, FR/NFR or ADR id, where the finding is against one>
 Location: <path>:<line>  (or the spec file and id, for a spec defect)
 Status: open | fixed | rejected | deferred
 

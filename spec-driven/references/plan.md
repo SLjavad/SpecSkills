@@ -152,11 +152,10 @@ Work deliberately out of this plan, and why.
 The plan is a working document, not a snapshot.
 
 - **Status lives in one place: the progress table's Status column.** One agent: `planned`,
-  `in progress`, `blocked`, `done YYYY-MM-DD` or `superseded by S-NN`. Multi-agent: only the values
-  the lead writes, in `multi-agent.md` ("Whose turn is it"); a coder at work or blocked shows in its
-  report, never here. Update it as each step moves. An implementer resuming after a break —
-  or a different agent picking it up — sees where things stand from that table alone, without the code
-  or the chat.
+  `in progress`, `blocked`, `done YYYY-MM-DD` or `superseded by S-NN`. Multi-agent: the values in
+  the protocol's "Step status" (`multi-agent.md`). Update it as each step moves. An implementer
+  resuming after a break — or a different agent picking it up — sees where things stand from that
+  table alone, without the code or the chat.
 - **Record the result once.** One agent: in the step's *Result* — what ran and what it showed, not just
   that it ran. Multi-agent: in the coder's report, which the lead's `done` cell confirms. The
   traceability matrix and the progress table never copy it.

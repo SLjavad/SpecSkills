@@ -24,7 +24,7 @@ docs/changes/README.md     changes in flight, and archived
 docs/adr/README.md         index of decisions
 docs/discovery/            understanding, gray-area register, proposal register
 docs/engineering/README.md index of stack playbooks, area records (areas/), principles
-docs/handoff/              multi-agent protocol, board and templates (only when used)
+docs/handoff/              multi-agent protocol and board (only when used)
 ```
 
 Every living document is reachable from `AGENTS.md` in two hops: `AGENTS.md` → an index → the file.

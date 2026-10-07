@@ -105,7 +105,7 @@ Read the files for the current phase, not all of them.
 | 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../senior-engineering/references/decision-records.md` for ADRs; `../senior-engineering/references/modern-practices.md` for the stack playbook |
 | 4 — Plan | `references/plan.md` |
 | A later change, any phase | `references/changes.md`, with that phase's file |
-| Multi-agent work | `references/multi-agent.md`, `references/handoff-templates.md` |
+| Multi-agent work | `references/multi-agent.md` |
 | 5 — Implementation | the plan step and the files it lists, plus `senior-engineering` |
 | 6 — Review | `references/review.md`, `../senior-engineering/references/review.md`, `../senior-engineering/references/security.md`, `../senior-engineering/references/testing.md` |
 | 7 — Close | `references/changes.md` |

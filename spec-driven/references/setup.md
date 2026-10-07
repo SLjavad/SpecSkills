@@ -27,10 +27,8 @@ Ask once, early, with real options:
 - **Another split the user prefers** — a separate reviewer, several coders. Map it onto the same roles
   and files.
 
-Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, read `multi-agent.md` and,
-before phase 1, set up `docs/handoff/` from `handoff-templates.md` — protocol, board and
-templates, including the handoff prompts — and, when any agent works without these skills installed,
-`docs/engineering/principles.md` (senior-engineering `project-knowledge.md`).
+Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, before phase 1, set up
+`docs/handoff/` as `multi-agent.md` describes — the protocol and the board.
 
 ## Decide the size and the architecture, with the user
 
@@ -109,7 +107,7 @@ docs/
     questions.md          gray-area register (Q-)
     proposals.md          proposal register (P-)
   engineering/            README.md index; stack playbooks, areas/ records, principles
-  handoff/                multi-agent only: PROTOCOL.md, BOARD.md, templates/
+  handoff/                multi-agent only: PROTOCOL.md, BOARD.md
 ```
 
 Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/` and `docs/adr/` (for the
@@ -177,9 +175,8 @@ Its architecture is the one that exists: record its size, shape and style as the
 choosing again; changing it is a proposal, like any other. The living specs for the area describe the
 system as it is, and the first change writes deltas against them, like any later change.
 
-A requirement the existing code already meets has `existing` in its matrix row's Plan step cell; one it
-does not meet stays empty there and records how it fails as a *Known defect* on the requirement
-(`requirements.md`). Without that marker, every backfilled requirement reads as unimplemented.
+A requirement the code already meets is marked `existing` in the matrix; one it fails gets a *Known
+defect* (`requirements.md`).
 
 ## Then stop
 
