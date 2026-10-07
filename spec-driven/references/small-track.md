@@ -61,6 +61,7 @@ docs/specs/tech.md                    stack, architecture, domain and data, cont
 docs/changes/CH-001-initial-build.md  the plan, then the review
 docs/adr/                             README.md and the ADRs, short form
 docs/discovery/questions.md, proposals.md     each created with its first entry
+docs/engineering/principles.md        the baseline for agents without these skills
 ```
 
 - **`AGENTS.md` links these files directly**, so there is no specs manifest or changes index while the

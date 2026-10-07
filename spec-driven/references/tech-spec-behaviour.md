@@ -148,22 +148,9 @@ one line — `not applicable — <reason>`. A contract test with no outside prov
 with one module, or a load test with no performance requirement behind it protects nothing. Mutation and
 architecture tests stay the default wherever there is a core or a boundary for them to guard.
 
-What each level is actually for:
-
-- **Unit** — pure logic in isolation: fast, deterministic, no database, network or clock. The mandated
-  class lives here, and the Step 8 worked examples become its test data directly.
-- **Integration** — the real path through every external dependency, on Testcontainers: the real
-  engine, the vendor's emulator, or a containerized mock server. Slower, so choose the paths where money
-  moves, data is written or a dependency is crossed, rather than aiming at coverage.
-- **Contract** — that an external service still returns the shape you mapped. Worth its cost the moment
-  a provider can change independently of your release, because that drift is silent: a field added
-  upstream compiles fine and arrives unconverted.
-- **Characterization** — locks in current behaviour before a refactor, so the diff proves equivalence.
-- **Property-based** — for invariants rather than examples: a round-trip that must return its input, a
-  sum that must equal its parts. One property replaces a table of cases and finds the input you would
-  not have thought of.
-- **Mutation** — proves the unit and integration tests on the core can fail when the code is wrong.
-- **Smoke** — the deployed thing answers and its dependencies resolve.
+What each level proves is in senior-engineering's `testing.md`. The Step 8 worked examples become the
+unit tests' data directly, and integration tests go where money moves, data is written or a dependency
+is crossed, rather than aiming at coverage.
 
 - **Integration infrastructure**: every external dependency and the container that stands in for it —
   the real engine, the vendor's emulator or a mock server — pinned to the production versions; the reset

@@ -103,8 +103,8 @@ parallel changes cannot collide. An id is never reused, not even from a rejected
 
 This is phase 7, and it runs in this order — never before the review:
 
-1. Every step is done, the change's review (phase 6) is closed, and the user has accepted the
-   change.
+1. Every step is done or superseded, the change's review (phase 6) is closed, and the user has
+   accepted the change.
 2. Apply each delta to the living specs: ADDED items go where their topic lives; MODIFIED items replace
    the original; REMOVED items stay with status `retired` and the reason; RENAMED items are updated
    everywhere — search for the old name.

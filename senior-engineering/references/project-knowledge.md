@@ -151,9 +151,10 @@ reliable — it may never open the file. On Windows, use the import, not a symli
 
 ## Engineering principles for agents without these skills
 
-When an agent without these skills installed works on the project — in any tool, on any machine —
-write `docs/engineering/principles.md`, under 200 lines, distilled from senior-engineering for this
-project. Record the date and the skill it came from, and refresh it when the skill changes.
+At setup, write `docs/engineering/principles.md`, under 200 lines, distilled from senior-engineering
+for this project — the one home of the baseline for any agent without these skills, in any tool, on
+any machine, since `AGENTS.md` does not repeat it. Record the date and the skill it came from, and
+refresh it when the skill changes.
 
 ```markdown
 # Engineering principles

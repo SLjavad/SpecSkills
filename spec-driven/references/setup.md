@@ -79,7 +79,8 @@ and a security review.
 
 ## AGENTS.md and CLAUDE.md
 
-Create or update both from the templates in senior-engineering's `references/project-knowledge.md`.
+Create or update both from the templates in senior-engineering's `references/project-knowledge.md`,
+and write `docs/engineering/principles.md` from the same file, for any agent without these skills.
 
 - **An existing `AGENTS.md`** is updated, not replaced; show the user the diff.
 - **Instruction files for other tools** (`.cursorrules`, Copilot instructions and the like): fold their
@@ -110,8 +111,9 @@ docs/
   handoff/                multi-agent only: PROTOCOL.md, BOARD.md
 ```
 
-Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/` and `docs/adr/` (for the
-architecture ADR) now; create each other folder when its phase starts, never as empty placeholders.
+Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/`, `docs/adr/` (for the
+architecture ADR) and `docs/engineering/` (its index and `principles.md`) now; create each other folder
+when its phase starts, never as empty placeholders.
 Under the small track the layout is the one in `small-track.md`.
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly

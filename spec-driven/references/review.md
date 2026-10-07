@@ -43,32 +43,19 @@ Then, in order:
    actually met is worse than one still open.
 2. **Spec conformance.** Does what was built match the files it claims to implement? Are all the
    inventory's components present, with the responsibilities described?
-3. **Correctness.** The rules and algorithms against their worked examples. The edge cases the spec
-   listed. Off-by-one, rounding direction, null handling, ordering, tie-breaks.
-4. **Requirement verification, FR and NFR** — see below. The part most often skipped, and the part where
+3. **Requirement verification, FR and NFR** — see below. The part most often skipped, and the part where
    a confident "verified" is most often unearned.
-5. **Design, domain and dependencies** — senior-engineering's `review.md`: the project's declared
-   principles first, then SOLID, DRY and KISS/YAGNI, with over-engineering a finding too; the rich
-   domain model; dependencies in the code and in the packages. Architecture tests present and passing
-   where an ADR names them.
-6. **Algorithms and efficiency** — the same file: complexity at the spec's stated scale, data access,
-   allocation, blocking, contention. Every finding carries evidence.
-7. **Security — always.** senior-engineering's `security.md` audit, against the diff and against the
-   tech spec's threat model: is every mitigation implemented and tested; did the change add a trust
-   boundary or data class the model does not know about?
-8. **Silent-wrongness risk.** For each change: if this were exactly backwards, what would tell us?
-   Anything where the answer is "nothing" is a finding regardless of whether it is currently correct.
-9. **Failure paths.** Every step of every flow — is the failure behaviour the spec specified actually
+4. **Failure paths.** Every step of every flow — is the failure behaviour the spec specified actually
    implemented, or only the happy path? Every FR's stated failure behaviour, too.
-10. **Verification gaps and test quality** — senior-engineering's `testing.md`. Steps marked verified
-    whose verification does not prove what it claims. A lens, or a risk the flow carries, missing on a
-    significant flow. Integration tests against substitutes instead of a real or emulated dependency. Tests that assert nothing, mirror
-    the implementation, cannot fail, or were weakened. Surviving mutants on the core.
-11. **Readability and balance.** Over-fragmentation and over-coupling both — the entry-point test from
-    senior-engineering's `design.md`.
-12. **Leftovers.** Debug output, commented-out code, `TODO`s, scaffolding, unused imports, dead
-    abstractions with no caller.
-13. **The documents tell the truth.** The change deltas, ADRs and area records match the code, so the
+5. **Silent-wrongness risk** — `design.md`'s question for each change: if this were exactly backwards,
+   what would tell us? "Nothing" is a finding, whether or not the code is currently correct.
+6. **The threat model.** Every mitigation implemented and tested; no trust boundary or data class the
+   model does not know about.
+7. **Every code-quality lens in senior-engineering's `review.md`** — correctness against the spec's
+   worked examples and edge cases, design, domain, dependencies, efficiency at the spec's stated scale,
+   the security audit (always), tests, readability and leftovers — plus the architecture tests an ADR
+   names.
+8. **The documents tell the truth.** The change deltas, ADRs and area records match the code, so the
     merge at close (`changes.md`) will leave the living specs correct. A mismatch is a `spec-defect`
     finding, or `conformance` where the code is what is wrong.
 
@@ -150,9 +137,10 @@ The point of recording feedback is that the correction is not needed a second ti
 - Every fix has been verified against the finding that prompted it.
 - Every `Must` requirement has been checked against its acceptance criteria, not just against its step
   being `done`.
-- Every requirement — FR and NFR — has a verification outcome recorded: the test that ran, the probe
-  result and what it ran against, an explicit "mechanism checked, outcome not measured", or an explicit
-  "not verified, needs X". No blanks.
+- Every requirement — FR and NFR — has its verification outcome recorded once, in its step's result
+  (one agent) or report (multi-agent): the test that ran, the probe result and what it ran against, an
+  explicit "mechanism checked, outcome not measured", or an explicit "not verified, needs X". No blanks;
+  where one falls short, the gap is a finding here.
 - The security lens ran and its critical and high findings are closed.
 - Every spec defect is amended in the spec, not just in the code.
 - Anything deliberate that looked wrong is recorded where the next reader will find it.

@@ -19,9 +19,9 @@ At setup (`setup.md`) the lead writes two files into the project, adjusted to it
   first, so a coder in any tool, with or without these skills, finds everything inside the project.
 - **`docs/handoff/BOARD.md`** — the active work and the user's inbox.
 
-When the coder works without these skills, the lead also writes `docs/engineering/principles.md`
-(senior-engineering `project-knowledge.md`); a tool that does not read `AGENTS.md` gets a shim. Plain
-Markdown, paths from the repository root, no tool-specific syntax.
+A coder without these skills follows `docs/engineering/principles.md`, written at setup; a tool that
+does not read `AGENTS.md` gets a shim. Plain Markdown, paths from the repository root, no tool-specific
+syntax.
 
 The coder's instructions are the plan step itself (`plan.md`). A small change has no plan: its task
 folder holds a `step.md` written from the same template, with a `Status:` line.
@@ -55,13 +55,15 @@ Summary: How the lead and coder agents build this project through files. Every a
   review-01.md only when the coder must act, report-02.md, …
 - A small change: docs/handoff/tasks/YYYY-MM-DD-<slug>/, with its step.md and the same files.
 - One writer per file. Once submitted, a file is frozen — a correction is a new file. The file's
-  writer still updates its status line, and the user may fill in decision fields anywhere.
+  writer still updates its status fields — a finding's Status and Outcome included — and the user may
+  fill in decision fields anywhere.
 
 ## Step status
 In the plan's progress table — for a small change, its step.md. Only the lead writes it: planned |
 ready | escalated | done YYYY-MM-DD | superseded by S-NN. `done` means the lead re-ran the
-verification and it passed; a check only the user can run waits on the board until it does. A coder
-at work or blocked shows in its report, not here.
+verification and it passed. A check only the user can run keeps the step `ready` and goes under
+"Waiting on the user" on the board until it passes. A coder at work or blocked shows in its report,
+not here.
 
 ## Start of every session
 - Lead: BOARD.md, then the active progress table or small change's step.md, then the task folder whose
@@ -73,7 +75,8 @@ at work or blocked shows in its report, not here.
 ## Whose turn — read from the task folder; the status may lag a report just submitted
 - step `ready`, no report → coder
 - latest report `in progress` → coder
-- latest report `submitted`, no review for it, step still `ready` → lead
+- latest report `submitted`, no review for it, step still `ready` → lead — or the user, while a check
+  of theirs for this step waits on the board
 - latest report `blocked` → lead, or the user if the question needs them
 - latest review `changes-requested` or `answered` → coder
 - step `done` → finished · step `escalated` → the user
@@ -168,7 +171,7 @@ Status: in progress | submitted | blocked · Tool and model: <…> · Base: <com
 ~~~markdown
 # Review <step id> — round N
 Verdict: changes-requested | answered · Reviewed: <commit> · Verification re-run: <commands and result>
-## Findings — in the finding format of spec-driven references/review.md
+## Findings — in the finding format of senior-engineering references/review.md ("Writing findings")
 ## Closed from earlier rounds — each with its outcome
 ## Deferred — where each one went
 ## Answers to the report's questions
