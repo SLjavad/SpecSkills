@@ -31,11 +31,11 @@ one coherent slice of work.
 |---|---|---|
 | **User** | `PROTOCOL.md`; starts every session and carries each handoff prompt; decides every question, proposal and ADR outside the approved spec; approves gates; accepts each change | — |
 | **Lead** — product manager, tech lead, architect, reviewer | `AGENTS.md` and `CLAUDE.md` (the user approves changes), specs and change deltas, plans and their progress table, ADRs (as proposed), `docs/discovery/` (the understanding and the registers), `docs/engineering/`, `docs/handoff/templates/`, `BOARD.md`, reviews | edits production code or tests; launches an agent to write them |
-| **Coder** — a separate session the user starts, in any tool | code, tests, reports | runs as a subagent of the lead; edits any document — specs, plans, ADRs, registers, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
+| **Coder** — a separate session the user starts, in any tool | code, tests, reports | runs as a subagent of the lead; edits any document — specs, plans, steps, ADRs, registers, reviews, the board, `AGENTS.md`, `docs/engineering/`; deletes or weakens a test to make work pass |
 
 **One writer per file.** Once a file is submitted its content is frozen; a correction is a new file —
-the next report round, a new task folder — never an edit to someone else's. Two exceptions: the owner
-keeps updating the file's status line as the work moves, and the user may fill in decision fields in
+the next report round, a new task folder — never an edit to someone else's. Two exceptions: the file's
+writer keeps updating its status line as the work moves, and the user may fill in decision fields in
 any file. The lead records a decision the user gave in the lead's session (see below).
 
 **The coder never edits a document, so it lists the docs a change affects** in its report; the lead
@@ -90,11 +90,24 @@ the project as `docs/handoff/templates/step.md`.
 
 ## Whose turn is it
 
-Computed from the files, never from memory:
+**A step's status** is in its plan's progress table — for a small change, in its `step.md`'s `Status:`
+line. The lead alone writes it, and only these values:
+
+- `planned`, `ready`, `escalated`, `superseded by S-NN`;
+- `done YYYY-MM-DD, re-run pass` — with `at <short commit>` after the date when the approved work was
+  already committed;
+- `done YYYY-MM-DD, re-run pass except <check> — waiting on the user` — when part of the verification
+  only the user can run, such as a manual check in their environment. The open check goes under
+  "Waiting on the user". When it passes, the lead drops the `except` part; when it fails, that is a
+  finding, and the lead writes a `changes-requested` review and sets the step back to `ready`.
+
+A coder at work or blocked shows in its report, never in the status.
+
+The turn is computed from the files, never from memory:
 
 | State | Turn |
 |---|---|
-| step `ready` in the progress table, no report yet | coder |
+| step `ready`, no report yet | coder |
 | latest report `in progress` | coder — still working |
 | latest report `submitted`, no review for that round, step still `ready` | lead |
 | latest report `blocked` | lead — or the user, if the question needs them |
@@ -136,11 +149,15 @@ background agent or workflow to write code, and does not offer to; it hands over
    `testing.md`, at the scale of the task.
 3. **Writes a review file only when the coder must act**: `changes-requested` (blocking findings only)
    or `answered`. On approval there is no review file, and the result is not copied anywhere: the
-   report holds the evidence, and the lead writes one cell — the step's status, `done YYYY-MM-DD,
-   re-run pass` — then records any non-blocking finding as item 2 of "Ending the loop" says. An
-   escalation is no file either: the step is marked `escalated` and the board says why. The lead
-   updates the docs the report lists as affected, and for another round gives the user the handoff
-   prompt for the coder.
+   report holds the evidence, and the lead writes one status, `done …` (see "Whose turn is it"), then
+   records any non-blocking finding as item 2 of "Ending the loop" says. An escalation is no file
+   either: the step is marked `escalated` and the board says why. The user's decision is recorded where
+   it acts — the next review, or the plan amendment or the superseding step's *Notes* — quoting the
+   escalation's reason and the decision, since the board drops the line once decided. The lead updates
+   the docs the report lists as affected, and for another round gives the user the handoff prompt for
+   the coder.
+4. **When the work is committed** — with the user's yes — the commit message names the step id
+   (`CH-007/S-02`, or a small change's task id). That ties the approval to the code in git itself.
 
 **The coder**
 1. Reads the step its handoff prompt names, and the files it links — nothing more by default.

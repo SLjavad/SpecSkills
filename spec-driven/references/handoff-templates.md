@@ -7,9 +7,8 @@ The files of the multi-agent loop. At setup, write into the project, adjusted to
   file of that kind in a task folder, and the handoff prompts.
 
 The coder's instructions are the plan step itself; there is no brief. `templates/step.md` is
-`plan.md`'s step template written out in full, with a second line for a small change, whose step.md
-has no progress table to hold its status:
-`Status: planned | ready | escalated | done YYYY-MM-DD, re-run pass | superseded by …`.
+`plan.md`'s step template written out in full, with a second line, `Status:`, for a small change,
+whose step.md has no progress table to hold it — the values in PROTOCOL's "Step status".
 `PROTOCOL.md` links the templates, so an agent in any tool finds every rule and format inside the
 project. Plain Markdown, no tool-specific syntax, and every path written from the repository root.
 
@@ -30,11 +29,12 @@ this first.
 
 ## Roles
 - **Lead** (<tool>): product manager, tech lead, architect, reviewer. Writes the specs, ADRs (as
-  proposed), docs/discovery/, plans and their progress table, reviews, BOARD.md, docs/engineering/ and
-  docs/handoff/templates/, and updates the docs a change affects. Never edits production code or tests.
-- **Coder** (<tool>): implements plan steps; writes code, tests and reports. Never edits any document —
-  specs, plans, ADRs, registers, reviews, BOARD.md, AGENTS.md, docs/engineering/ — and lists the ones a
-  change affects in its report.
+  proposed), docs/discovery/, plans and their progress table, steps (a small change's step.md too),
+  reviews, BOARD.md, docs/engineering/ and docs/handoff/templates/, and updates the docs a change
+  affects. Never edits production code or tests.
+- **Coder** (<tool>): implements steps; writes code, tests and reports. Never edits any document —
+  specs, plans, steps, ADRs, registers, reviews, BOARD.md, AGENTS.md, docs/engineering/ — and lists the
+  ones a change affects in its report.
 - **User**: owns this file, starts every session and carries each handoff prompt, decides everything
   outside the approved spec, accepts each change.
 
@@ -44,15 +44,27 @@ session (docs/handoff/templates/prompts.md). The coder is always a separate sess
 never a subagent, background agent or workflow launched by the lead.
 
 ## Start of every session in the implementation loop (phase 5 on)
-- Lead: docs/handoff/BOARD.md, then the active change's progress table (its plan/README.md), then the
-  task folder whose turn it is. The task folder, not the table, decides the turn — the table may lag
-  behind a report that was just submitted.
-- Coder: the plan step the handoff prompt names.
+- Lead: docs/handoff/BOARD.md, then the active change's progress table (its plan/README.md) or the
+  small change's step.md, then the task folder whose turn it is. The task folder, not the status,
+  decides the turn — the status may lag behind a report that was just submitted.
+- Coder: the step the handoff prompt names.
 - Both: the files the step links, the engineering rules (<the senior-engineering skill |
   docs/engineering/principles.md>) and the stack playbook (docs/engineering/stack-<name>.md).
 
+## Step status
+A step's status is in its plan's progress table — for a small change, in its step.md's Status line.
+Only the lead writes it, and only these values:
+- `planned`, `ready`, `escalated`, `superseded by S-NN`;
+- `done YYYY-MM-DD, re-run pass`, with `at <short commit>` after the date if the work was already
+  committed;
+- `done YYYY-MM-DD, re-run pass except <check> — waiting on the user`, when part of the verification
+  only the user can run; the check is listed under "Waiting on the user". When it passes, the lead
+  drops the `except` part; when it fails, the lead writes a `changes-requested` review and sets the
+  step back to `ready`.
+A coder at work or blocked shows in its report, never in the status.
+
 ## Whose turn
-- step `ready` in the progress table, no report → coder
+- step `ready`, no report → coder
 - report `in progress` → coder, still working
 - report `submitted`, no review for that round, step still `ready` → lead
 - report `blocked` → lead, or the user if the question needs them
@@ -67,7 +79,8 @@ docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/ — or docs/handoff/tasks/YYYY-MM-
 change, holding its own step.md — with report-01.md, a review-01.md only when the coder must act, then
 report-02.md, … Formats: docs/handoff/templates/step.md, report.md and review.md.
 One writer per file. Once submitted, a file's content is frozen — a correction is a new file. Two
-exceptions: the owner still updates its status line, and the user may fill in decision fields anywhere.
+exceptions: the file's writer still updates its status line, and the user may fill in decision fields
+anywhere.
 
 ## The lead decides only what the approved spec already answers
 New ideas, ADR acceptance, new or upgraded dependencies, changes to scope, requirements, acceptance
@@ -90,9 +103,11 @@ criteria, contracts or schemas, and security-posture changes wait for the user.
 - The coder lists the docs a change affects in its report; the lead updates them.
 - The lead re-runs the verification commands before approving.
 - Each fact is written once. The report holds the evidence; on approval the lead writes only the step's
-  status cell, `done YYYY-MM-DD, re-run pass`, and no review file. A review file is written only when
-  the coder must act (`changes-requested` or `answered`). An escalation marks the step `escalated` and
-  the board says why.
+  `done …` status, and no review file. A review file is written only when the coder must act
+  (`changes-requested` or `answered`). An escalation marks the step `escalated` and the board says why;
+  once the user decides, the next review — or the plan amendment or superseding step's Notes — quotes
+  the reason and the decision.
+- A commit that lands a step's work names the step id (CH-NNN/S-NN, or the small change's task id).
 - Only blocking findings block, and every blocker or major finding is blocking. A round is one report
   and the lead's response; an `answered` review does not count. From the second round a review only
   closes findings or flags regressions from the fix. Instead of a third `changes-requested` the lead
@@ -148,6 +163,7 @@ Updated: YYYY-MM-DD HH:MM UTC by the lead
 - Q-014 — <one line> — docs/discovery/questions.md
 - ADR-0006 (proposed) — <one line> — docs/adr/0006-<slug>.md
 - CH-007/S-04 — escalated after round 3 — <the open finding, in one line>
+- CH-007/S-05 — your check: <the verification only you can run> — <path to the step file>
 ```
 
 The board holds no task status — the progress table does. A change leaves "Active" when it is
