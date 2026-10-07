@@ -85,7 +85,8 @@ during development, except through a logged plan amendment.
 `docs/handoff/tasks/YYYY-MM-DD-<slug>/` and holds a `step.md` — `plan.md`'s step template, citing the
 living-spec ids it touches, with its own `Status:` line, since there is no progress table to hold it.
 
-Templates are in `handoff-templates.md`; the step template is in `plan.md`.
+Templates are in `handoff-templates.md`; the step template is in `plan.md`, and setup writes it into
+the project as `docs/handoff/templates/step.md`.
 
 ## Whose turn is it
 
@@ -136,7 +137,7 @@ background agent or workflow to write code, and does not offer to; it hands over
 3. **Writes a review file only when the coder must act**: `changes-requested` (blocking findings only)
    or `answered`. On approval there is no review file, and the result is not copied anywhere: the
    report holds the evidence, and the lead writes one cell — the step's status, `done YYYY-MM-DD,
-   re-run pass` — then sends any non-blocking finding to a later step or the proposal register. An
+   re-run pass` — then records any non-blocking finding as item 2 of "Ending the loop" says. An
    escalation is no file either: the step is marked `escalated` and the board says why. The lead
    updates the docs the report lists as affected, and for another round gives the user the handoff
    prompt for the coder.
@@ -178,8 +179,10 @@ Ideas beyond the step go into the report's *Proposals* section — never into th
    and marks the old step `superseded by S-NN, S-NN`.
 2. **Only blocking findings block**: an unmet acceptance criterion or requirement, an ADR violation, a
    failing test, a security issue, a regression — and every finding of severity blocker or major. A
-   non-blocking defect is deferred to a later step; only an improvement that is not a defect goes to
-   the proposal register.
+   non-blocking defect is deferred to a later step; where none will touch it — small changes, or the
+   plan's last step — it becomes a *Known defect* on the requirement it breaks (`requirements.md`),
+   fixed by a small change when the user says so. A note with no consequence is dropped, and only an
+   improvement that is not a defect goes to the proposal register.
 3. **From the second round, a review may only close earlier findings or flag regressions the fix
    introduced.** No new goalposts.
 4. **A finding that reopens, or is disputed twice, escalates** to the user.

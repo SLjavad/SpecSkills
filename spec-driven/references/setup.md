@@ -177,6 +177,10 @@ Its architecture is the one that exists: record its size, shape and style as the
 choosing again; changing it is a proposal, like any other. The living specs for the area describe the
 system as it is, and the first change writes deltas against them, like any later change.
 
+A requirement the existing code already meets has `existing` in its matrix row's Plan step cell; one it
+does not meet stays empty there and records how it fails as a *Known defect* on the requirement
+(`requirements.md`). Without that marker, every backfilled requirement reads as unimplemented.
+
 ## Then stop
 
 Continue straight into discovery (`discovery.md`): the sweep, the playback and the first batch of

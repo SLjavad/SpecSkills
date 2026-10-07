@@ -43,7 +43,8 @@ it ships (`references/changes.md`).
 **Scale the ceremony to the change.** The full pipeline is for a new project or a major feature. A small
 change needs no change folder and no separate plan: run senior-engineering's product pass, add or amend
 the affected requirements and design items in the living specs — ids, statements, the traceability
-row — in the same edit as the code, and report it as one step. Heavy process on small work is how
+row, its Plan step cell naming the change as `YYYY-MM-DD-<slug>` — in the same edit as the code, and
+report it as one step. Heavy process on small work is how
 spec-driven development gets abandoned. The project's own weight — its size, architecture and the
 practices it uses — is decided once, at setup, with the user. A small project usually takes the
 **small track** (`references/small-track.md`): the same phases and rules in three spec files, one change

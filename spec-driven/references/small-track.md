@@ -116,6 +116,8 @@ and, like it, is filled in at planning and not touched during implementation:
 | FR-014 | Must | CH-001/S-03 |
 ```
 
+The Plan step cell takes the same values as the matrix's (`requirements.md`).
+
 **Tech — `tech.md`** (`tech-spec-structure.md`, `tech-spec-behaviour.md`).
 - *Stack*: that file's table, versions pinned, then **stack notes** — the playbook (senior-engineering
   `modern-practices.md`) cut to what this project uses: support dates, what not to generate, the test

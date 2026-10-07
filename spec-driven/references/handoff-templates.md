@@ -3,10 +3,13 @@
 The files of the multi-agent loop. At setup, write into the project, adjusted to it:
 
 - `docs/handoff/PROTOCOL.md` and `docs/handoff/BOARD.md`;
-- `docs/handoff/templates/report.md`, `review.md` and `prompts.md` — the shape of every file of that
-  kind in a task folder, and the handoff prompts.
+- `docs/handoff/templates/step.md`, `report.md`, `review.md` and `prompts.md` — the shape of every
+  file of that kind in a task folder, and the handoff prompts.
 
-The coder's instructions are the plan step itself (`plan.md`'s step template); there is no brief.
+The coder's instructions are the plan step itself; there is no brief. `templates/step.md` is
+`plan.md`'s step template written out in full, with a second line for a small change, whose step.md
+has no progress table to hold its status:
+`Status: planned | ready | escalated | done YYYY-MM-DD, re-run pass | superseded by …`.
 `PROTOCOL.md` links the templates, so an agent in any tool finds every rule and format inside the
 project. Plain Markdown, no tool-specific syntax, and every path written from the repository root.
 
@@ -62,7 +65,7 @@ never a subagent, background agent or workflow launched by the lead.
 The instructions: docs/changes/CH-NNN-<slug>/plan/steps/S-NN-<slug>.md. The task folder, same name:
 docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/ — or docs/handoff/tasks/YYYY-MM-DD-<slug>/ for a small
 change, holding its own step.md — with report-01.md, a review-01.md only when the coder must act, then
-report-02.md, … Formats: docs/handoff/templates/report.md and review.md.
+report-02.md, … Formats: docs/handoff/templates/step.md, report.md and review.md.
 One writer per file. Once submitted, a file's content is frozen — a correction is a new file. Two
 exceptions: the owner still updates its status line, and the user may fill in decision fields anywhere.
 
@@ -95,6 +98,9 @@ criteria, contracts or schemas, and security-posture changes wait for the user.
   closes findings or flags regressions from the fix. Instead of a third `changes-requested` the lead
   marks the step `escalated`, or splits or rewrites it — new steps and task folders, the old step
   marked `superseded by …`.
+- A non-blocking defect goes to a later step; where none will touch it, it becomes a Known defect on
+  the requirement it breaks, fixed by a small change when the user says so. A note with no consequence
+  is dropped; an improvement goes to docs/discovery/proposals.md.
 - A finding that reopens, or is disputed twice, escalates to the user.
 - End every turn with the handoff prompt, then stop.
 - Never put secrets, personal data, internal hostnames or proprietary code in these files, or in any web
@@ -114,11 +120,18 @@ You are the coder on <project>. Read docs/handoff/PROTOCOL.md, then the step
 <path to the step file> and the files it links. Implement it within its files in scope, verify it as it
 says, write <task folder>/report-NN.md, give me the handoff prompt for the lead, and stop.
 
+## To the coder, next round
+You are the coder on <project>. Read docs/handoff/PROTOCOL.md, then <task folder>/review-NN.md, the
+step <path to the step file> and the files they link. Address every finding and answer, verify as the
+step says, write <task folder>/report-NN.md (the next round), give me the handoff prompt for the lead,
+and stop.
+
 ## To the lead
 You are the lead on <project>. Read docs/handoff/PROTOCOL.md, then <task folder>/report-NN.md.
 Re-run its verification and review the diff. Write <task folder>/review-NN.md only if the coder must
-act; if approved, mark the step done in the progress table. Update docs/handoff/BOARD.md if anything
-now waits on me, give me the next handoff prompt if there is one, and stop.
+act; if approved, mark the step done in the progress table, or a small change's step.md. Update
+docs/handoff/BOARD.md if anything now waits on me, give me the next handoff prompt if there is one, and
+stop.
 ```
 
 ## BOARD.md
@@ -185,7 +198,7 @@ Verdict: changes-requested | answered · Reviewed: <commit> · Verification re-r
 ## Closed from earlier rounds
 Each with its outcome.
 ## Deferred, non-blocking
-Where each one went: a later step, or P-NNN.
+Where each one went: a later step, a Known defect on FR-/NFR-NNN, or P-NNN.
 ## Answers to questions
 ## Rationale
 ```
