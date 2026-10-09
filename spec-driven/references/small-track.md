@@ -72,7 +72,8 @@ docs/engineering/principles.md        the baseline for agents without these skil
 ## Phase by phase
 
 **Setup and discovery** (`setup.md`, `discovery.md`). Ask the mode; recommend one agent. A lead and a
-coder work as `multi-agent.md` describes, with task folders under `docs/handoff/tasks/CH-NNN-S-NN-<slug>/`.
+coder work as `multi-agent.md` describes; its protocol's "Small track" line says where the step and its
+task folder live.
 Sweep both sides in full — it is cheap, and it is where small projects go wrong. The playback is the
 *Context* section of `product.md`, each point marked confirmed or inferred, instead of a separate
 `understanding.md`.
@@ -144,8 +145,9 @@ Result:
 ```
 
 With every step in one file there is no separate progress table: each block's `Status:` line is the
-step's one status, and its `Result:` the one record of what ran — in multi-agent mode, the task's report
-instead, as `multi-agent.md` describes.
+step's one status, and its `Result:` the one record of what ran. In multi-agent mode the lead alone
+writes that `Status:` line, with the protocol's values, and the task's report holds the result instead
+(`multi-agent.md`).
 
 The pre-mortem runs once, at stop 2.
 

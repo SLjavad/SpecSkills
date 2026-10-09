@@ -58,20 +58,23 @@ Summary: How the lead and coder agents build this project through files. Every a
 - Task folder, same name: docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/ — report-01.md, a
   review-01.md only when the coder must act, report-02.md, …
 - A small change: docs/handoff/tasks/YYYY-MM-DD-<slug>/, with its step.md and the same files.
+- Small track: the step is its block in docs/changes/CH-NNN-<slug>.md; its task folder is
+  docs/handoff/tasks/CH-NNN-S-NN-<slug>/, with the same files.
 - One writer per file. Once submitted, a file is frozen — a correction is a new file. The file's
   writer still updates its status fields — a finding's Status and Outcome included — and the user may
   fill in decision fields anywhere.
 
 ## Step status
-In the plan's progress table — for a small change, its step.md. Only the lead writes it: planned |
+In the plan's progress table — for a small change, its step.md; under the small track, the step
+block's Status: line. Only the lead writes it: planned |
 ready | escalated | done YYYY-MM-DD | superseded by S-NN. `done` means the lead re-ran the
 verification and it passed. A check only the user can run keeps the step `ready` and goes under
 "Waiting on the user" on the board until it passes. A coder at work or blocked shows in its report,
 not here.
 
 ## Start of every session
-- Lead: BOARD.md, then the active progress table or small change's step.md, then the task folder whose
-  turn it is.
+- Lead: BOARD.md, then where the active steps' status lives (see "Step status"), then the task folder
+  whose turn it is.
 - Coder: the step its handoff prompt names.
 - Both: the files the step links, the engineering rules (<the senior-engineering skill |
   docs/engineering/principles.md>) and docs/engineering/stack-<name>.md — nothing more by default.
