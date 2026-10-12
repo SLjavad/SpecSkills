@@ -1,7 +1,7 @@
 # SpecSkills
 
-Two agent skills for spec-first, senior-level software engineering. They work with Claude Code and with
-any coding agent that supports the open [Agent Skills](https://github.com/agentskills/agentskills)
+Three agent skills for spec-first, senior-level software engineering. They work with Claude Code and
+with any coding agent that supports the open [Agent Skills](https://github.com/agentskills/agentskills)
 format (`SKILL.md` folders), and they fall back to plain project files for tools that don't.
 
 ## What's inside
@@ -12,18 +12,144 @@ format (`SKILL.md` folders), and they fall back to plain project files for tools
 | `spec-driven` | Runs a project spec-first as small, linked files: discovery, product spec, numbered, testable requirements with a traceability matrix, a tech spec with ADRs and a stack playbook, a stepwise plan, and review. Size, architecture and practices are decided with you at setup; later features are change folders merged into living specs; one agent, or a lead and a coder working through files. |
 | `work-orchestrator` | Hands light, read-heavy work — builds and test runs, code searches, long logs, mechanical doc checks — to cheaper, faster helper models, so the session's main model spends its tokens on judgment. Helpers return facts only; implementation and review are never delegated, and no helper edits files. |
 
-`spec-driven` and `work-orchestrator` build on `senior-engineering`. Install them together, side by
-side in the same folder: they link to `../senior-engineering/`.
+`spec-driven` and `work-orchestrator` build on `senior-engineering`, and link to it as
+`../senior-engineering/` — the three always sit side by side in one folder. The installer takes care
+of that.
 
-## Install
+## Installation
 
-### 1. Get the files
+One installer sets up everything in this repository, on Windows, macOS and Linux:
+
+- **the three skills**, for Claude Code and for every other agent tool it finds on the machine;
+- **for Claude Code**, the `work-orchestrator` extras: four helper agents, a guard hook that keeps every
+  subagent off the top-tier model, the settings that make both work, and an exemption in your
+  `CLAUDE.md` if it asks you before every subagent.
+
+### Before you start
+
+| You need | Why |
+|---|---|
+| Git | to get the repository and to update it later — or download it as a ZIP |
+| **Windows:** nothing else | the installer uses Windows PowerShell, built into Windows 10 and 11 |
+| **macOS / Linux:** bash, and `python3` | bash runs the installer; Python edits `settings.json` safely. Without Python, the installer does every other step and prints the settings to add by hand |
+| Docker, or another runtime Testcontainers supports | not for installing — for projects whose integration tests run their real dependencies |
+
+You don't need to close Claude Code first: the installer only writes files, and Claude Code picks up
+the changes in the next session you start.
+
+### Step 1 — Get the repository
 
 ```bash
 git clone https://github.com/SLjavad/SpecSkills.git
 ```
 
-### 2. Copy the skill folders into your tool's skills folder
+If you use only Claude Code, you can clone it straight into its skills folder instead. The skills are
+then live where Claude Code reads them, and updating is a `git pull`:
+
+```bash
+git clone https://github.com/SLjavad/SpecSkills.git ~/.claude/skills
+```
+
+That needs `~/.claude/skills` to be empty or absent. Other skills you install later can live in the
+same folder; Git ignores them.
+
+### Step 2 — See what it will do
+
+Run the installer with `--dry-run` first. It prints every file it would add, update or remove, and
+writes nothing.
+
+**Windows** — in PowerShell, from the repository folder:
+
+```powershell
+.\install.cmd --dry-run
+```
+
+**macOS / Linux** — in a terminal, from the repository folder:
+
+```bash
+./install.sh --dry-run
+```
+
+### Step 3 — Install
+
+The same command without `--dry-run`:
+
+**Windows** — PowerShell or Command Prompt, or double-click `install.cmd` in Explorer:
+
+```powershell
+.\install.cmd
+```
+
+**macOS / Linux:**
+
+```bash
+./install.sh
+```
+
+`install.cmd` runs `install.ps1` without changing your PowerShell execution policy, which is why it is
+the easiest way on Windows. From Git Bash on Windows, `./install.sh` works too — it hands over to the
+PowerShell installer.
+
+Then **start a new Claude Code session**: it loads helpers, hooks and settings when a session starts.
+
+### What the installer does
+
+| Step | What happens | Where |
+|---|---|---|
+| Skills | Copies the three skill folders, and removes files an update deleted from them. If the repository *is* the folder — a clone into `~/.claude/skills` — it skips this; `git pull` keeps them current. | `~/.claude/skills/`; also `~/.agents/skills/` if Codex, Cursor or Gemini CLI is installed, and `~/.copilot/skills/` if GitHub Copilot is |
+| Helpers | Installs `runner`, `scout`, `log-digest` and `doc-check`, each pinned to Haiku | `~/.claude/agents/` |
+| Guard | Installs the guard that refuses any subagent not on its allowlist, and any launch that asks for an Opus or Fable model — as PowerShell on Windows, bash elsewhere — with the allowlist beside it | `~/.claude/hooks/` |
+| Settings | Removes `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` (it stops helpers using their own model); sets `CLAUDE_CODE_SUBAGENT_MODEL` to Sonnet if it is unset or a top-tier model; registers the guard next to your existing hooks. Everything else in the file stays as it was. | `~/.claude/settings.json` |
+| Instructions | If your `CLAUDE.md` has a rule to ask before launching subagents, adds one paragraph exempting the four helpers. Without such a rule, it changes nothing. | `~/.claude/CLAUDE.md` |
+
+### Safety
+
+- **Every file it replaces or removes is backed up first**, into one folder per run:
+  `~/.claude/backups/spec-skills/<date-time>/`. To undo a change, copy the file back from there.
+- **`--dry-run` writes nothing** — use it whenever you are unsure.
+- **Running it again is safe.** It compares every file and changes only what differs; when nothing
+  does, it says "Already up to date".
+- **It stops before changing anything** if `settings.json` is not valid JSON.
+- **It touches only what it installs.** Other skills, agents, hooks and settings keep their place and
+  content; a settings entry is added or updated, never the whole file replaced; line endings and
+  encoding are kept.
+
+### Options
+
+| Option | Effect |
+|---|---|
+| `--dry-run` | Show the plan; write nothing |
+| `--uninstall` | Remove the helpers, the guard and its settings entry, and the `CLAUDE.md` exemption — with backups. The skills and your other settings stay. |
+| `--help` | Show the options |
+
+In PowerShell, `-DryRun` and `-Uninstall` work as well. To install into a Claude Code folder other than
+`~/.claude`, set `CLAUDE_CONFIG_DIR` before running it.
+
+### Check it
+
+In a new Claude Code session, ask which skills it has: `senior-engineering`, `spec-driven` and
+`work-orchestrator` should be listed. Then check the helpers:
+
+```text
+Start the runner helper with `node --version` or `git --version`, and have it report the model it
+runs on. Then start a subagent named "no-such-agent" and quote the reason the guard refuses it.
+```
+
+The runner should report Haiku, and the guard should refuse the unknown agent.
+
+### Updating
+
+```bash
+git -C SpecSkills pull
+```
+
+Then run the installer again (Step 3). With a clone in `~/.claude/skills`, the pull already updates the
+skills; the installer brings the helpers, the guard and the settings up to date.
+
+### Installing by hand, or in another tool
+
+The installer covers the tools in this table. For a tool it does not know, copy the three skill folders
+into its skills folder yourself:
 
 | Tool | For you, in every project | For one project (commit it to share with a team) |
 |---|---|---|
@@ -37,51 +163,23 @@ git clone https://github.com/SLjavad/SpecSkills.git
 four non-Claude tools above. These locations were checked in September 2026; tools move fast, so check
 your tool's documentation if one doesn't work.
 
-macOS or Linux — set `SKILLS_DIR` to the folder from the table:
+- **A tool that supports Agent Skills** — its documentation mentions "Agent Skills" or `SKILL.md`:
+  copy the folders into the skills folder it documents.
+- **A tool that doesn't, but reads `AGENTS.md`**, as most coding agents do: copy the folders into the
+  project, for example under `.agents/skills/`, and add this to the project's `AGENTS.md`:
 
-```bash
-SKILLS_DIR=~/.claude/skills
-mkdir -p "$SKILLS_DIR"
-cp -R SpecSkills/senior-engineering SpecSkills/spec-driven SpecSkills/work-orchestrator "$SKILLS_DIR/"
-```
+  ```markdown
+  ## Engineering baseline
+  Before any task, read .agents/skills/senior-engineering/SKILL.md and follow it. For specs, plans,
+  reviews or multi-agent work, also read .agents/skills/spec-driven/SKILL.md; before running builds
+  or tests, searching code or reading long logs, read .agents/skills/work-orchestrator/SKILL.md. Open
+  the reference files they point to only when the task needs them.
+  ```
 
-Windows (PowerShell):
+- **A tool that reads only its own instruction file**: put the same lines there, or one line telling it
+  to read `AGENTS.md` first.
 
-```powershell
-$SkillsDir = "$HOME\.claude\skills"
-New-Item -ItemType Directory -Force $SkillsDir | Out-Null
-Copy-Item -Recurse -Force SpecSkills\senior-engineering, SpecSkills\spec-driven, SpecSkills\work-orchestrator $SkillsDir
-```
-
-### 3. Check it
-
-Start a new session (in VS Code, reload the window) and ask the agent which skills it has.
-`senior-engineering`, `spec-driven` and `work-orchestrator` should be listed.
-
-### 4. Claude Code: the helpers for `work-orchestrator`
-
-The skill works on its own, doing the reading inline. To hand that reading to cheaper helper models,
-Claude Code also needs the helper definitions, a guard that keeps every subagent off the top-tier
-model, and two settings — all in `work-orchestrator/references/claude-code.md`, with the files under
-`work-orchestrator/claude-code/`.
-
-### Any other tool
-
-1. **It supports Agent Skills** — its documentation mentions "Agent Skills" or `SKILL.md`: copy the
-   skill folders into the skills folder it documents, as in step 2.
-2. **It doesn't, but it reads `AGENTS.md`**, as most coding agents do: copy the skill folders into the
-   project, for example under `.agents/skills/`, and add this to the project's `AGENTS.md`:
-
-   ```markdown
-   ## Engineering baseline
-   Before any task, read .agents/skills/senior-engineering/SKILL.md and follow it. For specs, plans,
-   reviews or multi-agent work, also read .agents/skills/spec-driven/SKILL.md; before running builds
-   or tests, searching code or reading long logs, read .agents/skills/work-orchestrator/SKILL.md. Open
-   the reference files they point to only when the task needs them.
-   ```
-
-3. **It reads only its own instruction file**: put the same lines there, or one line telling it to read
-   `AGENTS.md` first.
+The Claude Code extras — helpers, guard and settings — by hand: `work-orchestrator/references/claude-code.md`.
 
 A project set up with `spec-driven` also gets `docs/engineering/principles.md`: the rules distilled for
 any agent that works on it without the skills installed.
@@ -95,13 +193,9 @@ any agent that works on it without the skills installed.
   by phase and stops for your approval at each gate. A small project takes the small track: the same
   phases in three spec files and two approval stops. No code is written until the plan is approved.
 - **Everyday work** — designing, coding, testing, reviewing: `senior-engineering` applies throughout.
+- **Long runs, big searches, long logs: `work-orchestrator`.** The agent hands them to a cheap helper and
+  reads back only the facts. You don't call it; it applies when a task fits.
 - **Ideas beyond the task are proposals.** Nothing outside the approved scope is built without your yes.
-
-## Requirements
-
-- A coding agent from the table above, or any that reads `SKILL.md` or `AGENTS.md`.
-- Docker, or another container runtime Testcontainers supports, for projects whose integration tests run
-  their real dependencies.
 
 ## Security
 
@@ -111,10 +205,5 @@ enforcement, so also block secret files in your tool's permission settings. In C
 add deny rules such as `"Read(//**/.env)"` and `"Read(~/.ssh/**)"` under `permissions.deny` in
 `~/.claude/settings.json`.
 
-## Updating
-
-```bash
-cd SpecSkills && git pull
-```
-
-Then copy the two folders again, as in step 2.
+The guard hook is an enforcement: Claude Code runs it before every subagent launch, and it refuses any
+launch that is not on its allowlist or asks for a top-tier model.

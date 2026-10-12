@@ -9,3 +9,7 @@
 !/spec-driven/
 !/senior-engineering/
 !/work-orchestrator/
+!/.gitattributes
+!/install.sh
+!/install.ps1
+!/install.cmd
