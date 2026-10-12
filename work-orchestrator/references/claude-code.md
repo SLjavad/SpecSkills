@@ -74,16 +74,9 @@ launch.
 
 ## Explore and Plan
 
-They stay installed, but until one of these routes is confirmed the guard refuses them, because they
-would run on the top tier in a lead session. The skill points agents to `scout` for searching, and Plan
-starts only in plan mode.
-
-1. **Same-name redefinition** — a user-defined `Explore` with `model: haiku` and `Plan` with
-   `model: sonnet` in `~/.claude/agents/`. If Claude Code lets a user definition replace a built-in of
-   the same name, add both names to the allowlist.
-2. **A model passed at launch** — on a version whose subagent tool takes a model, the guard could set
-   one instead of refusing.
-3. **Neither** — they stay refused, or are allowed as a stated exception that may run on the top tier.
+They stay installed as Claude Code ships them, and the guard refuses them by decision, because they run
+on the main session's model — the top tier in a lead session. This skill does not replace, re-model or
+allowlist them; `scout` covers searching, and Plan starts only in plan mode.
 
 ## Checking it works
 
@@ -91,6 +84,5 @@ In a new session after installing:
 - start `runner` with a harmless command (`git --version`) and ask it to report its model — it should
   say Haiku;
 - start an unknown agent name — the guard should refuse it with its reason;
-- start `Explore` — refused until a route above is confirmed; once one is, it should report a model
-  that is not top tier;
+- start `Explore` — the guard should refuse it;
 - fork the session, if your version offers forks, and check whether the guard sees it.
