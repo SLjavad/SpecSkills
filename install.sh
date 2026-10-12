@@ -11,19 +11,29 @@ esac
 
 DRY_RUN=0
 UNINSTALL=0
+REQUESTED=()
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=1 ;;
     --uninstall) UNINSTALL=1 ;;
     -h|--help)
-      echo "Usage: ./install.sh [--dry-run] [--uninstall]"
-      echo "  Installs every skill in this repository for Claude Code and any other agent tool found,"
-      echo "  plus the Claude Code helpers, hooks and settings. --dry-run shows the plan and writes"
-      echo "  nothing; --uninstall removes the helpers, hooks, their settings and the CLAUDE.md"
-      echo "  exemption, and leaves the skills in place."
+      echo "Usage: ./install.sh [--dry-run] [--uninstall] [skill ...]"
+      echo "  Installs the named skills - every skill in this repository when none is named - for"
+      echo "  Claude Code and any other agent tool found, with their Claude Code helpers, hooks and"
+      echo "  settings. A skill that another one links into is installed with it."
+      echo "  --uninstall removes the named skills - every one of them that is installed when none is"
+      echo "  named - with their helpers, hooks, settings entries and CLAUDE.md exemption."
+      echo "  --dry-run shows the plan and writes nothing."
       exit 0
       ;;
-    *) echo "Unknown option: $arg (see --help)"; exit 2 ;;
+    -*) echo "Unknown option: $arg (see --help)"; exit 2 ;;
+    *)
+      IFS=',' read -r -a names <<< "$arg"
+      for name in ${names[@]+"${names[@]}"}; do
+        name="${name%/}"
+        [ -n "$name" ] && REQUESTED+=("$name")
+      done
+      ;;
   esac
 done
 
@@ -81,6 +91,15 @@ sync_skill() {
   done < <(find "$dest" -type f | sort)
 }
 
+unsync_skill() {
+  local dest="$1" file
+  [ -d "$dest" ] || return
+  while IFS= read -r file; do
+    remove "$file"
+  done < <(find "$dest" -type f | sort)
+  [ "$DRY_RUN" = 1 ] || rm -rf "$dest"
+}
+
 python_ok() {
   command -v python3 >/dev/null 2>&1 && python3 -c 'import json' >/dev/null 2>&1
 }
@@ -97,15 +116,81 @@ if [ "${#SKILLS[@]}" -eq 0 ]; then
   done
 fi
 
+in_list() {
+  local item="$1" each
+  shift
+  for each in "$@"; do [ "$each" = "$item" ] && return 0; done
+  return 1
+}
+
+links_of() {
+  local found name
+  found="$(grep -rhoE '\.\./[A-Za-z0-9._-]+/' "$REPO/$1" 2>/dev/null | sort -u)"
+  for name in $found; do
+    name="${name#../}"
+    name="${name%/}"
+    [ "$name" != "$1" ] && in_list "$name" "${SKILLS[@]}" && echo "$name"
+  done
+}
+
+for name in ${REQUESTED[@]+"${REQUESTED[@]}"}; do
+  if ! in_list "$name" "${SKILLS[@]}"; then
+    echo "Unknown skill: $name. Skills in this repository: ${SKILLS[*]}"
+    exit 2
+  fi
+done
+
+if [ "${#REQUESTED[@]}" -eq 0 ]; then
+  SELECTED=("${SKILLS[@]}")
+else
+  SELECTED=("${REQUESTED[@]}")
+fi
+
+if [ "$UNINSTALL" = 1 ]; then
+  CANDIDATES=("$CONFIG/skills" "$HOME/.agents/skills" "$HOME/.copilot/skills")
+else
+  CANDIDATES=("$CONFIG/skills")
+  { [ -d "$HOME/.codex" ] || [ -d "$HOME/.cursor" ] || [ -d "$HOME/.gemini" ]; } && CANDIDATES+=("$HOME/.agents/skills")
+  [ -d "$HOME/.copilot" ] && CANDIDATES+=("$HOME/.copilot/skills")
+fi
+
+NOTES=()
+if [ "$UNINSTALL" = 1 ]; then
+  for skill in "${SKILLS[@]}"; do
+    in_list "$skill" "${SELECTED[@]}" && continue
+    for target in "${CANDIDATES[@]}"; do
+      same_dir "$REPO" "$target" && continue
+      [ -f "$target/$skill/SKILL.md" ] || continue
+      for needed in $(links_of "$skill"); do
+        if in_list "$needed" "${SELECTED[@]}"; then
+          echo "$skill in $target links into $needed, so $needed stays. Uninstall $skill with it, or leave $needed out. Nothing was changed."
+          exit 1
+        fi
+      done
+    done
+  done
+else
+  index=0
+  while [ "$index" -lt "${#SELECTED[@]}" ]; do
+    for needed in $(links_of "${SELECTED[$index]}"); do
+      if ! in_list "$needed" "${SELECTED[@]}"; then
+        SELECTED+=("$needed")
+        NOTES+=("$needed is included: ${SELECTED[$index]} links into it")
+      fi
+    done
+    index=$((index + 1))
+  done
+fi
+
 HELPERS=()
-for skill in "${SKILLS[@]}"; do
+for skill in "${SELECTED[@]}"; do
   for file in "$REPO/$skill"/claude-code/agents/*.md; do
     [ -f "$file" ] && HELPERS+=("$file")
   done
 done
 
 HOOKS=""
-for skill in "${SKILLS[@]}"; do
+for skill in "${SELECTED[@]}"; do
   list="$REPO/$skill/claude-code/hooks.list"
   [ -f "$list" ] || continue
   while read -r event matcher script timeout; do
@@ -123,31 +208,36 @@ if [ -f "$SETTINGS" ] && python_ok && ! python3 -c 'import json,sys; json.load(o
   exit 1
 fi
 
-if [ "$UNINSTALL" = 0 ]; then
-  echo "Skills"
-  TARGETS=("$CONFIG/skills")
-  { [ -d "$HOME/.codex" ] || [ -d "$HOME/.cursor" ] || [ -d "$HOME/.gemini" ]; } && TARGETS+=("$HOME/.agents/skills")
-  [ -d "$HOME/.copilot" ] && TARGETS+=("$HOME/.copilot/skills")
-  for target in "${TARGETS[@]}"; do
-    if same_dir "$REPO" "$target"; then
-      report skipped "$target — this repository is that folder; a git pull keeps it current"
+echo "Skills: ${SELECTED[*]}"
+for note in ${NOTES[@]+"${NOTES[@]}"}; do
+  echo "  $note"
+done
+for target in "${CANDIDATES[@]}"; do
+  [ "$UNINSTALL" = 1 ] && [ ! -d "$target" ] && continue
+  if same_dir "$REPO" "$target"; then
+    report skipped "$target — this repository is that folder; a git pull keeps it current"
+    continue
+  fi
+  for skill in "${SELECTED[@]}"; do
+    if [ -L "$target/$skill" ]; then
+      report skipped "$target/$skill — a link, left as it is"
       continue
     fi
-    for skill in "${SKILLS[@]}"; do
-      sync_skill "$REPO/$skill" "$target/$skill"
-    done
+    if [ "$UNINSTALL" = 1 ]; then unsync_skill "$target/$skill"; else sync_skill "$REPO/$skill" "$target/$skill"; fi
   done
-fi
+done
 
-echo "Claude Code helpers"
 HELPER_NAMES=()
-for file in "${HELPERS[@]}"; do
+EXTRAS=0
+{ [ "${#HELPERS[@]}" -gt 0 ] || [ -n "$HOOKS" ]; } && EXTRAS=1
+[ "$EXTRAS" = 1 ] && echo "Claude Code helpers"
+for file in ${HELPERS[@]+"${HELPERS[@]}"}; do
   name="$(basename "$file" .md)"
   HELPER_NAMES+=("$name")
   if [ "$UNINSTALL" = 1 ]; then remove "$CONFIG/agents/$name.md"; else put "$file" "$CONFIG/agents/$name.md"; fi
 done
 
-echo "Claude Code hooks"
+[ "$EXTRAS" = 1 ] && echo "Claude Code hooks"
 HOOK_SPEC=""
 while IFS=$'\t' read -r event matcher dir script timeout; do
   [ -n "${event:-}" ] || continue
@@ -162,7 +252,7 @@ while IFS=$'\t' read -r event matcher dir script timeout; do
     put "$dir/$script.sh" "$target"
     if [ -f "$dir/$script.allow" ]; then
       allow="$(mktemp)"
-      { tr -d '\r' < "$dir/$script.allow"; printf '%s\n' "${HELPER_NAMES[@]}"; } > "$allow"
+      { tr -d '\r' < "$dir/$script.allow"; printf '%s\n' ${HELPER_NAMES[@]+"${HELPER_NAMES[@]}"}; } > "$allow"
       put "$allow" "$CONFIG/hooks/$script.allow"
       rm -f "$allow"
     fi
@@ -170,10 +260,12 @@ while IFS=$'\t' read -r event matcher dir script timeout; do
   HOOK_SPEC+="$event	$matcher	bash \"$target\"	$timeout	$script"$'\n'
 done <<< "$HOOKS"
 
-echo "Claude Code settings and instructions"
-if python_ok; then
+[ "$EXTRAS" = 1 ] && echo "Claude Code settings and instructions"
+if [ "$EXTRAS" = 0 ]; then
+  :
+elif python_ok; then
   RESULT="$(SS_SETTINGS="$SETTINGS" SS_CLAUDE_MD="$CONFIG/CLAUDE.md" SS_BACKUP="$BACKUP" SS_HOME="$HOME" \
-    SS_MODE="$MODE" SS_DRY_RUN="$DRY_RUN" SS_HOOKS="$HOOK_SPEC" SS_HELPERS="${HELPER_NAMES[*]}" \
+    SS_MODE="$MODE" SS_DRY_RUN="$DRY_RUN" SS_HOOKS="$HOOK_SPEC" SS_HELPERS="${HELPER_NAMES[@]+"${HELPER_NAMES[*]}"}" \
     python3 - <<'PYTHON'
 import json, os, re, shutil, textwrap
 
@@ -219,7 +311,7 @@ def merge_settings():
     settings = json.loads(text) if text.strip() else {}
     eol = eol_of(text) if text else "\n"
     changes = []
-    if not uninstall:
+    if not uninstall and helpers:
         env = settings.setdefault("env", {})
         if "CLAUDE_CODE_SUBAGENT_MODEL_FORCE" in env:
             del env["CLAUDE_CODE_SUBAGENT_MODEL_FORCE"]
@@ -306,7 +398,8 @@ def edit_instructions():
     write(claude_md, eol.join(lines))
 
 merge_settings()
-edit_instructions()
+if helpers:
+    edit_instructions()
 PYTHON
 )"
   while IFS=$'\t' read -r status what; do
@@ -318,7 +411,7 @@ else
   while IFS=$'\t' read -r event matcher command timeout script; do
     [ -n "${event:-}" ] && echo "      hooks.$event: { \"matcher\": \"$matcher\", \"hooks\": [ { \"type\": \"command\", \"command\": \"${command//\"/\\\"}\", \"timeout\": $timeout } ] }"
   done <<< "$HOOK_SPEC"
-  report manual "$CONFIG/CLAUDE.md — if it asks before every subagent, exempt the helpers: ${HELPER_NAMES[*]}"
+  report manual "$CONFIG/CLAUDE.md — if it asks before every subagent, exempt the helpers: ${HELPER_NAMES[@]+"${HELPER_NAMES[*]}"}"
 fi
 
 echo

@@ -2,19 +2,28 @@ $ErrorActionPreference = 'Stop'
 
 $DryRun = $false
 $Uninstall = $false
+$Requested = New-Object System.Collections.Generic.List[string]
 foreach ($arg in $args) {
     switch -Regex ($arg) {
         '^(--dry-run|-DryRun)$' { $DryRun = $true; continue }
         '^(--uninstall|-Uninstall)$' { $Uninstall = $true; continue }
         '^(-h|--help|-Help|/\?)$' {
-            Write-Host 'Usage: install.ps1 [--dry-run] [--uninstall]'
-            Write-Host '  Installs every skill in this repository for Claude Code and any other agent tool found,'
-            Write-Host '  plus the Claude Code helpers, hooks and settings. --dry-run shows the plan and writes'
-            Write-Host '  nothing; --uninstall removes the helpers, hooks, their settings and the CLAUDE.md'
-            Write-Host '  exemption, and leaves the skills in place.'
+            Write-Host 'Usage: install.ps1 [--dry-run] [--uninstall] [skill ...]'
+            Write-Host '  Installs the named skills - every skill in this repository when none is named - for'
+            Write-Host '  Claude Code and any other agent tool found, with their Claude Code helpers, hooks and'
+            Write-Host '  settings. A skill that another one links into is installed with it.'
+            Write-Host '  --uninstall removes the named skills - every one of them that is installed when none is'
+            Write-Host '  named - with their helpers, hooks, settings entries and CLAUDE.md exemption.'
+            Write-Host '  --dry-run shows the plan and writes nothing.'
             exit 0
         }
-        default { Write-Host "Unknown option: $arg (see --help)"; exit 2 }
+        '^-' { Write-Host "Unknown option: $_ (see --help)"; exit 2 }
+        default {
+            foreach ($name in ([string] $_).Split(',')) {
+                $name = $name.Trim().TrimEnd('/', '\')
+                if ($name) { $Requested.Add($name) }
+            }
+        }
     }
 }
 
@@ -67,7 +76,14 @@ function Remove-InstalledFile([string] $Path, [string] $Label) {
 }
 
 function Get-CanonicalPath([string] $Path) {
-    (New-Object -ComObject Scripting.FileSystemObject).GetFolder((Resolve-Path -LiteralPath $Path).Path).ShortPath.TrimEnd('\')
+    $item = Get-Item -LiteralPath $Path -Force
+    for ($hop = 0; $hop -lt 8 -and ($item.Attributes -band [IO.FileAttributes]::ReparsePoint); $hop++) {
+        $link = [string] @($item.Target)[0]
+        if (-not $link) { break }
+        if (-not [IO.Path]::IsPathRooted($link)) { $link = Join-Path (Split-Path $item.FullName) $link }
+        $item = Get-Item -LiteralPath $link -Force
+    }
+    (New-Object -ComObject Scripting.FileSystemObject).GetFolder($item.FullName).ShortPath.TrimEnd('\')
 }
 
 function Test-SameDir([string] $A, [string] $B) {
@@ -85,6 +101,21 @@ function Sync-Skill([string] $Source, [string] $Target, [string] $Label) {
             Remove-InstalledFile (Join-Path $Target $rel) (Join-Path $Label $rel)
         }
     }
+}
+
+function Unsync-Skill([string] $Target, [string] $Label) {
+    if (-not (Test-Path -LiteralPath $Target -PathType Container)) { return }
+    foreach ($rel in @(Get-ChildItem -LiteralPath $Target -Recurse -File -Force -Name | Sort-Object)) {
+        Remove-InstalledFile (Join-Path $Target $rel) (Join-Path $Label $rel)
+    }
+    if (-not $DryRun) { Remove-Item -LiteralPath $Target -Recurse -Force }
+}
+
+function Get-LinkedSkills([string] $Skill) {
+    $found = @(Get-ChildItem -LiteralPath (Join-Path $Repo $Skill) -Recurse -File |
+        Select-String -Pattern '\.\./([A-Za-z0-9._-]+)/' -AllMatches |
+        ForEach-Object { $_.Matches } | ForEach-Object { $_.Groups[1].Value })
+    @($found | Sort-Object -Unique | Where-Object { $_ -ne $Skill -and $skillNames -ccontains $_ })
 }
 
 function ConvertTo-JsonString([string] $Text) {
@@ -149,7 +180,7 @@ function Get-LineEnding([string] $Text) {
 
 function Merge-Settings($Settings, $HookSpecs) {
     $changes = New-Object System.Collections.Generic.List[string]
-    if (-not $Uninstall) {
+    if (-not $Uninstall -and $helperNames.Count -gt 0) {
         $envBlock = Get-Member-Value $Settings 'env'
         if ($null -eq $envBlock) { $envBlock = [pscustomobject] @{}; Set-Member-Value $Settings 'env' $envBlock }
         if ($envBlock.PSObject.Properties['CLAUDE_CODE_SUBAGENT_MODEL_FORCE']) {
@@ -273,44 +304,96 @@ if ($skillNames.Count -eq 0) {
     $skillNames = @(Get-ChildItem -LiteralPath $Repo -Directory | Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') } | ForEach-Object { $_.Name })
 }
 $skillNames = @($skillNames | Sort-Object -Unique)
-$helpers = @($skillNames | ForEach-Object {
-    Get-ChildItem -LiteralPath (Join-Path $Repo "$_\claude-code\agents") -Filter '*.md' -File -ErrorAction SilentlyContinue
-} | Sort-Object Name)
-$helperNames = @($helpers | ForEach-Object { $_.BaseName })
 
-if (-not $Uninstall) {
-    Write-Host 'Skills'
-    $targets = @([pscustomobject] @{ Path = (Join-Path $Config 'skills'); Label = 'claude-skills' })
+foreach ($name in $Requested) {
+    if ($skillNames -cnotcontains $name) {
+        Write-Host "Unknown skill: $name. Skills in this repository: $($skillNames -join ' ')"
+        exit 2
+    }
+}
+$selected = New-Object System.Collections.Generic.List[string]
+foreach ($name in $(if ($Requested.Count) { $Requested } else { $skillNames })) {
+    if (-not $selected.Contains($name)) { $selected.Add($name) }
+}
+
+$claudeSkills = [pscustomobject] @{ Path = (Join-Path $Config 'skills'); Label = 'claude-skills' }
+$agentsSkills = [pscustomobject] @{ Path = (Join-Path $HomeDir '.agents\skills'); Label = 'agents-skills' }
+$copilotSkills = [pscustomobject] @{ Path = (Join-Path $HomeDir '.copilot\skills'); Label = 'copilot-skills' }
+if ($Uninstall) {
+    $targets = @($claudeSkills, $agentsSkills, $copilotSkills)
+} else {
+    $targets = @($claudeSkills)
     if ((Test-Path (Join-Path $HomeDir '.codex')) -or (Test-Path (Join-Path $HomeDir '.cursor')) -or (Test-Path (Join-Path $HomeDir '.gemini'))) {
-        $targets += [pscustomobject] @{ Path = (Join-Path $HomeDir '.agents\skills'); Label = 'agents-skills' }
+        $targets += $agentsSkills
     }
-    if (Test-Path (Join-Path $HomeDir '.copilot')) {
-        $targets += [pscustomobject] @{ Path = (Join-Path $HomeDir '.copilot\skills'); Label = 'copilot-skills' }
-    }
-    foreach ($target in $targets) {
-        if (Test-SameDir $Repo $target.Path) {
-            Report 'skipped' "$($target.Path) - this repository is that folder; a git pull keeps it current"
-            continue
+    if (Test-Path (Join-Path $HomeDir '.copilot')) { $targets += $copilotSkills }
+}
+
+$notes = New-Object System.Collections.Generic.List[string]
+if ($Uninstall) {
+    foreach ($skill in $skillNames) {
+        if ($selected.Contains($skill)) { continue }
+        foreach ($target in $targets) {
+            if (Test-SameDir $Repo $target.Path) { continue }
+            if (-not (Test-Path -LiteralPath (Join-Path $target.Path "$skill\SKILL.md"))) { continue }
+            foreach ($needed in (Get-LinkedSkills $skill)) {
+                if ($selected.Contains($needed)) {
+                    Write-Host "$skill in $($target.Path) links into $needed, so $needed stays. Uninstall $skill with it, or leave $needed out. Nothing was changed."
+                    exit 1
+                }
+            }
         }
-        foreach ($skill in $skillNames) {
-            Sync-Skill (Join-Path $Repo $skill) (Join-Path $target.Path $skill) (Join-Path $target.Label $skill)
+    }
+} else {
+    for ($index = 0; $index -lt $selected.Count; $index++) {
+        foreach ($needed in (Get-LinkedSkills $selected[$index])) {
+            if (-not $selected.Contains($needed)) {
+                $selected.Add($needed)
+                $notes.Add("$needed is included: $($selected[$index]) links into it")
+            }
         }
     }
 }
 
-Write-Host 'Claude Code helpers'
+$helpers = @($selected | ForEach-Object {
+    Get-ChildItem -LiteralPath (Join-Path $Repo "$_\claude-code\agents") -Filter '*.md' -File -ErrorAction SilentlyContinue
+} | Sort-Object Name)
+$helperNames = @($helpers | ForEach-Object { $_.BaseName })
+$hookLists = @($selected | ForEach-Object { Join-Path $Repo "$_\claude-code\hooks.list" } | Where-Object { Test-Path -LiteralPath $_ })
+$extras = $helpers.Count -gt 0 -or $hookLists.Count -gt 0
+
+Write-Host "Skills: $($selected -join ' ')"
+foreach ($note in $notes) { Write-Host "  $note" }
+foreach ($target in $targets) {
+    if ($Uninstall -and -not (Test-Path -LiteralPath $target.Path -PathType Container)) { continue }
+    if (Test-SameDir $Repo $target.Path) {
+        Report 'skipped' "$($target.Path) - this repository is that folder; a git pull keeps it current"
+        continue
+    }
+    foreach ($skill in $selected) {
+        $source = Join-Path $Repo $skill
+        $destination = Join-Path $target.Path $skill
+        $label = Join-Path $target.Label $skill
+        $item = Get-Item -LiteralPath $destination -Force -ErrorAction SilentlyContinue
+        if ($item -and ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            Report 'skipped' "$destination - a link, left as it is"
+            continue
+        }
+        if ($Uninstall) { Unsync-Skill $destination $label } else { Sync-Skill $source $destination $label }
+    }
+}
+
+if ($extras) { Write-Host 'Claude Code helpers' }
 foreach ($helper in $helpers) {
     $target = Join-Path $Config "agents\$($helper.Name)"
     $label = "claude\agents\$($helper.Name)"
     if ($Uninstall) { Remove-InstalledFile $target $label } else { Put-File $helper.FullName $target $label }
 }
 
-Write-Host 'Claude Code hooks'
+if ($extras) { Write-Host 'Claude Code hooks' }
 $hookSpecs = New-Object System.Collections.Generic.List[object]
-foreach ($skill in $skillNames) {
-    $list = Join-Path $Repo "$skill\claude-code\hooks.list"
-    if (-not (Test-Path -LiteralPath $list)) { continue }
-    $hookDir = Join-Path $Repo "$skill\claude-code\hooks"
+foreach ($list in $hookLists) {
+    $hookDir = Join-Path (Split-Path $list) 'hooks'
     foreach ($line in [IO.File]::ReadAllLines($list)) {
         $parts = @($line.Trim() -split '\s+' | Where-Object { $_ })
         if ($parts.Count -lt 4) { continue }
@@ -339,16 +422,18 @@ foreach ($skill in $skillNames) {
     }
 }
 
-Write-Host 'Claude Code settings and instructions'
-$changes = @(Merge-Settings $settings $hookSpecs)
-if ($changes.Count -gt 0) {
-    Report 'updated' "$settingsPath - $($changes -join '; ')"
-    $eol = if ($settingsText) { Get-LineEnding $settingsText } else { "`n" }
-    Write-TextFile $settingsPath (((Format-Json $settings) -replace "`n", $eol) + $eol) 'claude\settings.json'
-} else {
-    Report 'unchanged' $settingsPath
+if ($extras) {
+    Write-Host 'Claude Code settings and instructions'
+    $changes = @(Merge-Settings $settings $hookSpecs)
+    if ($changes.Count -gt 0) {
+        Report 'updated' "$settingsPath - $($changes -join '; ')"
+        $eol = if ($settingsText) { Get-LineEnding $settingsText } else { "`n" }
+        Write-TextFile $settingsPath (((Format-Json $settings) -replace "`n", $eol) + $eol) 'claude\settings.json'
+    } else {
+        Report 'unchanged' $settingsPath
+    }
+    if ($helperNames.Count -gt 0) { Edit-Instructions (Join-Path $Config 'CLAUDE.md') $helperNames }
 }
-Edit-Instructions (Join-Path $Config 'CLAUDE.md') $helperNames
 
 Write-Host ''
 if ($DryRun) {

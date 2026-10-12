@@ -18,7 +18,8 @@ of that.
 
 ## Installation
 
-One installer sets up everything in this repository, on Windows, macOS and Linux:
+One installer sets up everything in this repository, or only the skills you name, on Windows, macOS
+and Linux:
 
 - **the three skills**, for Claude Code and for every other agent tool it finds on the machine;
 - **for Claude Code**, the `work-orchestrator` extras: four helper agents, a guard hook that keeps every
@@ -72,7 +73,8 @@ writes nothing.
 
 ### Step 3 — Install
 
-The same command without `--dry-run`:
+The same command without `--dry-run`. It installs all three skills; to install only some, see
+[Choosing skills](#choosing-skills).
 
 **Windows** — PowerShell or Command Prompt, or double-click `install.cmd` in Explorer:
 
@@ -96,8 +98,8 @@ Then **start a new Claude Code session**: it loads helpers, hooks and settings w
 
 | Step | What happens | Where |
 |---|---|---|
-| Skills | Copies the three skill folders, and removes files an update deleted from them. If the repository *is* the folder — a clone into `~/.claude/skills` — it skips this; `git pull` keeps them current. | `~/.claude/skills/`; also `~/.agents/skills/` if Codex, Cursor or Gemini CLI is installed, and `~/.copilot/skills/` if GitHub Copilot is |
-| Helpers | Installs `runner`, `scout`, `log-digest` and `doc-check`, each pinned to Haiku | `~/.claude/agents/` |
+| Skills | Copies the skill folders — all three, or the ones you name — and removes files an update deleted from them. If the repository *is* the folder — a clone into `~/.claude/skills` — it skips this; `git pull` keeps them current. | `~/.claude/skills/`; also `~/.agents/skills/` if Codex, Cursor or Gemini CLI is installed, and `~/.copilot/skills/` if GitHub Copilot is |
+| Helpers — with `work-orchestrator` only, as are the three steps below | Installs `runner`, `scout`, `log-digest` and `doc-check`, each pinned to Haiku | `~/.claude/agents/` |
 | Guard | Installs the guard that refuses any subagent not on its allowlist, and any launch that asks for an Opus or Fable model — as PowerShell on Windows, bash elsewhere — with the allowlist beside it | `~/.claude/hooks/` |
 | Settings | Removes `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` (it stops helpers using their own model); sets `CLAUDE_CODE_SUBAGENT_MODEL` to Sonnet if it is unset or a top-tier model; registers the guard next to your existing hooks. Everything else in the file stays as it was. | `~/.claude/settings.json` |
 | Instructions | If your `CLAUDE.md` has a rule to ask before launching subagents, adds one paragraph exempting the four helpers. Without such a rule, it changes nothing. | `~/.claude/CLAUDE.md` |
@@ -118,12 +120,36 @@ Then **start a new Claude Code session**: it loads helpers, hooks and settings w
 
 | Option | Effect |
 |---|---|
+| *skill names* | Install or uninstall only these skills — see below. None named means all of them. |
 | `--dry-run` | Show the plan; write nothing |
-| `--uninstall` | Remove the helpers, the guard and its settings entry, and the `CLAUDE.md` exemption — with backups. The skills and your other settings stay. |
+| `--uninstall` | Remove the skills, and with `work-orchestrator` its helpers, the guard and its settings entry, and the `CLAUDE.md` exemption — with backups. Your other skills and settings stay. |
 | `--help` | Show the options |
 
 In PowerShell, `-DryRun` and `-Uninstall` work as well. To install into a Claude Code folder other than
 `~/.claude`, set `CLAUDE_CONFIG_DIR` before running it.
+
+### Choosing skills
+
+Name the skills after the options, separated by spaces or commas:
+
+```bash
+./install.sh spec-driven
+./install.sh --uninstall work-orchestrator
+```
+
+On Windows the same goes after `.\install.cmd`.
+
+- **Installing** puts in only the named skills and leaves the others as they are. A skill that another
+  one links into comes along: `spec-driven` brings `senior-engineering`, and the installer says so.
+  The helpers, the guard, the settings and the `CLAUDE.md` exemption come only with `work-orchestrator`.
+- **Uninstalling** removes the named skills — or, with no names, every one of the three that is
+  installed — from every tool folder, backing each file up first. It refuses, and changes nothing,
+  when a skill you keep links into one you are removing, such as `senior-engineering` while
+  `spec-driven` stays.
+- **A skill folder belongs to the installer.** Installing makes it match the repository and uninstalling
+  removes it, files you added included — both back them up first. A skill folder that is a link, and a
+  tool folder that *is* this repository, are left alone.
+- **An unknown name stops it** before anything changes, listing the skills it knows.
 
 ### Check it
 
