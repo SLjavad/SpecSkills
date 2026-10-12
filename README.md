@@ -10,9 +10,10 @@ format (`SKILL.md` folders), and they fall back to plain project files for tools
 |---|---|
 | `senior-engineering` | The baseline for any code work: ask instead of guessing; design with the project's own rules plus SOLID, DRY and KISS/YAGNI, and no abstraction without a present need; rich domain entities; security as part of correctness; no confidential data in remote tool calls; tests that challenge business rules, the technical solution, performance and security, with every external dependency run for real through Testcontainers; code review; ADRs. |
 | `spec-driven` | Runs a project spec-first as small, linked files: discovery, product spec, numbered, testable requirements with a traceability matrix, a tech spec with ADRs and a stack playbook, a stepwise plan, and review. Size, architecture and practices are decided with you at setup; later features are change folders merged into living specs; one agent, or a lead and a coder working through files. |
+| `work-orchestrator` | Hands light, read-heavy work — builds and test runs, code searches, long logs, mechanical doc checks — to cheaper, faster helper models, so the session's main model spends its tokens on judgment. Helpers return facts only; implementation and review are never delegated, and no helper edits files. |
 
-`spec-driven` builds on `senior-engineering`. Install both, and keep them side by side in the same
-folder: `spec-driven` links to `../senior-engineering/`.
+`spec-driven` and `work-orchestrator` build on `senior-engineering`. Install them together, side by
+side in the same folder: they link to `../senior-engineering/`.
 
 ## Install
 
@@ -22,7 +23,7 @@ folder: `spec-driven` links to `../senior-engineering/`.
 git clone https://github.com/SLjavad/SpecSkills.git
 ```
 
-### 2. Copy both folders into your tool's skills folder
+### 2. Copy the skill folders into your tool's skills folder
 
 | Tool | For you, in every project | For one project (commit it to share with a team) |
 |---|---|---|
@@ -41,7 +42,7 @@ macOS or Linux — set `SKILLS_DIR` to the folder from the table:
 ```bash
 SKILLS_DIR=~/.claude/skills
 mkdir -p "$SKILLS_DIR"
-cp -R SpecSkills/senior-engineering SpecSkills/spec-driven "$SKILLS_DIR/"
+cp -R SpecSkills/senior-engineering SpecSkills/spec-driven SpecSkills/work-orchestrator "$SKILLS_DIR/"
 ```
 
 Windows (PowerShell):
@@ -49,26 +50,34 @@ Windows (PowerShell):
 ```powershell
 $SkillsDir = "$HOME\.claude\skills"
 New-Item -ItemType Directory -Force $SkillsDir | Out-Null
-Copy-Item -Recurse -Force SpecSkills\senior-engineering, SpecSkills\spec-driven $SkillsDir
+Copy-Item -Recurse -Force SpecSkills\senior-engineering, SpecSkills\spec-driven, SpecSkills\work-orchestrator $SkillsDir
 ```
 
 ### 3. Check it
 
-Start a new session (in VS Code, reload the window) and ask the agent which skills it has. Both
-`senior-engineering` and `spec-driven` should be listed.
+Start a new session (in VS Code, reload the window) and ask the agent which skills it has.
+`senior-engineering`, `spec-driven` and `work-orchestrator` should be listed.
+
+### 4. Claude Code: the helpers for `work-orchestrator`
+
+The skill works on its own, doing the reading inline. To hand that reading to cheaper helper models,
+Claude Code also needs the helper definitions, a guard that keeps every subagent off the top-tier
+model, and two settings — all in `work-orchestrator/references/claude-code.md`, with the files under
+`work-orchestrator/claude-code/`.
 
 ### Any other tool
 
-1. **It supports Agent Skills** — its documentation mentions "Agent Skills" or `SKILL.md`: copy both
-   folders into the skills folder it documents, as in step 2.
-2. **It doesn't, but it reads `AGENTS.md`**, as most coding agents do: copy both folders into the
+1. **It supports Agent Skills** — its documentation mentions "Agent Skills" or `SKILL.md`: copy the
+   skill folders into the skills folder it documents, as in step 2.
+2. **It doesn't, but it reads `AGENTS.md`**, as most coding agents do: copy the skill folders into the
    project, for example under `.agents/skills/`, and add this to the project's `AGENTS.md`:
 
    ```markdown
    ## Engineering baseline
    Before any task, read .agents/skills/senior-engineering/SKILL.md and follow it. For specs, plans,
-   reviews or multi-agent work, also read .agents/skills/spec-driven/SKILL.md. Open the reference
-   files they point to only when the task needs them.
+   reviews or multi-agent work, also read .agents/skills/spec-driven/SKILL.md; before running builds
+   or tests, searching code or reading long logs, read .agents/skills/work-orchestrator/SKILL.md. Open
+   the reference files they point to only when the task needs them.
    ```
 
 3. **It reads only its own instruction file**: put the same lines there, or one line telling it to read
