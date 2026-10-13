@@ -51,16 +51,14 @@ careful runners would return the same facts. Then the session's tier decides:
 - **Build tier** — keep builds and test runs in the session, read through the tool's own filters (a
   results logger, the failing lines, the warning summary). Hand off only a search of five or more
   queries, or output still past about 300 lines after that filtering — a log read for patterns, not
-  just for failures.
+  just for failures. Below that, its own filtering costs less than a handoff and does not wait on one.
 
 Either tier keeps in the session:
 - **a cheap task** — a one-line lookup, or a file it has just read. A helper starts with an empty
   context and no share of the session's prompt cache, so every handoff has a fixed cost;
-- **a quick check the user is waiting on** — a handoff adds 15–50 seconds while the helper starts and
-  its answer comes back.
+- **a quick check the user is waiting on** — a handoff adds the helper's start-up and the trip back.
 
-Independent handoffs — a test run and a search, say — go out together and run in parallel. Why the
-tiers differ is in "Measuring it".
+Independent handoffs — a test run and a search, say — go out together and run in parallel.
 
 ## The helpers
 
@@ -111,25 +109,11 @@ ways: the main model alone at its usual effort; the main model alone at lower ef
 with helpers. Compare per finished step — top-price tokens, total cost, wall time, review rounds and
 the findings a review raised. Keep handing off only the kinds of task where it wins.
 
-**Measured 2026-10** on single short tasks — a test run, a build, a code search, a docs check and a
-5,000-line test log — with Opus as the decide tier, Sonnet as the build tier and Haiku helpers, every
-answer correct:
-- the helpers' own cost was $0.005–0.01 a task;
-- handing off saved the decide tier about 5% a task, and cost the build tier the same or up to 25%
-  more;
-- every handoff was 15–50 seconds slower;
-- both main models filtered large output well on their own, so even the 5,000-line log gained little.
-
-A session's cost was mostly its fixed context, re-read every turn, not the output it read. The case
-for the decide tier rests on what a single task cannot show: in a long session, output read stays in
-context and is paid for on every later turn. That has not been measured yet.
-
-**The skill loads only when something points to it.** With no pointer, sessions given these tasks
-handed off once in 19; with one line in the project's instructions, eight times in ten. The pointer is
-the line in the `AGENTS.md` template (senior-engineering's `references/project-knowledge.md`).
-
 ## Setup
 
+- **The project's pointer.** The skill does not load on its own for a plain request such as "run the
+  tests"; the work-orchestrator line in the `AGENTS.md` template (senior-engineering's
+  `references/project-knowledge.md`) makes each session load it.
 - **Claude Code**: `references/claude-code.md` — the helper definitions, the guard that keeps every
   helper off the top model, the settings, and the install steps.
 - **Another tool with helper agents**: define the four helpers with its mechanism, on its cheapest

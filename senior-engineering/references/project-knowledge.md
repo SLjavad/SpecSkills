@@ -121,7 +121,7 @@ Every other agent: read docs/engineering/principles.md before changing anything.
 ```
 
 The work-orchestrator line is there because that skill does not load on its own for a plain "run the
-tests" — measured in its "Measuring it" section.
+tests".
 
 The baseline — asking, proposals, data egress, tests and the rest — lives in the skills, or in
 `principles.md` for agents without them; `AGENTS.md` does not repeat it. "Rules for this project" is
