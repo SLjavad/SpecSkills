@@ -108,9 +108,8 @@ Lead:
 1. Hands over the next `planned` step once it is ready — no unresolved Q- in its files, every
    acceptance criterion testable, files in scope, latitude and verification named. A gap is fixed by
    amending the step, logged in the plan. Marks it `ready`.
-2. On a submitted report: reads it and the diff, re-runs the verification itself — through a runner
-   helper where one is set up (the work-orchestrator skill); the report is a claim, the run is
-   evidence — and reviews the diff (<the spec-driven and senior-engineering review
+2. On a submitted report: reads it and the diff, re-runs the verification itself — the report is a
+   claim, the run is evidence — and reviews the diff (<the spec-driven and senior-engineering review
    files | docs/engineering/principles.md>).
 3. Responds with one of: approval — the step `done YYYY-MM-DD`, no review file, the report stays the
    record of the result; a review file, `changes-requested` (blocking findings only) or `answered`

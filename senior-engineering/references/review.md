@@ -22,11 +22,10 @@ these lenses too, after checking the code against the spec.
 2. **Run the automated gates first** — build, tests, analyzers, and a dependency audit when the change
    touches dependencies. Do not spend review attention on what a tool already enforces, and name any
    gate that did not run.
-3. **Run the lenses at the scale of the change** — beyond a local change, as separate passes, so one
-   concern does not crowd out the others. The reviewer runs every lens itself; only the build and test
-   runs may go to a helper (the `work-orchestrator` skill, where installed). The lenses below are the
-   minimum; add whatever further lens the change calls for — data migration, accessibility,
-   operability, compatibility, and so on.
+3. **Run the lenses at the scale of the change** — beyond a local change, as separate passes or
+   parallel sub-reviews where the tooling allows and the user agrees, so one concern does not crowd out
+   the others. The lenses below are the minimum; add whatever further lens the change calls for — data
+   migration, accessibility, operability, compatibility, and so on.
 4. **Verify every candidate finding** against the code before reporting it — reproduce it, trace it, or
    measure it. Drop what does not survive; merge duplicates across lenses.
 5. **Rank the result**: blocking first, then non-blocking, with problems that pre-date the change
