@@ -42,17 +42,25 @@ only what to read and how much of it.
 
 ## The routing rule
 
-Hand a task to a helper when all three hold:
+A task can go to a helper only when **it needs no judgment** — the request can be written so that two
+careful runners would return the same facts. Then the session's tier decides:
 
-1. **It reads far more than it returns** — a log, a test run, a sweep across files.
-2. **It needs no judgment** — the request can be written so that two careful runners would return the
-   same facts.
-3. **It is not already cheap** — a one-line lookup, or a file the session has just read, costs less to
-   do than to hand over. A helper starts with an empty context and gets no share of the session's
-   prompt cache, so every handoff has a fixed cost.
+- **Decide tier** — hand off builds, test runs, long logs, doc checks, and searches of five or more
+  queries. Its tokens are the dearest and its session runs longest, and everything it reads stays in
+  its context and is paid for again on every later turn.
+- **Build tier** — keep builds and test runs in the session, read through the tool's own filters (a
+  results logger, the failing lines, the warning summary). Hand off only a search of five or more
+  queries, or output still past about 300 lines after that filtering — a log read for patterns, not
+  just for failures.
 
-Keep the task in the session when any of the three fails. Independent handoffs — a test run and a
-search, say — go out together and run in parallel.
+Either tier keeps in the session:
+- **a cheap task** — a one-line lookup, or a file it has just read. A helper starts with an empty
+  context and no share of the session's prompt cache, so every handoff has a fixed cost;
+- **a quick check the user is waiting on** — a handoff adds 15–50 seconds while the helper starts and
+  its answer comes back.
+
+Independent handoffs — a test run and a search, say — go out together and run in parallel. Why the
+tiers differ is in "Measuring it".
 
 ## The helpers
 
@@ -102,6 +110,23 @@ Delegation earns its place by measurement, not by assumption. On a real step, ru
 ways: the main model alone at its usual effort; the main model alone at lower effort; the main model
 with helpers. Compare per finished step — top-price tokens, total cost, wall time, review rounds and
 the findings a review raised. Keep handing off only the kinds of task where it wins.
+
+**Measured 2026-10** on single short tasks — a test run, a build, a code search, a docs check and a
+5,000-line test log — with Opus as the decide tier, Sonnet as the build tier and Haiku helpers, every
+answer correct:
+- the helpers' own cost was $0.005–0.01 a task;
+- handing off saved the decide tier about 5% a task, and cost the build tier the same or up to 25%
+  more;
+- every handoff was 15–50 seconds slower;
+- both main models filtered large output well on their own, so even the 5,000-line log gained little.
+
+A session's cost was mostly its fixed context, re-read every turn, not the output it read. The case
+for the decide tier rests on what a single task cannot show: in a long session, output read stays in
+context and is paid for on every later turn. That has not been measured yet.
+
+**The skill loads only when something points to it.** With no pointer, sessions given these tasks
+handed off once in 19; with one line in the project's instructions, eight times in ten. The pointer is
+the line in the `AGENTS.md` template (senior-engineering's `references/project-knowledge.md`).
 
 ## Setup
 

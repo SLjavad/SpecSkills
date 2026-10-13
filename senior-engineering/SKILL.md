@@ -41,7 +41,7 @@ the task touches, not all of them.
 | Setting up a project, its docs, or its `AGENTS.md` | `references/project-knowledge.md` |
 | Starting a new project or a major feature | the `spec-driven` skill |
 | Changing a project that has living specs (`docs/specs/`) | the `spec-driven` skill — a small change amends the living specs in the same edit; anything larger opens a change folder |
-| Running builds and tests, searching code, reading long logs or checking docs, where the output is large and needs no judgment | the `work-orchestrator` skill, where installed — it hands that reading to a cheaper helper |
+| Running builds and tests, searching code, reading long logs or checking docs, where the work needs no judgment | the `work-orchestrator` skill, where installed — its routing rule decides, by the session's tier, which of that reading goes to a cheaper helper |
 
 ## Non-negotiables
 
