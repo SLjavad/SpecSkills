@@ -82,12 +82,11 @@ The project's ADR fixes which rings exist; add none it did not choose. The commo
 - **Each feature keeps its command, handler and input validation together**, in one folder.
 - **A handler orchestrates and does not decide**: authorize, load, call domain behaviour, save,
   publish. A business rule in a handler is in the wrong ring (`design.md` "Rich domain model").
-- **Input is a command or query of plain data; output is a plain result.** The driving adapter maps
-  the result to its delivery format. Martin's output port and presenter earn their place only where
-  one use case serves several delivery formats that shape the result differently; otherwise return
-  the result.
-- **One use case, one transaction.** The handler, or the pipeline around it, commits once; a port
-  never commits behind the use case's back.
+- **Input is a command or query** (`references/patterns/application.md` "Commands and queries");
+  **output is a plain result.** The driving adapter maps the result to its delivery format. Martin's
+  output port and presenter earn their place only where one use case serves several delivery formats
+  that shape the result differently; otherwise return the result.
+- **One use case, one commit** (`application.md` "Unit of work").
 - **A handler never calls another handler.** Logic two use cases share belongs in the domain — an
   entity method or a domain service — and an operation that needs both runs as one use case.
 - **Cross-cutting steps** — input validation, authorization, logging, the transaction — wrap the
@@ -110,19 +109,18 @@ Each kind of check has one home:
 
 ## Persistence
 
+The patterns — repository, the read side, unit of work and the choice of persistence shape — are in
+`references/patterns/application.md`. Clean adds where each part lives:
+
 - **The domain does not reference the ORM.** Mapping lives in the persistence adapter, as the ORM's
   external configuration; no persistence or serialization attributes on domain types.
-- **Choose one write-side port per project, and record it in the ADR:**
-  - a repository per aggregate root, loading and saving the whole aggregate — the default;
-  - or a data-context port the application owns, over the ORM — fewer classes, but the ORM's query
-    semantics leak into the use cases, and the application references the ORM's package. Acceptable
-    when the ADR says so and the ORM is not expected to change; the ORM package is then the one
-    outward reference the application may have, and the architecture tests allow exactly that one.
-- **No generic repository, and no repository for a non-aggregate.** A repository that hands out a
-  composable query object leaks the ORM through the port; it returns aggregates or plain results.
-- **Reads bypass the aggregates.** A query projects straight from the store into its result type
-  through a read port; loading aggregates to return a DTO pays for invariants nobody changes.
-- **Don't wrap the ORM's unit of work in another one.** The port exposes one way to commit.
+- **The default shape is a port in front of persistence**: the repositories and the one way to commit
+  are ports the application owns, implemented in the persistence adapter.
+- **The use case using the ORM directly** is allowed in a Clean module only when the ADR says so and
+  the ORM is not expected to change. The ORM package is then the one outward reference the
+  application may have, and the architecture tests allow exactly that one.
+- **Read ports live in the application ring** beside the queries that use them; their implementations
+  — projections, hand-written SQL — live in the persistence adapter.
 
 ## Mapping between rings
 
@@ -139,9 +137,9 @@ boundary for every operation is the most common Clean over-engineering.
 ## Errors
 
 The domain fails fast on a broken invariant and returns a typed result for an expected business
-outcome (`design.md`, one error convention). The driving adapter translates both into its delivery
-format — a status code, a problem response, a rejected message. The domain and the use cases never
-know a status code.
+outcome (`design.md`, one error convention; `application.md` "Result type"). The driving adapter
+translates both into its delivery format — a status code, a problem response, a rejected message. The
+domain and the use cases never know a status code.
 
 ## Lighter boundaries
 
