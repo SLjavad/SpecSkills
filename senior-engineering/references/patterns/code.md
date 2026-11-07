@@ -101,8 +101,8 @@ Chain of responsibility, as most code meets it: middleware, request pipelines, h
 
 - **Problem**: one operation, several interchangeable algorithms chosen at run time — pricing per
   market, an export format, a routing rule.
-- **Earns its place** at the third variant, or at the second when the variants change for different
-  reasons or belong to different owners (`design.md` open/closed).
+- **Earns its place** once the variants are several and the branch keeps growing, or as soon as two
+  variants change for different reasons or belong to different owners (`design.md` open/closed).
 - **Shape**: an interface for the algorithm, one implementation per variant, and the selection in one
   place. Where the language has function values, a strategy can be a function — it needs no class.
 - **Misuse**: a strategy interface with one implementation; strategies that know about each other;
