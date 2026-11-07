@@ -26,8 +26,8 @@ row per dependency; each column is a decision, and "none" is a valid, stated ans
 
 | Dependency | Timeout | Retry | Idempotent? | Breaker | Bulkhead | When it fails, the user sees |
 |---|---|---|---|---|---|---|
-| payment provider | 5 s | no — not idempotent without a key | with key | yes | own pool | "payment pending", reconciled later |
-| product search | 800 ms | 1, with jitter | yes | yes | own pool | cached results, marked as possibly stale |
+| payment provider | `<from its measured latency>` | no — not idempotent without a key | with key | yes | own pool | "payment pending", reconciled later |
+| product search | `<from its measured latency>` | `<attempts>`, with jitter | yes | yes | own pool | cached results, marked as possibly stale |
 
 - **The last column is the decision that matters.** A failure the design never answered becomes a
   stack trace, a hung request or a silent wrong answer.
@@ -40,8 +40,8 @@ row per dependency; each column is a decision, and "none" is a valid, stated ans
   default is usually infinite or minutes long. A call without one holds a thread, a connection and the
   caller's request until something else gives up.
 - **Choose it from the dependency's measured latency**: the percentile that matches the false-timeout
-  rate you accept (a timeout at p99.9 fails one healthy call in a thousand), plus padding for the
-  network. A guessed round number is a bug waiting for load.
+  rate you accept — a timeout at a given percentile fails the share of healthy calls slower than it —
+  plus padding for the network. A guessed round number is a bug waiting for load.
 - **Propagate the deadline.** A call made while serving a request gets the time that request has left,
   minus a margin — not a fresh, fixed timeout. Work whose deadline has passed is skipped; nobody is
   waiting for its answer.
@@ -59,10 +59,11 @@ with brief, transient faults and make overload worse.
 - **Retry only what is safe to repeat** — a read, a naturally idempotent write, or a write carrying an
   idempotency key the receiver honours (`design.md` "Concurrency and idempotency"). A timed-out
   payment may have succeeded; retrying it blindly charges twice.
-- **Retry at one layer.** Three attempts at each of five layers is up to 243 calls at the bottom for
-  one user action. Pick the layer closest to the failing dependency; the layers above do not retry.
-- **Back off exponentially, with jitter, up to a cap**, and stop after a small number of attempts —
-  typically two or three. Without jitter, every client retries in step and the recovering dependency
+- **Retry at one layer.** Attempts multiply across layers: every layer that retries multiplies the
+  calls the bottom receives for one user action. Pick the layer closest to the failing dependency;
+  the layers above do not retry.
+- **Back off exponentially, with jitter, up to a cap**, and stop after a small number of attempts,
+  recorded per dependency. Without jitter, every client retries in step and the recovering dependency
   receives synchronized waves.
 - **Honour the server's answer**: a `Retry-After` is a minimum wait, and an overload response means
   back off, not try harder.
