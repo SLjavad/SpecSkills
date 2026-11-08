@@ -86,28 +86,42 @@ the same as a service's; only the deployment is shared.
 
 ## Commands between modules
 
-Each module commits its own transaction; a synchronous command from inside one module's command handler
-to another module would commit one side and leave the other to chance — no outbox, no retry, no
-duplicate protection — and would couple the caller to the other module's availability.
+Each module commits its own transaction, so a command to another module never commits together with
+the caller's change. It crosses in one of two ways:
 
-| Situation | How |
+| The caller | How |
 |---|---|
-| Another module must **react** to a change | an integration event, published through an outbox in the same transaction as the change (`references/architecture/event-driven.md`) |
-| A **business process** spans modules in steps | a process manager (saga) sends each module its command; each step is one local transaction, failures are compensated |
-| The **entry point** — an endpoint, a job, a UI — runs one module's use case | the driving adapter calls that module's contract; that is not one module calling another |
-| A module's command handler calls another module's command | **not allowed** |
+| needs the result to answer now — the charge must succeed before the booking is confirmed | a **synchronous command** through the other module's contract, under the rules below |
+| only needs the other module to react, now or later | an **integration event**, published through an outbox in the same transaction as the change (`references/architecture/event-driven.md`) |
 
-- **"I need the other module's answer before I can decide"** is a process, not a call: reserve in a
-  pending state, let the other module act, then confirm or release. The process manager may send its
-  commands synchronously when a user waits for the result, as long as no module's transaction is open
-  while it waits and the process records its state, so a crash resumes or compensates.
+A synchronous command:
+
+- **carries an idempotency key** — a unique identifier the caller creates once per intended change.
+  The receiver stores the key with its change in one transaction and answers a repeat with the first
+  result, so resending is always safe.
+- **is never sent while the caller's transaction is open.** The caller first commits its own change
+  in a pending state that holds the key — `PendingPayment` — then sends the command, then records the
+  outcome in a second transaction.
+- **has three outcomes, each handled**: done — the caller confirms; refused for a business reason —
+  the caller moves to its failure state and compensates any step already done; unknown — a timeout or
+  a crash — the caller stays pending.
+- **is settled by a reconciliation job when it stays pending**: the job resends the command with the
+  same key, which returns the original result if it already ran, and escalates what is still pending
+  at its deadline.
+
+- **A process of several steps** repeats these rules per step, compensating the finished steps in
+  reverse order when a later one is refused; where such processes grow long, use a saga
+  (`event-driven.md`).
+- **The entry point** — an endpoint, a job, a UI — calling one module's contract is not one module
+  calling another; it follows the same rules only when it also changes its own state.
 - **No transaction spans two modules**, even in one database. It couples their data and stops working
   the day one module is split out. If two modules truly must change atomically every time, they are
   one module.
 
 ## Failure without a shared transaction
 
-Each step commits locally; failures are handled by kind:
+When the change travels as an integration event, each step commits locally and failures are handled
+by kind:
 
 | Failure | Handling |
 |---|---|
@@ -162,7 +176,8 @@ Treat each as a review finding:
 - a join, a view or a foreign key across modules' tables;
 - a module reading another's tables "just for a report";
 - a contract that returns entities, or mirrors one module's internal model;
-- a module's command handler calling another module's command;
+- a command to another module without an idempotency key, or sent while the caller's transaction is
+  open;
 - a transaction spanning two modules;
 - cycles between modules, or one module that every other one depends on;
 - a shared kernel that keeps growing, or a `Common` package;
@@ -176,8 +191,8 @@ When a stated need makes one module a service (`references/architecture/microser
   to a broker — the outbox and the idempotent consumers already handle the delivery;
 - **its schema moves to its own database**, which is a move, not a redesign, because nobody else
   reads it;
-- **synchronous queries become network calls**, now with timeouts, retries and breakers
-  (`references/patterns/resilience.md`) — review each one, and replace the hot ones with local copies
-  fed by events.
+- **synchronous queries and commands become network calls**, now with timeouts, retries and breakers
+  (`references/patterns/resilience.md`) — review each one, and replace the hot queries with local
+  copies fed by events.
 
 A module that kept these rules splits in steps; a module that broke them has to be redesigned first.
