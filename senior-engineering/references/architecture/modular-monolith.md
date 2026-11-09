@@ -3,7 +3,7 @@
 Read when the project's architecture ADR chose a modular monolith, when a monolith is being split into
 modules, or when a module is about to become a service. It adds the rules between modules; inside a
 module, its own style applies (`references/architecture/clean.md` or
-`references/architecture/vertical-slice.md`), and `references/design.md` applies throughout.
+`references/architecture/vertical-slice.md`), and `references/principles/design.md` applies throughout.
 
 A modular monolith is one deployable unit made of modules with hard boundaries: each module owns its
 behaviour and its data, and the others reach it only through its public contract. The boundaries are
@@ -40,9 +40,9 @@ the same as a service's; only the deployment is shared.
 
 ## What a module is
 
-- **A business capability, ideally one bounded context** — Bookings, Payments, Catalogue — with its own
-  language and model (`references/architecture/ddd-strategic.md`). Not a technical layer, and not one
-  entity: a module per table is a distributed data model in one process.
+- **A business capability, ideally one bounded context** — Orders, Payments, Catalogue — with its
+  own language and model (`references/architecture/ddd-strategic.md`). Not a technical layer, and not
+  one entity: a module per table is a distributed data model in one process.
 - **High cohesion inside, low coupling between.** If two modules change together for most features, or
   one cannot do anything without the other's data, the boundary is in the wrong place.
 - **Each module chooses its internal style** — Clean for a core with complex rules, slices for a
@@ -76,9 +76,9 @@ the same as a service's; only the deployment is shared.
 
 ## Queries between modules
 
-- **A module may query another synchronously, through its contract** — `Catalogue.getRoomSummary(id)`
-  — because a query changes nothing: if it fails, the caller retries or fails the request, and
-  nothing is left half done.
+- **A module may query another synchronously, through its contract** —
+  `Catalogue.getProductSummary(id)` — because a query changes nothing: if it fails, the caller retries
+  or fails the request, and nothing is left half done.
 - **Mind the coupling it still creates**: the caller now depends on the other module being up and
   fast. For data read constantly, keep a local copy updated by the owner's events instead.
 - **Never a query that changes state** — a "get" that also records or reserves is a command and
@@ -91,7 +91,7 @@ the caller's change. It crosses in one of two ways:
 
 | The caller | How |
 |---|---|
-| needs the result to answer now — the charge must succeed before the booking is confirmed | a **synchronous command** through the other module's contract, under the rules below |
+| needs the result to answer now — the charge must succeed before the order is confirmed | a **synchronous command** through the other module's contract, under the rules below |
 | only needs the other module to react, now or later | an **integration event**, published through an outbox in the same transaction as the change (`references/architecture/event-driven.md`) |
 
 A synchronous command:

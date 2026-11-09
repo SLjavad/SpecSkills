@@ -3,7 +3,7 @@
 Read when a design adds a cache at any layer, when a read is too slow or a dependency too loaded, and
 when a review finds a cache. A cache is a copy of data that is allowed to be wrong for a while: every
 cache is a decision about staleness, a new dependency and a security boundary, not a performance
-setting. `references/design.md` "Balance" governs — a cache names a measured problem.
+setting. `references/principles/design.md` "Balance" governs — a cache names a measured problem.
 
 ## Contents
 - Decide before caching
@@ -154,9 +154,9 @@ setting. `references/design.md` "Balance" governs — a cache names a measured p
 
 ## What not to cache
 
-- **A command never decides from cached data.** A balance, a stock level or a free seat may be cached
-  for display; the decision to withdraw, sell or book reads the store and is protected by an optimistic
-  concurrency token or a constraint (`design.md` "Concurrency and idempotency").
+- **A command never decides from cached data.** A balance or a stock level may be cached for display;
+  the decision to withdraw or sell reads the store and is protected by an optimistic concurrency token
+  or a constraint (`design.md` "Concurrency and idempotency").
 - **Aggregates loaded for a write** come from the store, never from a cache — a write based on a
   stale copy is a lost update.
 - **Data with a low hit rate, cheap queries, and data that must be exact for every reader** — a cache
@@ -166,7 +166,7 @@ setting. `references/design.md` "Balance" governs — a cache names a measured p
 
 ## Testing and observing
 
-- **Tests** run against the real cache in a container (`references/testing.md`) and prove:
+- **Tests** run against the real cache in a container (`references/quality/testing.md`) and prove:
   - a write is visible after the invalidation, and the write–read race does not leave the old value;
   - two tenants or users with the same request never see each other's entry;
   - with the cache down, the use case still answers — from the store, within its limits;

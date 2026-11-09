@@ -34,7 +34,7 @@ instead of the whole bundle. That selective loading is where the token saving co
 
 ## Size and sharding rules
 
-- **One topic per file**, named for its topic: `booking-cancellation.md`, never `part-2.md`.
+- **One topic per file**, named for its topic: `order-cancellation.md`, never `part-2.md`.
 - **Target 80–200 lines; hard cap 300.** A file over 100 lines opens with a contents list, so a partial
   read still shows everything it holds.
 - **Author topic files from the start.** A monolith chopped up afterwards produces fragments that cut
@@ -55,10 +55,10 @@ Every document opens with its title and a short header, so its first lines tell 
 read on. A plan step is the one exception for status: its plan's progress table holds it.
 
 ```markdown
-# Booking — functional requirements
+# Ordering — functional requirements
 Status: approved · Owner: lead · IDs: FR-010–FR-021
-Summary: What guests and agents can do with a booking — create, change, cancel, view.
-Related: docs/specs/03-tech/domain/booking.md · docs/specs/03-tech/flows/FL-03-cancel-booking.md
+Summary: What customers and support agents can do with an order — place, change, cancel, view.
+Related: docs/specs/03-tech/domain/order.md · docs/specs/03-tech/flows/FL-03-cancel-order.md
 ```
 
 - **Stable ids for everything that gets cited**: `FR-` and `NFR-` (three digits), `ADR-` (four), `Q-`,
@@ -69,7 +69,7 @@ Related: docs/specs/03-tech/domain/booking.md · docs/specs/03-tech/flows/FL-03-
   findings `F-` inside a change (`CH-007/S-02`, `CH-007/F-12`), reviews `R-` inside a change,
   acceptance criteria under their requirement (`AC-014.1`).
 - **Cross-reference by id plus the path from the repository root** —
-  `FR-014` (`docs/specs/02-requirements/functional/booking.md`) — never "the section above", never a
+  `FR-014` (`docs/specs/02-requirements/functional/ordering.md`) — never "the section above", never a
   section number, never `../..`. The same string then refers to a file everywhere, so one search finds
   every reference when a file moves, and no agent has to work out where a relative path lands. Cite a
   change by its id, since its folder moves when it is archived.

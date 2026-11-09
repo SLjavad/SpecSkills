@@ -3,7 +3,7 @@
 Read when a design draws or changes the boundary of a module or service, when the system integrates
 with another context or an outside system, or when one word in the domain turns out to mean two
 things. Tactical design — entities, value objects, aggregates, domain events — is in
-`references/design.md`; this file decides where one model ends and the next begins.
+`references/principles/design.md`; this file decides where one model ends and the next begins.
 
 Domain-driven design (Evans) splits a large domain into parts that each have one model and one
 language, and makes the relationships between those parts explicit. A boundary is a design decision,
@@ -152,7 +152,7 @@ legacy system, or another context whose model would distort its own. It is the a
 - **It is the only place that knows the upstream model.** When the upstream changes, one place
   changes; when the upstream is replaced, the layer is rewritten and the context is not.
 - **It may do more than map**: combine several upstream calls into one concept, cache slow reference
-  data (`references/caching.md`), and apply the resilience decisions
+  data (`references/patterns/caching.md`), and apply the resilience decisions
   (`references/patterns/resilience.md`).
 - **It holds no business rule** of the downstream context; those stay in its domain.
 - **Replacing a legacy system piece by piece** (strangler fig): put the layer in front, move one

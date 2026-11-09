@@ -88,10 +88,10 @@ capability:
 ```markdown
 ### FR-014 — Free cancellation window
 Must · Source: C-03, J-02 · Verification: test
-When a guest cancels more than 24 hours before check-in, the system shall refund the full amount.
-- AC-014.1 Check-in in 30 h → full refund; booking Cancelled.
-- AC-014.2 Check-in in exactly 24 h → the fee applies (FR-015).
-Fails: refund provider down → booking stays Paid; the guest sees "try again later"; nothing charged.
+When a customer cancels more than 24 hours before dispatch, the system shall refund the full amount.
+- AC-014.1 Dispatch in 30 h → full refund; order Cancelled.
+- AC-014.2 Dispatch in exactly 24 h → the fee applies (FR-015).
+Fails: refund provider down → order stays Paid; the customer sees "try again later"; nothing charged.
 ```
 
 NFRs take the same shape with a target number, a measurement and a consequence if missed — only for the
@@ -137,8 +137,8 @@ first, each step verifiable on its own, no decisions. One compact block per step
 ```markdown
 ### S-03 — Cancel within the free window
 Implements: FR-014, FR-015 · Depends on: S-02 · Status: planned
-Files: src/Booking/… · tests/Booking/… · Read first: tech.md (Booking, FL-02), requirements.md (C-03)
-Latitude: internal structure and naming within Booking
+Files: src/Orders/… · tests/Orders/… · Read first: tech.md (Order, FL-02), requirements.md (C-03)
+Latitude: internal structure and naming within Orders
 Tests: business — the 24 h boundary, both sides; failure — refund provider down (Testcontainers mock)
 Verification: `<test command>` → the six cancellation tests pass, including WindowBoundaryAt24h
 Result:

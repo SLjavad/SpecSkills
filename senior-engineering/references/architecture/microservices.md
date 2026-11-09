@@ -111,7 +111,7 @@ The defining property: any service can be released without releasing another (Ne
     merges the answers, returning what it has when an optional part fails;
   - data read on every request is kept as a local copy fed by the owner's events instead;
   - a chain that cannot be avoided is recorded in an ADR, kept short, and passes its deadline down.
-- **Events are business facts** — `BookingCancelled`, with the data a consumer needs — not database
+- **Events are business facts** — `OrderCancelled`, with the data a consumer needs — not database
   entities, not change-data dumps, not generic "entity updated" messages. Each is self-contained and
   does not depend on the order of other events unless the contract says so.
 - **The broker carries messages, not logic** — smart endpoints, dumb pipes (Lewis and Fowler).
@@ -139,7 +139,7 @@ The defining property: any service can be released without releasing another (Ne
 - **Services authenticate each other** — mutual TLS, workload identities or signed service tokens —
   and the network is not trusted because it is internal.
 - **The gateway validates the caller's token; each service authorizes its own operations** — may this
-  caller cancel this booking — because only the service knows the rule, and a call that bypasses the
+  caller cancel this order — because only the service knows the rule, and a call that bypasses the
   gateway must not bypass the rule.
 - **The identity reaches the service in a form it can verify** — the caller's token passed on, or an
   internal token the gateway issues in exchange, checked locally against the issuer's keys — never a
@@ -168,8 +168,8 @@ The defining property: any service can be released without releasing another (Ne
 ## Testing
 
 - **Service tests carry most of the weight**: each service through its API, with its own database and
-  broker in containers (`references/testing.md`), and the services it calls replaced by stubs at the
-  network boundary.
+  broker in containers (`references/quality/testing.md`), and the services it calls replaced by stubs
+  at the network boundary.
 - **Consumer-driven contract tests**: each consumer writes down the requests it sends and the fields
   it reads from each answer; the provider's pipeline checks every consumer's contract against the
   provider on each change. A change that breaks a consumer fails the provider's build before it

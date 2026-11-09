@@ -1,9 +1,9 @@
 # Code patterns
 
 Read when a design reaches for one of these patterns, or a review finds one. You know what each
-pattern is; this file says when it earns its place and how it goes wrong. `references/design.md`
-"Balance" governs every entry: a pattern names a present need — a second real case, a boundary, a fake
-a test cannot do without — never "flexibility".
+pattern is; this file says when it earns its place and how it goes wrong.
+`references/principles/design.md` "Balance" governs every entry: a pattern names a present need — a
+second real case, a boundary, a fake a test cannot do without — never "flexibility".
 
 ## Contents
 - Composition, interfaces and inheritance
@@ -74,7 +74,7 @@ class Notifier { constructor(channel: Channel); notify(m) { channel.send(m) } } 
 - **Earns its place** when the added behaviour is a separate concern with its own reason to change, or
   must apply to several implementations of one interface.
 - **Shape**: implements the same interface, holds the inner instance, works before or after
-  delegating: `CachingBookingStore(inner: BookingStore)`. The stack is composed in one place, the
+  delegating: `CachingOrderStore(inner: OrderStore)`. The stack is composed in one place, the
   composition root, and its order is deliberate — say why caching sits outside retry, or inside.
 - **Misuse**: a decorator that changes what the result means — it no longer honours the contract it
   implements; stacks so deep a reader cannot tell what runs; a decorator that patches a bug in the
@@ -127,7 +127,7 @@ Chain of responsibility, as most code meets it: middleware, request pipelines, h
   invariants, or work a constructor must not do.
 - **Earns its place** when creation chooses between implementations, needs dependencies the caller
   should not know, or can fail as a business outcome: a static factory on the entity —
-  `Booking.create(…)` returning the booking or the reason it cannot exist.
+  `Order.create(…)` returning the order or the reason it cannot exist.
 - **Misuse**: a factory that only calls the constructor; an abstract factory with one family of
   products; a factory that pulls objects out of the dependency-injection container — a service
   locator under another name.

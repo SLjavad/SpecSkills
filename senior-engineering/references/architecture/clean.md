@@ -1,8 +1,8 @@
 # Clean Architecture
 
 Read when the project's architecture ADR chose Clean Architecture — for the whole system, or for one
-module of a modular monolith. It adds the rules of this style to `references/design.md`, which still
-applies in full: the dependency rule, the rich domain model, failure design and balance.
+module of a modular monolith. It adds the rules of this style to `references/principles/design.md`,
+which still applies in full: the dependency rule, the rich domain model, failure design and balance.
 
 Clean Architecture (Robert C. Martin) shares its core with Hexagonal (ports and adapters) and Onion:
 policy at the centre, mechanism outside, every dependency pointing inward. This file uses Clean's
@@ -61,7 +61,7 @@ The project's ADR fixes which rings exist; add none it did not choose. The commo
 - **Source dependencies point inward; control flow does not have to.** A use case that must reach the
   database calls a port it owns, and the persistence adapter implements that port: the call goes
   outward, the dependency points inward.
-- **A port lives with the code that needs it and is named for the need** — `BookingStore`,
+- **A port lives with the code that needs it and is named for the need** — `OrderStore`,
   `PaymentGateway`, `Clock` — not for a technology. The technology names the adapter.
 - **Nothing outer crosses inward in its own format.** No request object, ORM entity or provider DTO
   enters a use case; the adapter converts it to the command, or to a type the domain owns.
@@ -75,7 +75,7 @@ The project's ADR fixes which rings exist; add none it did not choose. The commo
 
 ## Use cases
 
-- **One use case is one operation in the domain's language** — `CancelBooking`, `IssueRefund` — not
+- **One use case is one operation in the domain's language** — `CancelOrder`, `IssueRefund` — not
   create/read/update/delete on a table. The application ring's top level lists the use cases, grouped
   by feature, so the structure says what the system does ("screaming architecture"); a top level of
   `Services/`, `Helpers/` and `Models/` says only how it is built.
@@ -105,7 +105,7 @@ Each kind of check has one home:
   port, and backed by a database constraint, since a read-then-write check is a race (`design.md`
   "Concurrency and idempotency").
 - **Authentication** at the driving adapter; **authorization** of the operation — may this caller
-  cancel this booking — in the use case, where it cannot be bypassed by a second entry point.
+  cancel this order — in the use case, where it cannot be bypassed by a second entry point.
 
 ## Persistence
 
@@ -159,8 +159,9 @@ Record which one the module uses in the ADR; either is Clean, neither is "Clean 
 - **Domain**: unit tests on entities and value objects — no doubles, because nothing there does I/O.
 - **Use cases**: tests through the handler with the ports faked, for the decisions and the
   orchestration.
-- **Adapters**: integration tests against the real dependency in a container (`references/testing.md`)
-  — the mapping, the queries, the constraints are exactly what a fake hides.
+- **Adapters**: integration tests against the real dependency in a container
+  (`references/quality/testing.md`) — the mapping, the queries, the constraints are exactly what a
+  fake hides.
 - **End to end**: a few through the driving adapter, for the wiring.
 - **Architecture tests** for this style, failing the build (`design.md` "Enforce the structure"):
   - the domain references nothing outside the language and approved pure libraries;

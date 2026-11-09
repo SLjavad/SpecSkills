@@ -183,7 +183,7 @@ Assets: <data classes> · Actors: <roles, anonymous callers, other services> · 
 
 | ID | Element | STRIDE | Threat | Likelihood × impact | Mitigation | Requirement / ASVS | Test |
 |---|---|---|---|---|---|---|---|
-| TH-01 | booking endpoint | E | guest reads another guest's booking by id | high × high | object-level ownership check | NFR-007 | authz matrix test |
+| TH-01 | order endpoint | E | customer reads another customer's order by id | high × high | object-level ownership check | NFR-007 | authz matrix test |
 
 Accepted risks: <each with an owner and a revisit date>
 ```

@@ -2,9 +2,10 @@
 
 Read when code calls something outside its process — a database, another service, a provider's API, a
 message broker — or accepts load it must survive, and when a review finds one of these patterns. A
-slow or failing dependency is one of the failure properties a design must decide (`references/design.md`
-"Concurrency and idempotency"); this file says how. The resilience library, if any, is the stack
-playbook's choice. Caching is its own topic (`references/caching.md`).
+slow or failing dependency is one of the failure properties a design must decide
+(`references/principles/design.md` "Concurrency and idempotency"); this file says how. The resilience
+library, if any, is the stack playbook's choice. Caching is its own topic
+(`references/patterns/caching.md`).
 
 ## Contents
 - Decide per dependency
@@ -161,9 +162,10 @@ moved aside and alerted on, never retried forever while the queue behind it wait
 ## Testing and observing
 
 - **Inject the failure for real.** Integration tests run the dependency in a container behind a
-  fault-injecting proxy or a stub server that delays, drops and errors (`references/testing.md`), and
-  prove: the timeout fires, the retry stops at its limit and only for retryable errors, the breaker
-  opens and recovers, the bulkhead rejects, the fallback's answer is the decided one.
+  fault-injecting proxy or a stub server that delays, drops and errors
+  (`references/quality/testing.md`), and prove: the timeout fires, the retry stops at its limit and
+  only for retryable errors, the breaker opens and recovers, the bulkhead rejects, the fallback's
+  answer is the decided one.
 - **Test the duplicate**: the retried write, the redelivered message, applied twice, leave one effect.
 - **Every retry, breaker state change, rejection and fallback is logged and counted**, tagged with the
   dependency. Without that, resilience turns a visible outage into an invisible degradation.
@@ -172,7 +174,7 @@ moved aside and alerted on, never retried forever while the queue behind it wait
 
 - **Hedging** — sending a second request before the first answers, for tail latency. Only for
   idempotent reads with a measured tail problem; it adds load by design.
-- **Cache-aside and stale-while-revalidate** — `references/caching.md`.
+- **Cache-aside and stale-while-revalidate** — `references/patterns/caching.md`.
 - **Health endpoints, liveness and readiness** — operations, recorded with the deployment; a readiness
   check that fails under load can restart a struggling service into a worse state.
 - **Compensation and sagas** — `references/architecture/event-driven.md`.

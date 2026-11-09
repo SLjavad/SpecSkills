@@ -178,7 +178,7 @@ Status: in progress | submitted | blocked · Tool and model: <…> · Base: <com
 ~~~markdown
 # Review <step id> — round N
 Verdict: changes-requested | answered · Reviewed: <commit> · Verification re-run: <commands and result>
-## Findings — in the finding format of senior-engineering references/review.md ("Writing findings")
+## Findings — in senior-engineering's references/quality/review.md format ("Writing findings")
 ## Closed from earlier rounds — each with its outcome
 ## Deferred — where each one went
 ## Answers to the report's questions

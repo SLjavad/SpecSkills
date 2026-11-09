@@ -71,7 +71,7 @@ and record every answer immediately, in the register and in the documents it cha
 - **Example mapping**, per capability: rules become requirements, concrete examples become acceptance
   criteria, and unanswered points become `Q-` entries. Many questions means the capability is not ready;
   many rules means it is too big and should split.
-- **Ask for the worked example.** "Show me one real booking, with its numbers" exposes rounding, time
+- **Ask for the worked example.** "Show me one real order, with its numbers" exposes rounding, time
   zones and edge cases faster than any abstract question.
 - **Assumption mapping**: rate each assumption by importance and by the evidence behind it. Validate
   the important, weakly evidenced ones first.
@@ -88,7 +88,7 @@ ADR or the understanding file.
 `docs/discovery/proposals.md` holds every idea that goes beyond the approved scope — a product
 improvement, a creative alternative, an optimization, a refactor, a new dependency, a better process —
 from any agent, at any phase. Each entry, `### P-NNN — <title>`, uses the one proposal format in
-senior-engineering's `references/review.md` ("Improvements are proposals").
+senior-engineering's `references/quality/review.md` ("Improvements are proposals").
 
 - **`idea`** is noted but not yet worked up; it becomes `proposed` once its fields are filled in.
 - **Hard rule: nothing in this register is built until the user accepts it.** An accepted proposal

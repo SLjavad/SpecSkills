@@ -88,9 +88,9 @@ name; derive them from its requirements, NFRs, architecture, threat model and fa
 the ones that carry real risk. What that list holds depends on the system. Subjects that often matter —
 examples, not a checklist:
 
-- **Concurrency** — lost updates and races. *Example:* release 50 bookings for the last seat at once
-  through a barrier against the real database, repeatedly: exactly one success, 49 conflicts, inventory
-  never below zero.
+- **Concurrency** — lost updates and races. *Example:* place 50 orders for the last item in stock
+  at once through a barrier against the real database, repeatedly: exactly one success, 49 conflicts,
+  inventory never below zero.
 - **Idempotency and duplicates** — the same request or idempotency key sent sequentially and
   concurrently; the same message delivered twice; a crash between the side effect and the
   acknowledgement.

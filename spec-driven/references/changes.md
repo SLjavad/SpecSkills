@@ -72,15 +72,15 @@ Deltas are written against the living spec, item by item, by id:
 
 ## MODIFIED
 ### FR-014 — Free cancellation window
-Was: free until 24 h before check-in.
+Was: free until 24 h before dispatch.
 <the complete requirement block, restated in full>
 
 ## REMOVED
-### FR-009 — Manual rate override
+### FR-009 — Manual price override
 Reason: replaced by FR-031.
 
 ## RENAMED
-FR-011: "Booking hold" → "Tentative booking"
+FR-011: "Basket hold" → "Reserved basket"
 ```
 
 - **MODIFIED restates the whole item**, so merging means replacing, not patching.

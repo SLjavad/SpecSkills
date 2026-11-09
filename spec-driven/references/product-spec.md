@@ -91,7 +91,7 @@ One topic per file, each opening with the standard header (status, summary, ids,
 ## The glossary is not optional
 
 It is the highest-value file for handoff and the one most often dropped. Two words for one concept —
-"reservation" and "booking", "agency" and "tenant" — reliably produce two models of it, two sets of
+"order" and "purchase", "client" and "customer" — reliably produce two models of it, two sets of
 names, and a bug at the seam. Fix the vocabulary here, in the product's own language, and the tech
 spec inherits it. Include the terms the users themselves use — in their own language where that
 differs — even where they are imprecise, and note the precise meaning this project gives them. The

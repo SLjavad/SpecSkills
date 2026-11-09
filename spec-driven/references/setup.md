@@ -79,8 +79,9 @@ and a security review.
 
 ## AGENTS.md and CLAUDE.md
 
-Create or update both from the templates in senior-engineering's `references/project-knowledge.md`,
-and write `docs/engineering/principles.md` from the same file, for any agent without these skills.
+Create or update both from the templates in senior-engineering's
+`references/project/project-knowledge.md`, and write `docs/engineering/principles.md` from the same
+file, for any agent without these skills.
 
 - **Ask for the project's own rules** in the first batch of questions — the kinds the template lists
   under "Rules for this project" — and record each there, with its reason. The skills set none of
@@ -145,7 +146,7 @@ Summary: The living specification — what the system is, what it must do, how i
 |---|---|---|
 | docs/specs/glossary.md | every domain term, defined once | — |
 | docs/specs/01-product/overview.md | summary, problem, value, success, scale | — |
-| docs/specs/02-requirements/functional/booking.md | booking capability requirements | FR-010–FR-021 |
+| docs/specs/02-requirements/functional/ordering.md | ordering capability requirements | FR-010–FR-021 |
 ```
 
 List every file, one line each, with its path from the repository root. Collections — flows, rules,

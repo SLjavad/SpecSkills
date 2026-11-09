@@ -1,8 +1,8 @@
 # Vertical Slice Architecture
 
 Read when the project's architecture ADR chose vertical slices — for the whole system, or for one
-module of a modular monolith. It adds the rules of this style to `references/design.md`, which still
-applies in full: the rich domain model, failure design and balance.
+module of a modular monolith. It adds the rules of this style to `references/principles/design.md`,
+which still applies in full: the rich domain model, failure design and balance.
 
 Vertical slices (Jimmy Bogard) organise code by request instead of by technical layer: each feature
 holds everything from its entry point to its data access, and coupling runs along the axis of change —
@@ -38,7 +38,7 @@ high inside a slice, low between slices.
 
 - **One request, one folder**: the command or query, its handler, its input validation, its data access
   and its endpoint or message consumer, together. The folder tree lists what the system does,
-  grouped by feature — `Bookings/CancelBooking/`, `Bookings/ChangeDates/` — never `Controllers/`,
+  grouped by feature — `Orders/CancelOrder/`, `Orders/ChangeDeliveryDate/` — never `Controllers/`,
   `Services/`, `Repositories/`.
 - **Commands and queries are separate slices** (`references/patterns/application.md` "Commands and
   queries"); a slice that reads and writes is two slices.
@@ -74,10 +74,11 @@ creates (Comartin):
 | **Feature-level helpers** used by related slices only | a shared folder inside that feature | never used from another feature |
 | **A `Common` or `Utils` package** | nowhere | it couples unrelated features through whatever lands in it |
 
-- **Slices share the entity, not the handler.** `CancelBooking` and `ChangeDates` both call `Booking`,
-  whose `ensureChangeable` rule exists once; each handler keeps its own flow, data access and response.
+- **Slices share the entity, not the handler.** `CancelOrder` and `ChangeDeliveryDate` both call
+  `Order`, whose `ensureChangeable` rule exists once; each handler keeps its own flow, data access and
+  response.
 - **Share a model only within one module and one meaning.** When another feature needs the same data
-  for a different purpose — shipping needs a booking's address, not its cancellation rules — it gets
+  for a different purpose — shipping needs an order's address, not its cancellation rules — it gets
   its own model. One entity that every feature in the system changes is a god object
   (`references/architecture/ddd-strategic.md`).
 - **A slice owns the data it writes.** Two unrelated slices changing the same state through different
@@ -100,8 +101,8 @@ A handler calling another slice's handler hides one use case inside another and 
 changes. Instead:
 
 - **Shared rules** go to the domain, which both slices call.
-- **A reaction in another feature** — send the confirmation after a booking — is a domain event the
-  other feature handles (`references/patterns/code.md` "Observer and in-process events").
+- **A reaction in another feature** — send the confirmation after an order is placed — is a domain
+  event the other feature handles (`references/patterns/code.md` "Observer and in-process events").
 - **An operation of another module** goes through that module's public contract
   (`references/architecture/modular-monolith.md`), never through its slices.
 - **One operation that needs both** is one slice that calls the domain for both.
@@ -121,8 +122,8 @@ changes. Instead:
 ## Testing
 
 - **Slice tests carry most of the weight**: through the slice's entry point, against the real database
-  and dependencies in containers (`references/testing.md`) — they prove the request, the validation,
-  the query and the response together, without mocking the layers a slice does not have.
+  and dependencies in containers (`references/quality/testing.md`) — they prove the request, the
+  validation, the query and the response together, without mocking the layers a slice does not have.
 - **Domain unit tests** for every entity and value object that carries a rule — fast, with no doubles.
 - **Architecture tests**, failing the build (`design.md` "Enforce the structure"):
   - a slice does not reference another slice's types;

@@ -70,7 +70,7 @@ model — it pays the full cost of a domain model and gets none of the benefit, 
 agent produces by default. Treat it as a defect.
 
 - **State changes only through intention-revealing methods** that validate before they mutate —
-  `booking.Cancel(reason, now)`, not `booking.Status = Cancelled`. No public setters on domain state.
+  `order.Cancel(reason, now)`, not `order.Status = Cancelled`. No public setters on domain state.
 - **Valid from creation.** A constructor or factory establishes every invariant, so an invalid entity
   cannot exist. The constructor the ORM uses is private or protected and has no side effects — no
   events raised, no ids generated, no clock read.
@@ -98,7 +98,7 @@ agent produces by default. Treat it as a defect.
 - **Time and randomness are injected**, never read from ambient statics inside the domain, so
   behaviour is deterministic under test — and identifiers too, where a test must predict them.
 - **One error convention per codebase, in the language's idiom.** A broken invariant fails fast — the
-  language's mechanism for bugs. An expected business outcome (slot taken, insufficient funds) is a
+  language's mechanism for bugs. An expected business outcome (out of stock, insufficient funds) is a
   typed result the caller must handle.
 - **Map through the ORM's support for private state** — field access, embedded or complex value
   types, value converters. If the persistence technology cannot map private state, map in the
@@ -166,8 +166,8 @@ effect repeated, a duplicate record someone must clean up, a lost update. A natu
 - **Let the database arbitrate.** A unique constraint decides duplicates; an optimistic concurrency
   token detects a lost update. A read-then-write check in application code is a race.
 - **Commit the dedupe marker and the side effect together**, in one transaction, or the marker lies.
-- **Name the contended resources** — the last seat, the balance, the counter — and choose per resource:
-  optimistic token, pessimistic lock, atomic conditional update, or a single-writer queue.
+- **Name the contended resources** — the last item in stock, the balance, the counter — and choose
+  per resource: optimistic token, pessimistic lock, atomic conditional update, or a single-writer queue.
 - **Never block on asynchronous work** from inside asynchronous code. Bound every pool and queue, and
   say what happens when it is full.
 

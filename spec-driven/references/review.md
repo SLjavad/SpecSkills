@@ -65,10 +65,10 @@ operability, compatibility with existing clients.
 ## Finding format
 
 Every finding — in this phase's review and in a multi-agent task's review alike — uses the one finding
-format in senior-engineering's `references/review.md` ("Writing findings"), with this phase's lenses:
-requirement-gap, conformance, unverified, silent-risk, failure-path and spec-defect. `F-` ids are
-scoped to the change and allocated in one sequence across its task reviews and phase-6 reviews — by the
-lead in multi-agent mode, by the reviewer otherwise. Cite them as `CH-007/F-12`.
+format in senior-engineering's `references/quality/review.md` ("Writing findings"), with this phase's
+lenses: requirement-gap, conformance, unverified, silent-risk, failure-path and spec-defect. `F-` ids
+are scoped to the change and allocated in one sequence across its task reviews and phase-6 reviews —
+by the lead in multi-agent mode, by the reviewer otherwise. Cite them as `CH-007/F-12`.
 
 ## Verifying the requirements
 

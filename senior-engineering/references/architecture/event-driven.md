@@ -251,8 +251,8 @@ applies, and:
 
 ## Testing
 
-- **Against the real broker and database in containers** (`references/testing.md` "Integration tests
-  run every external dependency for real").
+- **Against the real broker and database in containers** (`references/quality/testing.md`
+  "Integration tests run every external dependency for real").
 - **Each consumer against the second copy**: the same message twice, two copies at once, out of
   order, and a crash between the change and the acknowledgment — one effect every time.
 - **The outbox**: a rolled-back change publishes nothing; a relay crash after publishing publishes

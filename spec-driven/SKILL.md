@@ -59,7 +59,8 @@ code**, and never offer to.
 A single long specification is expensive for an agent to load and mostly irrelevant to any one task.
 Every phase writes **a folder of small topic files**, authored that way from the start — each opening
 with its header, cited by stable id, and reachable from `AGENTS.md` in two hops. The rules and the
-`AGENTS.md` and `CLAUDE.md` templates are in `../senior-engineering/references/project-knowledge.md`.
+`AGENTS.md` and `CLAUDE.md` templates are in
+`../senior-engineering/references/project/project-knowledge.md`.
 
 - **Every plan step names the exact files it needs**, so nobody reads the whole bundle.
 - **Each fact is written once; everything else links to it.** A result, a status, a rule or a decision
@@ -72,16 +73,16 @@ Read the files for the current phase, not all of them.
 | Phase | Read |
 |---|---|
 | Small track, any phase | `references/small-track.md` first; it says which parts of each phase file apply |
-| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project-knowledge.md`, `../senior-engineering/references/decision-records.md` for the architecture ADR |
+| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project/project-knowledge.md`, `../senior-engineering/references/project/decision-records.md` for the architecture ADR |
 | 0 — Discovery, and at every gate | `references/discovery.md` |
 | 1 — Product spec | `references/product-spec.md` |
 | 2 — Requirements | `references/requirements.md` |
-| 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../senior-engineering/references/decision-records.md` for ADRs; `../senior-engineering/references/modern-practices.md` for the stack playbook |
+| 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../senior-engineering/references/project/decision-records.md` for ADRs; `../senior-engineering/references/principles/modern-practices.md` for the stack playbook |
 | 4 — Plan | `references/plan.md` |
 | A later change, any phase | `references/changes.md`, with that phase's file |
 | Multi-agent work | `references/multi-agent.md` |
 | 5 — Implementation | the plan step and the files it lists, plus `senior-engineering` |
-| 6 — Review | `references/review.md`, `../senior-engineering/references/review.md`, `../senior-engineering/references/security.md`, `../senior-engineering/references/testing.md` |
+| 6 — Review | `references/review.md`, `../senior-engineering/references/quality/review.md`, `../senior-engineering/references/quality/security.md`, `../senior-engineering/references/quality/testing.md` |
 | 7 — Close | `references/changes.md` |
 
 ## The handoff contract
@@ -136,9 +137,9 @@ keep the number, and say that is what you did.
 - **The requirements contain no solution language either**, and no requirement without a source in the
   product spec. They are the product spec made countable and checkable, not a second draft of it.
 - **The tech spec contains no product decisions and no new requirements.** If writing it surfaces a
-  product question — what should happen when two users claim the same slot — that goes back to phase 1
-  and forward through phase 2. If it surfaces a missing requirement, add it in phase 2 rather than burying
-  it in a design paragraph.
+  product question — what should happen when two customers order the last item — that goes back to
+  phase 1 and forward through phase 2. If it surfaces a missing requirement, add it in phase 2 rather
+  than burying it in a design paragraph.
 - **The plan contains no new decisions at all.** It is an ordering of work already specified. If a step
   needs a decision, the tech spec is incomplete; fix it there.
 

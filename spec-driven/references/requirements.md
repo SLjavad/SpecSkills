@@ -7,8 +7,8 @@ satisfies, the plan implements, and the review checks. These are the files every
 capability or journey in the product spec. If you are writing one with no origin there, either the
 product spec is incomplete — go back and amend it — or you are inventing scope. Say which.
 
-**Hard rule: no solution language.** "The system shall record the guest's nationality" is a
-requirement. "Store nationality as a two-character column" is a tech-spec decision. If a requirement
+**Hard rule: no solution language.** "The system shall record the customer's delivery country" is
+a requirement. "Store the country as a two-character column" is a tech-spec decision. If a requirement
 names a table, framework or algorithm, it is in the wrong document.
 
 Write to `docs/specs/02-requirements/` — or, for a later change, as requirement deltas (`changes.md`);
@@ -48,18 +48,18 @@ criteria are its key examples.
 
 ```markdown
 ### FR-014 — Free cancellation window
-Source: C-03, J-02 (docs/specs/01-product/capabilities.md) · Priority: Must · Actor: Guest
+Source: C-03, J-02 (docs/specs/01-product/capabilities.md) · Priority: Must · Actor: Customer
 Status: proposed | approved | retired
 
-**Statement.** When a guest cancels a booking more than 24 hours before check-in, the system shall
-refund the full amount.
+**Statement.** When a customer cancels an order more than 24 hours before its dispatch, the system
+shall refund the full amount.
 
-**Preconditions.** The booking is paid and not yet checked in.
+**Preconditions.** The order is paid and not yet dispatched.
 
 **Acceptance criteria.**
-- AC-014.1 Given a paid booking with check-in in 30 hours, when the guest cancels, then the full
-  amount is refunded and the booking is Cancelled.
-- AC-014.2 Given a paid booking with check-in in 20 hours, when the guest cancels, then the
+- AC-014.1 Given a paid order with dispatch in 30 hours, when the customer cancels, then the full
+  amount is refunded and the order is Cancelled.
+- AC-014.2 Given a paid order with dispatch in 20 hours, when the customer cancels, then the
   cancellation fee applies (FR-015).
 
 **Failure behaviour.** What happens when it cannot be satisfied: what the actor sees and what they can
@@ -178,10 +178,10 @@ stack ADRs have to cite them by id — that is what stops the stack being chosen
 
 **Every requirement carries a `Verification` field — functional and non-functional alike** — naming
 one method: test | evaluation | probe | exercise | structural check | dedicated plan | not verified.
-What each proves and what it records is in senior-engineering's `references/testing.md` ("Choosing the
-verification method"); choose the strongest that can run. A requirement nobody can show is met is
-indistinguishable from one that is not, and a structural check on an FR usually means the requirement
-is not testable as written.
+What each proves and what it records is in senior-engineering's `references/quality/testing.md`
+("Choosing the verification method"); choose the strongest that can run. A requirement nobody can
+show is met is indistinguishable from one that is not, and a structural check on an FR usually means
+the requirement is not testable as written.
 
 **An FR whose only verification is "the code looks right" is unverified.** Reading an implementation and
 agreeing with it is not evidence about behaviour.
@@ -195,7 +195,7 @@ for the items it adds or modifies in its own delta file, and merges those rows h
 ```markdown
 | ID | Requirement | Priority | Tech spec | Components | Plan step |
 |---|---|---|---|---|---|
-| FR-001 | Guest can book a stay | Must | docs/specs/03-tech/flows/FL-01-book-stay.md | BookingService | CH-001/S-04 |
+| FR-001 | Customer can place an order | Must | docs/specs/03-tech/flows/FL-01-place-order.md | OrderService | CH-001/S-04 |
 | NFR-003 | p95 ≤ 300 ms @ 50 rps | Must | docs/specs/03-tech/performance.md | search query, index IX_… | CH-001/S-09 |
 ```
 

@@ -2,8 +2,8 @@
 
 Read when a design decides how use cases receive input, reach storage and report outcomes — or a review
 finds one of these patterns. They sit between the entry points and the domain, in any architecture
-style. `references/design.md` governs: the rich domain model, one error convention, concurrency and
-idempotency, and "Balance" — each pattern names a present need, never "flexibility".
+style. `references/principles/design.md` governs: the rich domain model, one error convention,
+concurrency and idempotency, and "Balance" — each pattern names a present need, never "flexibility".
 
 ## Contents
 - Commands and queries
@@ -18,8 +18,8 @@ idempotency, and "Balance" — each pattern names a present need, never "flexibi
 
 ## Commands and queries
 
-- **A command is one business task, named in the domain's language** — `BookRoom`, `CancelBooking` —
-  not a data change: never `SetReservationStatus`, never `UpdateBooking` with every field optional.
+- **A command is one business task, named in the domain's language** — `PlaceOrder`, `CancelOrder` —
+  not a data change: never `SetOrderStatus`, never `UpdateOrder` with every field optional.
   Its intent is what the handler, the log and the audit trail record.
 - **A command changes state and returns little**: the new identifier, or the outcome of a business
   rule. **A query returns data and changes nothing** — no "get and mark as read", no lazily created
@@ -65,7 +65,7 @@ aggregate's loading rules deserve one home (`design.md`).
 - **One repository per aggregate root, never per table.** It loads and saves the whole aggregate; the
   children of an aggregate have no repository of their own.
 - **Its methods are named for the domain's needs** — `findByReference(reference)`,
-  `findOverlapping(room, period)` — and return aggregates, or plain results for a check such as
+  `findAwaitingShipment(warehouse)` — and return aggregates, or plain results for a check such as
   `existsWithEmail(email)`.
 - **No generic repository** — `Repository<T>` with `getAll`, `find(predicate)`, `update(entity)` for
   every type. It is the ORM restated, with less power; it gives every non-aggregate a repository, and
@@ -77,8 +77,8 @@ aggregate's loading rules deserve one home (`design.md`).
   work, below).
 - **Fakes are simple** because the interface is small: an in-memory collection behind the same
   interface. The real repository is tested against the real database in a container
-  (`references/testing.md`); a fake never proves a query.
-- **Misuse**: a repository method per screen (`getBookingsForDashboardPage`) — that is a read, and
+  (`references/quality/testing.md`); a fake never proves a query.
+- **Misuse**: a repository method per screen (`getOrdersForDashboardPage`) — that is a read, and
   belongs on the read side; business rules inside the repository; a service whose methods only
   forward to a repository.
 - **Simpler**: where the ADR lets the use case use the ORM directly (see "Choosing the persistence
@@ -90,8 +90,8 @@ aggregate's loading rules deserve one home (`design.md`).
 - **Reads bypass the aggregates.** A query projects straight from the store into its result type,
   selecting only the fields it returns; loading aggregates to build a list pays for invariants nobody
   changes, and for columns nobody reads.
-- **A query handler, or a read port named for what it answers** — `BookingSummaries`,
-  `AvailabilitySearch` — owns the query. Hand-written SQL is fine here; it is the read model's own
+- **A query handler, or a read port named for what it answers** — `OrderSummaries`,
+  `ProductSearch` — owns the query. Hand-written SQL is fine here; it is the read model's own
   language, and the integration test proves it.
 - **Read models are plain data, shaped for the consumer**, with no domain logic (`design.md` "What
   stays plain on purpose"). One per screen or endpoint is normal; they change for the consumer's
@@ -151,9 +151,9 @@ writes it out in one go at the end, handling concurrency conflicts (Fowler, *PoE
 
 ## Result type
 
-An expected business outcome — slot taken, insufficient funds, booking already cancelled — is returned
-as a typed result the caller must handle; a broken invariant or a bug fails fast (`design.md`, one
-error convention). This section says where the result type stops paying for itself.
+An expected business outcome — out of stock, insufficient funds, order already cancelled — is
+returned as a typed result the caller must handle; a broken invariant or a bug fails fast (`design.md`,
+one error convention). This section says where the result type stops paying for itself.
 
 - **Shape**: success with a value, or a failure with a stable code the caller can branch on and a
   message for people. The failure cases of one use case are a closed, named set, so the driving adapter
