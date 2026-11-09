@@ -198,6 +198,6 @@ repositories and read through SQL projections.
   that only forwards is the anemic model.
 - **Event sourcing** — storing the events as the source of truth; a decision with its own costs
   (`references/architecture/event-driven.md`), never a side effect of choosing CQRS.
-- **Saga and process manager** — coordination across aggregates or services
+- **Saga** — coordination across aggregates or services
   (`references/architecture/event-driven.md`).
 - **Identity map, lazy load, data mapper internals** — the ORM's business, not the application's.
