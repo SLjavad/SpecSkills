@@ -33,7 +33,7 @@ decisions go to `docs/adr/`.
 
 | File | Holds |
 |---|---|
-| `stack.md` | One line per concern: choice, pinned version, the ADR that decided it |
+| `stack.md` | One line per concern: choice, pinned version, when its support ends, the ADR that decided it |
 | `architecture.md` | Style, modules and dependency direction, composition root, forbidden leaks, diagram |
 | `contexts.md` | Where there is more than one bounded context: the context list, a record per context, the context map |
 | `domain/<aggregate>.md` | One aggregate per file |
@@ -85,25 +85,26 @@ Record each significant choice as an ADR (senior-engineering `decision-records.m
 later step depend on it. Then summarize in `stack.md`:
 
 ```markdown
-| Concern | Choice | Version | ADR |
-|---|---|---|---|
-| Language / runtime | | | |
-| Framework | | | |
-| Persistence, data access and migrations | | | |
-| Messaging: broker, outbox and inbox / jobs | | | |
-| Event envelope and contract format | | | |
-| Workflow engine | | | |
-| Resilience | | | |
-| Caching | | | |
-| In-process dispatch | | | |
-| Testing (unit, integration, mutation, architecture) | | | |
-| Build / CI | | | |
-| Hosting / runtime target | | | |
-| Observability | | | |
+| Concern | Choice | Version | Support ends | ADR |
+|---|---|---|---|---|
+| Language / runtime | | | | |
+| Framework | | | | |
+| Persistence, data access and migrations | | | | |
+| Messaging: broker, outbox and inbox / jobs | | | | |
+| Event envelope and contract format | | | | |
+| Workflow engine | | | | |
+| Resilience | | | | |
+| Caching | | | | |
+| In-process dispatch | | | | |
+| Testing (unit, integration, mutation, architecture) | | | | |
+| Build / CI | | | | |
+| Hosting / runtime target | | | | |
+| Observability | | | | |
 ```
 
 Write `none` for a concern the system does not have. **Pin versions.** "Latest" is not reproducible
-and will not be the same next month.
+and will not be the same next month. The versions and support dates live only here; the playbook does
+not repeat them.
 
 **Then write the stack playbook** — `docs/engineering/stack-<name>.md` for each stack, following
 senior-engineering's `modern-practices.md`: the current idioms, performance practice, superseded

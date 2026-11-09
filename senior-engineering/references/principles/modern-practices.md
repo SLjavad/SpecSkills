@@ -17,8 +17,8 @@ project uses; the stack itself is chosen in the tech spec, not here.
 
 Read the project's toolchain files, not your assumptions: the SDK or runtime pin, the target
 framework, the language version, the lock file, the central package file, the container base image.
-Then read the project's stack playbook, `docs/engineering/stack-<name>.md`. Flag anything past or near
-its end of support.
+Then read the stack summary where the project keeps one — each choice's version and support end — and
+the stack playbook, `docs/engineering/stack-<name>.md`. Flag anything past or near its end of support.
 
 ## The stay-current routine
 
@@ -50,17 +50,13 @@ something to say in: a small project's playbook is often a page, and none passes
 **A stack decision** — a language, a framework, or a library a reference file leaves to the stack,
 such as the broker or the resilience library — is recorded where the project records the stack: an
 ADR for one that is expensive to reverse, and the stack summary where the project keeps one
-(spec-driven's `stack.md`). The playbook does not choose; it says how to use what was chosen, at the
-pinned version.
+(spec-driven's `stack.md`), with its pinned version and when its support ends. The playbook does not
+choose and does not repeat the versions; it says how to use what was chosen, at the pinned version.
 
 ```markdown
 # <Stack> playbook
 Status: current · Last verified: YYYY-MM-DD · Pinned by: ADR-NNNN
-Summary: How <project> writes <stack>: versions, idioms, performance practice, what not to use.
-
-## Versions and support
-| Component | Pinned | Support ends | Source |
-|---|---|---|---|
+Summary: How <project> writes <stack>: idioms, performance practice, what not to use.
 
 ## Use
 | Rule | Since (version) | Use when | Not when | Source |

@@ -109,9 +109,9 @@ and, like it, is filled in at planning and not touched during implementation:
 The Plan step cell takes the same values as the matrix's (`requirements.md`).
 
 **Tech — `tech.md`** (`tech-spec-structure.md`, `tech-spec-behaviour.md`).
-- *Stack*: that file's table, versions pinned, then **stack notes** — the playbook (senior-engineering
-  `modern-practices.md`) cut to what this project uses: support dates, what not to generate, the test
-  toolchain, sourced and dated. It moves to `docs/engineering/stack-<name>.md` past about 80 lines.
+- *Stack*: that file's table, versions pinned and support dates, then **stack notes** — the playbook
+  (senior-engineering `modern-practices.md`) cut to what this project uses: what not to generate, the
+  test toolchain, sourced and dated. It moves to `docs/engineering/stack-<name>.md` past about 80 lines.
 - *Architecture*: modules and the dependency direction in a few lines; a diagram past three modules;
   architecture tests only where a boundary is worth enforcing.
 - *Domain and data*: one section per aggregate with its tables. The quality bars on types, nulls,
