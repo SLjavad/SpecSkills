@@ -47,6 +47,12 @@ across sources — vendor documentation, release notes and what's-new pages, the
 write-ups, registries, issue trackers — synthesize, and keep only the sections this project has
 something to say in: a small project's playbook is often a page, and none passes 300 lines.
 
+**A stack decision** — a language, a framework, or a library a reference file leaves to the stack,
+such as the broker or the resilience library — is recorded where the project records the stack: an
+ADR for one that is expensive to reverse, and the stack summary where the project keeps one
+(spec-driven's `stack.md`). The playbook does not choose; it says how to use what was chosen, at the
+pinned version.
+
 ```markdown
 # <Stack> playbook
 Status: current · Last verified: YYYY-MM-DD · Pinned by: ADR-NNNN

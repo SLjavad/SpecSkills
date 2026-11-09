@@ -50,23 +50,23 @@ reasons; the user decides.
   already stated the size, use it and record it as `answered`. Where a point is open, ask it in the first
   batch of questions. On the border, propose small and record it as `assumed` — growing out of it is
   cheap by design (`small-track.md`), shrinking from standard is not.
-- **The architecture shape — the lightest one the stated scale needs.** A monolith is the usual start.
-  A modular monolith — one deployable whose modules own their data and talk through explicit
-  interfaces — where the domain has clear boundaries and a later split is plausible: it keeps that split
-  open without paying for it now. Separate services only for a stated need — independent scaling
-  or deployment.
-- **The internal style**: plain layers or vertical slices, or clean or hexagonal where the business
-  rules are complex and long-lived.
+- **The architecture shape — the lightest one the stated scale needs**: one deployable, a modular
+  monolith, or services. When each fits is in senior-engineering's `references/architecture/` —
+  `modular-monolith.md` and `microservices.md`; services only for a stated need.
+- **The internal style, per module** — Clean or vertical slices, chosen from each style's "When it
+  fits" (`clean.md`, `vertical-slice.md`) and the module's classification (`ddd-strategic.md`
+  "Subdomains").
 - **The practices this project uses**, recommended from its size: how far the spec phases merge their
   files, short or full ADRs, when a change gets its own folder, and where mutation, architecture and
   load tests apply. A small project usually takes the **small track** (`small-track.md`): three spec
   files, one change file per change, short ADRs, and two approval stops instead of five.
 
-Record the size, shape and style as one decision in the first ADR (senior-engineering
-`decision-records.md`) — `proposed`, citing the discovery answers and any open or `assumed` entries it
-rests on — and, under "Working mode" in `AGENTS.md`, the size and architecture with the ADR's link, and
-the practices. The user decides it at gate 0 or, where it rests on open questions, once they are
-answered and before the tech spec starts.
+Record the size, shape and style per module as one decision in the first ADR, the architecture ADR
+(senior-engineering `decision-records.md` "The architecture ADR") — `proposed`, citing the discovery
+answers and any open or `assumed` entries it rests on — and, under "Working mode" in `AGENTS.md`, the
+size and architecture with the ADR's link, and the practices. The user decides it at gate 0 or, where
+it rests on open questions, once they are answered and before the tech spec starts. Modules the tech
+spec finds later are added to it as a dated addendum.
 
 The tech spec details this architecture and checks it against the requirements; changing it later —
 growing from small to standard included — is a superseding ADR with the user's yes. A change of size

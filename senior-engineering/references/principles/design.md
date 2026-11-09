@@ -23,16 +23,16 @@ signals a review looks for; DRY and KISS/YAGNI are what "Balance" enforces.
 Dependencies point **inward**, toward policy and away from mechanism. **The direction is fixed; the
 number of layers is not.** The domain — the entities and the rules they hold — never references the
 web or UI framework, the message bus or a provider's SDK. How many layers sit between them is the
-project's architecture decision, made at setup and recorded in its ADR: clean or hexagonal where the
-business rules are complex and long-lived, vertical slices or plain layers where they are not. Follow
-the chosen style, and add no layer it did not choose.
+project's architecture decision, made at setup and recorded in its ADR; each style's rules, and where
+it fits, are in `references/architecture/`. Follow the chosen style, and add no layer it did not
+choose.
 
 - **A framework or vendor type in a domain signature is a leak** — an HTTP request object, a
   provider's DTO, a UI framework type. Map at the boundary instead.
-- **The ORM follows the chosen style.** Where the ADR chose clean or hexagonal, the domain does not
-  reference it, and the test is: could you delete the HTTP layer and the database and still compile
-  the use cases? Elsewhere — vertical slices, a small or CRUD-heavy module — a handler may use the ORM
-  directly, and a repository interface over it needs its own reason.
+- **The ORM follows the chosen style** — whether the domain may reference it and whether a repository
+  sits in front of it are decided per module (`references/patterns/application.md` "Choosing the
+  persistence shape"; the check is in `references/architecture/clean.md` "The dependency rule in
+  practice").
 - **An interface earns its place by the need test in "Balance"**, not by the layer it sits in. Where
   one exists, it lives with the code that needs it, named for what it needs; the implementation lives
   outside and depends inward.
@@ -51,7 +51,8 @@ the chosen style, and add no layer it did not choose.
   branch is still cheaper than a hierarchy. Do not build the seam before the second case.
 - **Liskov — a subtype that throws on a base member is lying.** So is one that tightens a
   precondition, and a caller that downcasts is the symptom. If an implementation cannot honour the
-  contract, the contract is wrong or the hierarchy is.
+  contract, the contract is wrong or the hierarchy is; most hierarchies are better as composition
+  (`references/patterns/code.md` "Composition, interfaces and inheritance").
 - **Interface segregation — no consumer should depend on members it never calls.** A twelve-member
   interface where each caller uses two is four interfaces wearing one name; implementers stubbing
   members is the signal. This matters most for test doubles and for reading: a narrow port tells you
@@ -71,6 +72,8 @@ agent produces by default. Treat it as a defect.
 
 - **State changes only through intention-revealing methods** that validate before they mutate —
   `order.Cancel(reason, now)`, not `order.Status = Cancelled`. No public setters on domain state.
+- **Tell, don't ask**: a caller tells the entity what to do and never reads its state to decide for it
+  — `order.Cancel(…)`, not code that checks `order.Status` and then changes it.
 - **Valid from creation.** A constructor or factory establishes every invariant, so an invalid entity
   cannot exist. The constructor the ORM uses is private or protected and has no side effects — no
   events raised, no ids generated, no clock read.
@@ -87,14 +90,12 @@ agent produces by default. Treat it as a defect.
   loads, calls domain behaviour and saves. A business rule in a handler, controller or component is in
   the wrong place.
 - **The rest of the toolkit is used on a need, never by default** — each piece costs every reader:
-  - domain events, when another part of the system must react to a change;
-  - a transactional outbox, when a message must leave the process together with a database write —
-    and then its consumers are idempotent, because delivery is at-least-once;
   - a domain service, when a rule genuinely spans aggregates;
-  - a repository, when the architecture ADR keeps persistence out of the domain or the queries deserve
-    one home;
   - strongly typed identifiers, where mixing two ids up is a real risk;
-  - referencing other aggregates only by identity, where they change or load independently.
+  - referencing other aggregates only by identity, where they change or load independently;
+  - domain events, an outbox and a repository, on the needs their own files name
+    (`references/patterns/code.md` "Observer and in-process events",
+    `references/architecture/event-driven.md`, `references/patterns/application.md` "Repository").
 - **Time and randomness are injected**, never read from ambient statics inside the domain, so
   behaviour is deterministic under test — and identifiers too, where a test must predict them.
 - **One error convention per codebase, in the language's idiom.** A broken invariant fails fast — the
@@ -172,9 +173,10 @@ effect repeated, a duplicate record someone must clean up, a lost update. A natu
   say what happens when it is full.
 
 Concurrency and idempotency are two of the failure properties a design must decide; resilience to a
-slow or failing dependency, data consistency across separate updates, and compatibility with old
-clients and old data are others. Decide each one the system actually has, and `testing.md` asks the
-tests to challenge them.
+slow or failing dependency (`references/patterns/resilience.md`), data consistency across separate
+updates (`references/architecture/event-driven.md`), and compatibility with old clients and old data
+are others. Decide each one the system actually has, and `testing.md` asks the tests to challenge
+them.
 
 ## Irreversibility
 

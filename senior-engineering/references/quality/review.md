@@ -43,7 +43,9 @@ Judge the code by the fixed set of principles in `SKILL.md` — the project's de
 using the signals in `design.md`: SOLID, "Balance" and the entry-point test. Raise a finding only with a
 concrete change scenario or defect risk; "violates principle X" on its own is not a finding.
 **Over-engineering is a finding with the same weight as a violation.** Layering and module boundaries
-are the project's chosen architecture, checked by its architecture tests and the dependency lens below.
+are the project's chosen architecture: check the code against the architecture ADR, the "Signs of
+drift" in each named style's file (`references/architecture/`) and the "Misuse" entries of any pattern
+it uses (`references/patterns/`); the architecture tests and the dependency lens below enforce the rest.
 
 ## Lens: domain model
 
@@ -51,6 +53,8 @@ Anemic signals: public setters on state that carries an invariant; services name
 *Helper* holding `if (x.Status == …) x.Status = …`; the same validation repeated across handlers;
 invariants checked in controllers or components; collections exposed mutable. Each is a finding
 against the rich-domain rules in `design.md` — unless the module is classified as plain CRUD there.
+Across modules or contexts, the "Signs of drift" in `references/architecture/ddd-strategic.md` apply
+too.
 
 ## Lens: dependencies in the code
 

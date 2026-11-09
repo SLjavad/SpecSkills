@@ -4,7 +4,7 @@ Read when code calls something outside its process — a database, another servi
 message broker — or accepts load it must survive, and when a review finds one of these patterns. A
 slow or failing dependency is one of the failure properties a design must decide
 (`references/principles/design.md` "Concurrency and idempotency"); this file says how. The resilience
-library, if any, is the stack playbook's choice. Caching is its own topic
+library, if any, is a stack decision. Caching is its own topic
 (`references/patterns/caching.md`).
 
 ## Contents

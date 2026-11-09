@@ -5,7 +5,7 @@ an outbox, a saga or event sourcing. A change whose caller needs the answer now 
 synchronous command instead (`references/architecture/modular-monolith.md` "Commands between
 modules"); in-process domain events are in `references/patterns/code.md` "Observer and in-process
 events". The broker, the outbox and inbox implementation, and any messaging or workflow library are
-the stack playbook's choice.
+stack decisions (`references/principles/modern-practices.md` "The stack playbook").
 
 ## Contents
 - When it fits

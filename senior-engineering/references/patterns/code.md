@@ -167,7 +167,7 @@ Two different things carry the name.
     with the coupling hidden; in-process notifications used where a reaction needs isolation and
     retry (see Observer).
   - Simpler: inject the handler where it is called, and wrap it with decorators for the pipeline.
-- The dispatcher library, if any, is the stack playbook's choice, not this file's.
+- The dispatcher library, if any, is a stack decision, not this file's.
 
 ## Observer and in-process events
 

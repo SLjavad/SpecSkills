@@ -182,11 +182,11 @@ architecture tests enforce it:
   the use cases; fits vertical slices and small modules, and a Clean module only where the ADR allows
   that one outward reference (`references/architecture/vertical-slice.md`).
 
-Either shape is implemented with an ORM, a thin data mapper or plain SQL — a technology choice for the
-stack playbook, not a third shape. Plain SQL fits where the ORM cannot map the aggregate, a legacy
-schema fights it, or a hot write needs an exact statement; the mapping is then hand-written and tested
-against the real database. The read side may differ from the write side: a module can save through
-repositories and read through SQL projections.
+Either shape is implemented with an ORM, a thin data mapper or plain SQL — a stack decision, not a
+third shape. Plain SQL fits where the ORM cannot map the aggregate, a legacy schema fights it, or a
+hot write needs an exact statement; the mapping is then hand-written and tested against the real
+database. The read side may differ from the write side: a module can save through repositories and
+read through SQL projections.
 
 ## Patterns left out
 

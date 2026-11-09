@@ -1,6 +1,6 @@
 ---
 name: senior-engineering
-description: The engineering, product and security baseline for work on any codebase in any stack - understand the product and technical sides or ask, design by SOLID, DRY and KISS/YAGNI with rich domain entities and no abstraction without a present need, write current idiomatic code for the project's pinned versions, treat security as part of correctness, keep confidential data out of external tool calls, test business rules, the technical solution, performance and security plus every other risk a flow carries, with every external dependency run for real via Testcontainers, review code against design principles, dependencies and efficiency, propose improvements for approval instead of applying them, and record decisions as ADRs. Use when starting work on a project, designing, implementing, testing or reviewing code, choosing between approaches, adding a dependency, or when a request could be read more than one way. Also the checklist to self-apply before reporting any task done.
+description: Engineering, product and security baseline for any codebase in any stack - understand the product and technical sides or ask, design by SOLID, DRY and KISS/YAGNI with rich domain entities and no speculative abstraction, follow the project's chosen architecture (Clean, vertical slices, modular monolith, microservices, event-driven, DDD) and use patterns only where they earn their place, write current idiomatic code for the pinned versions, treat security as part of correctness, keep confidential data out of external tool calls, test business, technical, performance and security risks with real dependencies via Testcontainers, review against design principles, dependencies and efficiency, propose improvements instead of applying them, and record decisions as ADRs. Use when starting on a project, designing, implementing, testing or reviewing code, choosing an architecture, pattern or approach, adding a dependency, or when a request is ambiguous. Also the self-check before reporting any task done.
 ---
 
 # Senior engineering baseline
@@ -27,12 +27,21 @@ design wins.
 
 ## Load what the task needs
 
-This file is the always-on core. The detail lives in `references/`, one topic per file — read the ones
-the task touches, not all of them.
+This file is the always-on core. The detail lives in `references/`, one topic per file, grouped as
+`principles/`, `architecture/`, `patterns/`, `quality/` and `project/` — read the ones the task
+touches, not all of them. Of the architecture styles, read only those the project's architecture ADR
+names.
 
 | When you are | Read |
 |---|---|
 | Designing or implementing anything beyond a local change | `references/principles/design.md` — dependency rule, SOLID, DRY and KISS/YAGNI, rich domain model, failure design, balance |
+| Working inside a module or service whose style the architecture ADR names, or choosing that style | that style's file in `references/architecture/` — `clean.md`, `vertical-slice.md`, `modular-monolith.md` or `microservices.md`; only the named ones, or the candidates when choosing |
+| Drawing or changing a boundary between modules or services, integrating another context or an outside system, or when one word means two things | `references/architecture/ddd-strategic.md` — subdomains, bounded contexts, context map, anti-corruption layer |
+| Sending a change across a boundary as a message, or using events, an outbox, a saga or event sourcing | `references/architecture/event-driven.md` |
+| Reaching for a design pattern, or reviewing one | `references/patterns/code.md` — when each pattern earns its place and how it goes wrong |
+| Shaping how use cases take input, reach storage and report outcomes | `references/patterns/application.md` — commands and queries, CQRS, repository, unit of work, result type |
+| Calling anything outside the process, or accepting load it must survive | `references/patterns/resilience.md` — timeouts, retries, breakers, bulkheads, fallbacks |
+| Adding a cache, or when a read is too slow or a dependency too loaded | `references/patterns/caching.md` |
 | Writing, judging or planning tests | `references/quality/testing.md` — four test lenses and the flow's other risks, Testcontainers for every external dependency, mutation testing |
 | Touching identity, input, secrets, personal data or external calls — and in every review | `references/quality/security.md` |
 | Writing code in any stack, or adding or upgrading a library | `references/principles/modern-practices.md` — versions, stay-current routine, stack playbook |

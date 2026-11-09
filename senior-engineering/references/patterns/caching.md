@@ -178,7 +178,7 @@ setting. `references/principles/design.md` "Balance" governs — a cache names a
 
 - **Memoization within one request or computation** — an ordinary local variable, needing none of the
   above.
-- **The ORM's second-level cache and the cache library** — the stack playbook's choice.
+- **The ORM's second-level cache and the cache library** — stack decisions.
 - **CDN and proxy configuration** — operations, recorded with the deployment, following the Security
   rules above.
 - **Semantic caching of model responses** — research it for the case at hand; it must never return

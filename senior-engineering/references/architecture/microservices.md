@@ -98,8 +98,8 @@ The defining property: any service can be released without releasing another (Ne
   code uses asynchronous I/O, so the other service must be up. Every call follows
   `references/patterns/resilience.md` — timeout, bounded retry, breaker, a decided answer when the
   owner is down — and passes its deadline on.
-- **Asynchronous messages go through a broker** — RabbitMQ, Kafka or the platform's own, chosen in the
-  stack playbook. The receiver may be down when a message is sent, and catches up later.
+- **Asynchronous messages go through a broker** — RabbitMQ, Kafka or the platform's own, a stack
+  decision. The receiver may be down when a message is sent, and catches up later.
 - **Queries and commands may both be synchronous.** A command follows `modular-monolith.md`
   "Commands between modules": an idempotency key, a pending state committed before the call, a
   reconciliation job. Over the network a timeout is the usual unknown outcome — the command may or may

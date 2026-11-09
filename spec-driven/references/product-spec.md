@@ -96,7 +96,9 @@ names, and a bug at the seam. Fix the vocabulary here, in the product's own lang
 spec inherits it. Include the terms the users themselves use — in their own language where that
 differs — even where they are imprecise, and note the precise meaning this project gives them. The
 glossary lives at `docs/specs/glossary.md` and is shared by every phase; past 300 lines, split it by
-domain area.
+domain area. A term that means different things in different bounded contexts gets one entry per
+context — `Customer (Billing)`, `Customer (Support)` — added once the tech spec names the contexts
+(senior-engineering `ddd-strategic.md` "Ubiquitous language").
 
 ## Done when
 

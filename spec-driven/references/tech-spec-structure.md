@@ -35,6 +35,7 @@ decisions go to `docs/adr/`.
 |---|---|
 | `stack.md` | One line per concern: choice, pinned version, the ADR that decided it |
 | `architecture.md` | Style, modules and dependency direction, composition root, forbidden leaks, diagram |
+| `contexts.md` | Where there is more than one bounded context: the context list, a record per context, the context map |
 | `domain/<aggregate>.md` | One aggregate per file |
 | `data/<store-or-context>.md` | Tables or collections for one store or bounded context |
 | `contracts/<surface>.md` | One API area, message group or outbound integration per file; `contracts/errors.md` holds the error taxonomy |
@@ -88,8 +89,13 @@ later step depend on it. Then summarize in `stack.md`:
 |---|---|---|---|
 | Language / runtime | | | |
 | Framework | | | |
-| Persistence and migrations | | | |
-| Messaging / jobs | | | |
+| Persistence, data access and migrations | | | |
+| Messaging: broker, outbox and inbox / jobs | | | |
+| Event envelope and contract format | | | |
+| Workflow engine | | | |
+| Resilience | | | |
+| Caching | | | |
+| In-process dispatch | | | |
 | Testing (unit, integration, mutation, architecture) | | | |
 | Build / CI | | | |
 | Hosting / runtime target | | | |
@@ -113,6 +119,9 @@ addendum. If a requirement contradicts the decision, stop and propose a supersed
 decides. Never make the architecture heavier here on your own: every layer is paid for by every later
 change. Then detail it:
 
+- **The bounded contexts**, where there is more than one: the list, a record per context and the
+  context map, in `contexts.md` (senior-engineering `ddd-strategic.md` "Recording the contexts" and
+  "The context map"). Modules follow the contexts, and the architecture ADR points to the file.
 - **Module boundaries and the dependency direction.** List every module and what it may depend on.
   Dependencies point inward, toward policy. State what the innermost layer is forbidden to know.
 - **The composition root** — the one place that wires everything.
@@ -122,9 +131,9 @@ change. Then detail it:
 - **Architecture tests** that enforce the above, where there is a boundary worth enforcing — recorded
   as the architecture ADR's *Confirmation* in the same dated addendum, and built by an early plan step.
 
-Then the check for the chosen style. For any style: does anything depend in a forbidden direction? For
-clean or hexagonal, also: *could the HTTP layer and the datastore be deleted and the use cases still
-compile?* If not, say where the leak is and fix the design before continuing.
+Then the check for the chosen style: does anything depend in a forbidden direction, and does the
+design show any of the style's signs of drift (senior-engineering `references/architecture/`, the
+style's own file)? If so, say where and fix the design before continuing.
 
 ## Step 3 — Domain model
 
@@ -175,7 +184,8 @@ Every externally visible surface, fully specified.
   objects), request shape with types and validation rules, response shape with types, every status
   code it can return, the error body, and what a repeated call returns.
 - **Per message or event**: name, transport, queue or topic, payload with types, publisher, consumers,
-  delivery guarantee, and idempotency key.
+  delivery guarantee, idempotency key, ordering key, and the envelope with its schema version
+  (senior-engineering `event-driven.md` "Contracts and versioning").
 - **Per outbound call**: the service, the operation, request and response shapes, timeout, retry policy,
   and what your system does when it fails or never answers.
 - **Versioning**: how a breaking change is introduced.

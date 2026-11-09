@@ -9,6 +9,7 @@ of in-code documentation.
 - Three kinds of record
 - When a decision needs an ADR
 - The ADR template
+- The architecture ADR
 - Lifecycle rules
 - Area records and scoped rules
 - Code that looks wrong and is not
@@ -89,6 +90,25 @@ Short MUST / MUST NOT lines an implementer can follow without reading the rest.
 ## Revisit when
 The condition that would reopen this decision.
 ```
+
+## The architecture ADR
+
+The project's first ADR, in the full form, made at setup. Its Decision section holds:
+
+- **the system's shape** — one deployable, a modular monolith or services — and, for services, the
+  stated need behind the split;
+- **one row per module or context**:
+
+  | Module or context | Classification | Style | Persistence shape | CQRS degree | Event sourcing |
+  |---|---|---|---|---|---|
+
+- **how each multi-step process is coordinated** — choreography or orchestration;
+- **where the context list and context map live** in the technical specification.
+
+Name each style by its usual name — Clean, vertical slices, modular monolith, microservices,
+event-driven — so a reader knows which reference to load. Exceptions are their own ADRs that cite this
+one: shared tables, an unavoidable chain of calls, a rarely used pattern. A change to any row is a
+superseding ADR.
 
 ## Lifecycle rules
 
