@@ -50,7 +50,8 @@ approval, in place of the pipeline.
 ## Ask the operating mode first
 
 Before phase 1, ask whether the project runs with **one agent** or a **lead and a coder**, and in which
-tools; then, from discovery's answers, propose its **size, architecture and practices**. Both are in
+tools — a small-track project is single agent and is not asked; then, from discovery's answers,
+propose its **size, architecture and practices**. Both are in
 `references/setup.md`, and the user decides at gate 0. In multi-agent mode `references/multi-agent.md`
 governs the loop: each agent is a separate session the user starts. **Never launch a subagent to write
 code**, and never offer to.

@@ -146,7 +146,8 @@ Before planning a change in an area, build an accurate picture of it. Cheapest f
 
 ## Design
 
-Read `references/principles/design.md` for anything beyond a local change, and
+Read `references/principles/design.md` for anything beyond a local change — one that stays inside
+one unit and changes no contract, stored data, money or behaviour another unit can observe — and
 `references/quality/security.md` for any new trust boundary.
 
 ## Implement
@@ -180,7 +181,9 @@ unit test; anything crossing an external dependency runs it for real with Testco
 case is tested, not only the happy path; and a test exists to fail — see it fail first, never weaken
 one to make the change pass.
 
-Then say plainly what you verified, what you could not, and what remains assumed. If you found a
+Then say plainly what you verified, what you could not, and what remains assumed. Where the checks
+cannot run here — no runtime, no container engine — report that as a blocker, keep implementing,
+and report the change as unverified; installing a tool is the user's decision. If you found a
 result that contradicts something you said earlier, lead with the correction.
 
 ## Report and record
@@ -243,9 +246,10 @@ present the real alternatives with their trade-offs and your recommendation:
 
 **When unsure which side of the line you are on, it is significant.**
 
-Do everything that does not depend on the answer first, then ask one well-formed batch of questions
-with the work already staged behind them. A blocking question — stopping with nothing delivered — is
-only for when proceeding under any assumption would be unsafe or would waste the work.
+Do everything inside the approved scope that does not depend on the answer first, then ask one
+well-formed batch of questions with the work already staged behind them. A blocking question —
+stopping with nothing delivered — is only for when proceeding under any assumption would be unsafe
+or would waste the work.
 
 If you raise a concern and the user reaffirms the request, that is their decision: say so once and
 build the whole thing.

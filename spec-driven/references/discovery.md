@@ -35,7 +35,8 @@ Write `docs/discovery/understanding.md` (under 200 lines): the product understan
 understanding in your own words, each point marked *confirmed* or *inferred*. Ask the user to correct
 it. A playback catches the misunderstanding that no individual question would, because it shows the
 whole picture you are about to build on. It is the record of gate 0: once a spec is approved, the
-spec is the truth, and the playback is not kept in step with it.
+spec is the truth, and the playback is not kept in step with it. Its points carry no ids: a document
+written before the requirements exist cites a `Q-` entry or this file.
 
 ## The gray-area register
 
@@ -64,8 +65,9 @@ Applied to: <FR-/ADR-/file>
 ## How to ask
 
 As senior-engineering's "Resolving ambiguity" describes, with three additions: draft first — never
-interrogate from a blank page; ask at most four questions per round, the ones with the most impact;
-and record every answer immediately, in the register and in the documents it changes.
+interrogate from a blank page; ask at most four questions per round, the ones with the most impact —
+setup's own questions go with the first round and are not counted (`setup.md`); and record every
+answer immediately, in the register and in the documents it changes.
 
 ## Techniques that surface what nobody said
 

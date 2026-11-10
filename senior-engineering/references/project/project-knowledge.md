@@ -124,7 +124,8 @@ where the project's own rules go: what agents may do in git or against a databas
 allowed, the runtime and test-framework choices, and any convention a reader cannot derive.
 
 Add each line when its target exists — no links to files nobody has written, and no `Commands` section
-until the commands exist.
+until the commands exist. A value proposed to the user and not yet decided is written with
+`(proposed)`; one with no proposal yet has no line.
 
 ## CLAUDE.md template
 
@@ -155,8 +156,9 @@ reliable — it may never open the file. On Windows, use the import, not a symli
 
 At setup, write `docs/engineering/principles.md`, under 200 lines, distilled from senior-engineering
 for this project — the one home of the baseline for any agent without these skills, in any tool, on
-any machine, since `AGENTS.md` does not repeat it. Record the date and the skill it came from, and
-refresh it when the skill changes.
+any machine, since `AGENTS.md` does not repeat it. Fill it from senior-engineering's `SKILL.md`,
+opening a reference only for a heading the core does not cover. Record the date and the skill it
+came from, and refresh it when the skill changes.
 
 ```markdown
 # Engineering principles

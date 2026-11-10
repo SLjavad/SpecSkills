@@ -14,7 +14,8 @@ every later document plugs into.
 
 ## Ask the operating mode
 
-Ask once, early, with real options:
+Ask once, early, with real options — except where the request is plainly a small tool, which runs
+single agent and is not asked (`small-track.md`):
 
 - **Single agent** — one agent writes the specs, implements, and reviews; the usual choice for a small
   project. Prefer a fresh-context session for the review; a reviewer with no memory of writing the code
@@ -29,6 +30,9 @@ Ask once, early, with real options:
 
 Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, before phase 1, set up
 `docs/handoff/` as `multi-agent.md` describes — the protocol and the board.
+
+The setup questions — the mode, the project's own rules, any open point about the size — go with the
+first round of discovery questions and do not count toward its four (`discovery.md`, "How to ask").
 
 ## Decide the size and the architecture, with the user
 
@@ -55,10 +59,13 @@ with your reasons; the user decides.
   `modular-monolith.md` and `microservices.md`; services only for a stated need.
 - **The internal style, per module** — Clean or vertical slices, chosen from each style's "When it
   fits" (`clean.md`, `vertical-slice.md`) and the module's classification (`ddd-strategic.md`
-  "Subdomains") — for the modules already known; the tech spec decides the rest.
-- **The practices this project uses**: how far the spec phases merge their files, short or full
-  ADRs, when a change gets its own folder, and where mutation, architecture and load tests apply —
-  the lighter end for a modest application.
+  "Subdomains") — for the modules already known: those the user named or that existing code has.
+  A capability the user described is not a module. Never invent modules here; the tech spec names
+  and decides the rest.
+- **The practices this project uses**: whether the spec phases keep one topic per file or merge
+  them (`tech-spec-structure.md`, "The files"), short or full ADRs, when a change gets its own
+  folder, and where mutation, architecture and load tests apply — the lighter end for a modest
+  application.
 
 Record the size, the shape and the style — per module where the modules are already known — as one
 decision in the first ADR, the architecture ADR (senior-engineering `decision-records.md` "The
@@ -82,7 +89,8 @@ and a security review.
 
 Create or update both from the templates in senior-engineering's
 `references/project/project-knowledge.md`, and write `docs/engineering/principles.md` from the same
-file, for any agent without these skills.
+file, for any agent without these skills — except on the small track, which has none
+(`small-track.md`).
 
 - **Ask for the project's own rules** as one question in the first batch — the kinds the template
   lists under "Rules for this project" — and record each there, with its reason. One still unset is
@@ -119,7 +127,7 @@ docs/
 
 Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/`, `docs/adr/` (for the
 architecture ADR) and `docs/engineering/` (its index and `principles.md`) now; create each other folder
-when its phase starts, never as empty placeholders.
+when its phase starts and `glossary.md` with the product spec, never as empty placeholders.
 A small-track project has only `AGENTS.md`, `CLAUDE.md` and its page (`small-track.md`).
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly
@@ -151,7 +159,8 @@ Summary: The living specification — what the system is, what it must do, how i
 ```
 
 List every file, one line each, with its path from the repository root. Collections — flows, rules,
-aggregates — are listed file by file too, so any living document is two hops from `AGENTS.md`.
+aggregates — are listed file by file too, so any living document is two hops from `AGENTS.md`. Add
+each reading path when the files it names exist.
 
 **`docs/engineering/README.md`** — the same shape, listing the stack playbooks, the area records under
 `areas/`, and `principles.md` when it exists.
