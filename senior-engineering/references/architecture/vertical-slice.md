@@ -101,8 +101,10 @@ A handler calling another slice's handler hides one use case inside another and 
 changes. Instead:
 
 - **Shared rules** go to the domain, which both slices call.
-- **A reaction in another feature** — send the confirmation after an order is placed — is a domain
-  event the other feature handles (`references/patterns/code.md` "Observer and in-process events").
+- **A reaction in another feature** — update the customer's order history after an order is placed
+  — is a domain event the other feature handles (`references/patterns/code.md` "Observer and
+  in-process events"); one with an outside side effect, such as sending the confirmation, leaves
+  through an outbox.
 - **An operation of another module** goes through that module's public contract
   (`references/architecture/modular-monolith.md`), never through its slices.
 - **One operation that needs both** is one slice that calls the domain for both.
@@ -125,7 +127,8 @@ changes. Instead:
   and dependencies in containers (`references/quality/testing.md`) — they prove the request, the
   validation, the query and the response together, without mocking the layers a slice does not have.
 - **Domain unit tests** for every entity and value object that carries a rule — fast, with no doubles.
-- **Architecture tests**, failing the build (`design.md` "Enforce the structure"):
+- **Architecture tests**, failing the build
+  (`design.md` "Enforce the structure with architecture tests"):
   - a slice does not reference another slice's types;
   - features do not reference each other except through the domain, events or a module contract;
   - no `Common` or `Utils` package exists;

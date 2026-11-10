@@ -151,9 +151,10 @@ writes that `Status:` line, with the protocol's values, and the task's report ho
 
 The pre-mortem runs once, at stop 2.
 
-**Implementation, review and close.** The step loop is unchanged. The review runs every lens in
-`review.md` — security always — starting at the coverage table, and writes its findings in that
-file's format into a *Review* section of the change file, split into `CH-001-review.md` past the cap.
+**Implementation, review and close.** The step loop is unchanged. The review runs the whole list in
+this skill's `review.md` ("What to review against") — security always — starting at the coverage
+table, and writes its findings in the one finding format into a *Review* section of the change file,
+split into `CH-001-review.md` past the cap.
 When the user accepts, the change file moves to `docs/changes/archive/YYYY-MM-DD-CH-001-initial-build.md`.
 
 ## Later changes

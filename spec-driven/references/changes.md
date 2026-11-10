@@ -95,9 +95,10 @@ FR-011: "Basket hold" → "Reserved basket"
 
 ## IDs across changes
 
-New items continue the global sequence. Before allocating an id, search `docs/specs/` and every open
-change folder for the highest one in use. One writer allocates ids — the lead, in multi-agent mode — so
-parallel changes cannot collide. An id is never reused, not even from a rejected change.
+New items continue the global sequence. Before allocating an id, search `docs/specs/` and every change
+folder, open or archived, for the highest one in use. One writer allocates ids — the lead, in
+multi-agent mode — so parallel changes cannot collide. An id is never reused, not even from a
+rejected change.
 
 ## Closing a change: merge and archive
 
@@ -106,8 +107,8 @@ This is phase 7, and it runs in this order — never before the review:
 1. Every step is done or superseded, the change's review (phase 6) is closed, and the user has
    accepted the change.
 2. Apply each delta to the living specs: ADDED items go where their topic lives; MODIFIED items replace
-   the original; REMOVED items stay with status `retired` and the reason; RENAMED items are updated
-   everywhere — search for the old name.
+   the original; REMOVED items with an id stay, with status `retired` and the reason, and those
+   without one are deleted; RENAMED items are updated everywhere — search for the old name.
 3. Merge the change's traceability rows into the living matrix — their plan-step cells
    (`CH-NNN/S-NN`) record which change implemented each — and update the glossary, the manifest and
    the ADR index.

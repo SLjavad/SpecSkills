@@ -136,10 +136,11 @@ writes it out in one go at the end, handling concurrency conflicts (Fowler, *PoE
 - **Most ORMs already are one.** Do not wrap the ORM's context in a second unit-of-work abstraction
   with the same methods; the port exposes one way to commit, or the ADR lets the use case use the
   ORM's own.
-- **Two aggregates in one commit** are fine in one database when the use case needs them consistent
-  together; across databases or services it is not a unit of work but a distributed transaction —
-  use an outbox and eventual consistency instead, and a saga when the steps must all complete or be
-  compensated (`references/architecture/event-driven.md`).
+- **Two aggregates in one commit** are fine in one module when the use case needs them consistent
+  together; across modules, databases or services it is not a unit of work — each side commits its
+  own change, joined by a synchronous command or an outbox event
+  (`references/architecture/modular-monolith.md` "Commands between modules"), and by a saga when the
+  steps must all complete or be compensated (`references/architecture/event-driven.md`).
 - **The commit is where concurrency is decided**: an optimistic concurrency conflict surfaces here,
   and the use case states what the caller gets — a retry, a conflict response, a merge (`design.md`
   "Concurrency and idempotency").

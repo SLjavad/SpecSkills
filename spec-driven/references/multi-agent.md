@@ -149,9 +149,10 @@ Ideas beyond the step go in the report's Proposals — never into the code.
   third `changes-requested`, the lead escalates, or supersedes the step with new steps (logged in the
   plan). A finding that reopens, or is disputed twice, escalates too.
 - Prefer a fresh coder session per task, and per round once a session has grown long.
-- The change's review (phase 6) runs in the lead role. Its blocking findings reach the coder as a fix
-  step, plan/steps/R-NN-fixes.md; the lead allocates every F- id. A change is done when every step is
-  done or superseded, that review is closed, the specs are merged, and the user accepts it.
+- The change's review (phase 6) runs in the lead role. Its blocking findings reach the coder as one
+  more step, `S-NN` "Fixes for R-NN", added to the plan and its amendment log like any other; the lead
+  allocates every F- id. A change is done when every step is done or superseded, that review is closed,
+  the user accepts it, and the specs are merged (`changes.md`).
 
 ## report-NN.md — the coder
 ~~~markdown

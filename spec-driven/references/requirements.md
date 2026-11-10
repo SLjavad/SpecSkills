@@ -189,8 +189,9 @@ agreeing with it is not evidence about behaviour.
 ## The traceability matrix
 
 `traceability.md`, initialised here with every requirement; the tech spec and the plan fill in their
-columns, and nothing changes it during implementation. From CH-002 on, each change keeps the same table
-for the items it adds or modifies in its own delta file, and merges those rows here at close.
+columns, and nothing changes it during implementation but a logged plan amendment that moves a
+requirement to another step. From CH-002 on, each change keeps the same table for the items it adds
+or modifies in its own delta file, and merges those rows here at close.
 
 ```markdown
 | ID | Requirement | Priority | Tech spec | Components | Plan step |

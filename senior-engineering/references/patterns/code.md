@@ -74,7 +74,7 @@ class Notifier { constructor(channel: Channel); notify(m) { channel.send(m) } } 
 - **Earns its place** when the added behaviour is a separate concern with its own reason to change, or
   must apply to several implementations of one interface.
 - **Shape**: implements the same interface, holds the inner instance, works before or after
-  delegating: `CachingOrderStore(inner: OrderStore)`. The stack is composed in one place, the
+  delegating: `CachingOrderSummaries(inner: OrderSummaries)`. The stack is composed in one place, the
   composition root, and its order is deliberate — say why caching sits outside retry, or inside.
 - **Misuse**: a decorator that changes what the result means — it no longer honours the contract it
   implements; stacks so deep a reader cannot tell what runs; a decorator that patches a bug in the

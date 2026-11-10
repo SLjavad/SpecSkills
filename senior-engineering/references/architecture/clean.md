@@ -43,7 +43,7 @@ The project's ADR fixes which rings exist; add none it did not choose. The commo
 | Ring | Holds | Depends on | Never contains |
 |---|---|---|---|
 | **Domain** | entities, value objects, domain events, domain services, domain errors | nothing but the language and pure libraries | a framework, ORM or serializer type; any I/O |
-| **Application** | one handler per use case, its command or query, the ports it needs, application errors | Domain | an HTTP, ORM or vendor SDK type |
+| **Application** | one handler per use case, its command or query, the ports it needs, application errors | Domain | an HTTP or vendor SDK type; an ORM type, unless the ADR allows it ("Persistence") |
 | **Adapters** | endpoints and controllers, presenters, port implementations — persistence, gateways, message publishers and consumers — and their mapping | Application, Domain | business rules |
 | **Composition root** | the host's startup: configuration and the wiring of every port to its adapter | everything | anything else |
 
@@ -163,10 +163,12 @@ Record which one the module uses in the ADR; either is Clean, neither is "Clean 
   (`references/quality/testing.md`) — the mapping, the queries, the constraints are exactly what a
   fake hides.
 - **End to end**: a few through the driving adapter, for the wiring.
-- **Architecture tests** for this style, failing the build (`design.md` "Enforce the structure"):
+- **Architecture tests** for this style, failing the build
+  (`design.md` "Enforce the structure with architecture tests"):
   - the domain references nothing outside the language and approved pure libraries;
   - the application references the domain only;
-  - no web, ORM or vendor SDK type in the domain or the application;
+  - no web, ORM or vendor SDK type in the domain or the application — except the ORM in the
+    application, where the ADR allows it ("Persistence");
   - driving adapters do not reference driven adapters — only the composition root does;
   - no cycles between features in the application ring.
 

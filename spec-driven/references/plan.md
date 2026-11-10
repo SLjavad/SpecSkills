@@ -161,7 +161,8 @@ The plan is a working document, not a snapshot.
 
 - **Every `Must` requirement is implemented by at least one step**, and the matrix shows it. An empty cell
   against a `Must` is the plan being incomplete, not the matrix being untidy.
-- **Every requirement verified by a probe or a dedicated plan has a step that runs it**, with the passing
+- **Every requirement verified by anything other than an automated test** — an evaluation, a probe, an
+  exercise, a structural check, a dedicated plan — **has a step that runs it**, with the passing
   result stated. One verified by an automated test is covered by the step that writes the test.
 - Every component in the inventory is created by exactly one step, and every flow is exercised by at
   least one step's verification.
@@ -175,6 +176,7 @@ The plan is a working document, not a snapshot.
 Run the pre-mortem (`discovery.md`) against the plan and fold its results in. Then state that the plan
 is complete, list the plan index and the specs it builds, and say what an implementing agent should
 read first. Report the matrix coverage — how many `Must` requirements have steps, and any that do not
-— present the `assumed` entries, open questions and proposals, and ask for approval. Do not start implementing unless asked — the user may hand this to a
-different agent, model or tool, and that is the point of writing it this way. In multi-agent mode, the
-lead now marks the first step `ready` and hands it to the coder (`multi-agent.md`).
+— present the `assumed` entries, open questions and proposals, and ask for approval. Do not start
+implementing unless asked — the user may hand this to a different agent, model or tool, and that is the
+point of writing it this way. In multi-agent mode, the lead marks the first step `ready` and hands it to
+the coder only once the user approves the plan and says to start (`multi-agent.md`).

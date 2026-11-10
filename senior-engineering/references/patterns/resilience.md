@@ -27,7 +27,7 @@ row per dependency; each column is a decision, and "none" is a valid, stated ans
 
 | Dependency | Timeout | Retry | Idempotent? | Breaker | Bulkhead | When it fails, the user sees |
 |---|---|---|---|---|---|---|
-| payment provider | `<from its measured latency>` | no — not idempotent without a key | with key | yes | own pool | "payment pending", reconciled later |
+| payment provider | `<from its measured latency>` | only with its idempotency key | only with the key | yes | own pool | "payment pending", reconciled later |
 | product search | `<from its measured latency>` | `<attempts>`, with jitter | yes | yes | own pool | cached results, marked as possibly stale |
 
 - **The last column is the decision that matters.** A failure the design never answered becomes a

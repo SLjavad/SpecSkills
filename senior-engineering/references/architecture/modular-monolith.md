@@ -159,7 +159,8 @@ by kind:
 
 Folders are not walls. Boundaries hold only where the build fails when one is crossed:
 
-- **Architecture tests**, failing the build (`design.md` "Enforce the structure"):
+- **Architecture tests**, failing the build
+  (`design.md` "Enforce the structure with architecture tests"):
   - a module references another module's contract only — never its domain, application or
     persistence;
   - no cycles between modules;

@@ -84,8 +84,9 @@ agent produces by default. Treat it as a defect.
   validated when created. A bare decimal for money is how an amount in the wrong currency gets
   stored; a bare string for a name with no rules is fine.
 - **Aggregates are consistency boundaries.** Model true invariants inside one aggregate and keep
-  aggregates small. Changing two aggregates in one transaction in the same database is fine when the
-  use case needs them consistent together; eventual consistency is for aggregates that live apart.
+  aggregates small. Changing two aggregates in one transaction is fine when both belong to the same
+  module and the use case needs them consistent together; across modules or services, consistency is
+  eventual (`modular-monolith.md` "Commands between modules").
 - **Whatever orchestrates — a handler, an endpoint, an application service — does not decide**: it
   loads, calls domain behaviour and saves. A business rule in a handler, controller or component is in
   the wrong place.

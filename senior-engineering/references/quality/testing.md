@@ -156,7 +156,9 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
 - **Build the input in the test.** A shared mega-fixture hides which field actually mattered; the
   reader has to see the input that produces the expectation.
 - **Mock only what you cannot run.** Over-mocking asserts that the code calls the methods you wrote it
-  to call — true by construction, and it locks the design in place.
+  to call — true by construction, and it locks the design in place. A fake behind a port the code
+  owns is the exception: it serves a use-case test for the decision, and never proves the query or
+  the mapping — the integration test does.
 - **Worked examples are the best test data you will get** — real numbers someone already reasoned
   through, from the spec, an area record or ADR, or the ticket.
 - **Cover the boundary and the negative case**, not three variations of the happy path. Empty, zero,

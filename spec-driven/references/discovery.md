@@ -51,10 +51,10 @@ Applied to: <FR-/ADR-/file>
 ```
 
 - **Every would-be `TBD` becomes an entry**, and the document cites it where the doubt sits — `[Q-012]`.
-  An approved document cites no **unresolved** entry — any status but `answered`, or an `assumed`
-  entry the user has not yet confirmed at a gate.
+  An approved document cites no **unresolved** entry — any status but `answered`.
 - **`assumed`** means you decided a routine point yourself. Every assumed entry is listed at the next
-  gate for the user to confirm or correct — cheaply, before anything depends on it.
+  gate for the user to confirm or correct — cheaply, before anything depends on it — and then becomes
+  `answered`, with the user's answer and the date.
 - **A changed answer is a new entry** that supersedes the old one; the history stays readable.
 - **Who may answer**: the user; the lead agent only where the approved spec already answers it.
 - Open and assumed entries first. When the file passes 300 lines, move the closed ones — answered and

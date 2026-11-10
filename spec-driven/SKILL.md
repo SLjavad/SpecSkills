@@ -164,8 +164,9 @@ proposals; ask for approval or corrections. Do not roll straight into the next p
 list with the summary.
 
 **After phase 4: hand off.** State that the specs and plan are complete, where they are — the manifest and
-the change folder — and what an implementing agent should read first. In multi-agent mode, the lead now
-hands the first step to the coder. Do not begin implementing unless the user asks you to.
+the change folder — and what an implementing agent should read first. Do not begin implementing unless
+the user asks you to; in multi-agent mode, the lead hands the first step to the coder only once the
+user approves the plan and says to start.
 
 **During implementation (phase 5):** work the plan step by step, in order. After each step, verify it as
 the plan specifies, record the result in the step's *Result*, and mark it done in the progress table —

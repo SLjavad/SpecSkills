@@ -61,7 +61,7 @@ Stack-neutral; the project's stack playbook names the concrete API for each.
 **Identity, sessions and tokens**
 - Standard protocols (OIDC/OAuth with PKCE) and vetted libraries; never hand-rolled token handling.
 - Verify signature, algorithm, issuer, audience and expiry on every token. Never accept a token issued
-  for another audience, and never forward one.
+  for another audience, and never pass one on to a party outside its audience.
 - Browser apps keep tokens out of JavaScript-readable storage — prefer a backend-for-frontend with
   secure, HttpOnly, SameSite cookies, plus CSRF protection.
 - Hash passwords with a current memory-hard or iterated algorithm at the currently recommended cost —

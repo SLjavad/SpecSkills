@@ -104,8 +104,8 @@ The defining property: any service can be released without releasing another (Ne
   "Commands between modules": an idempotency key, a pending state committed before the call, a
   reconciliation job. Over the network a timeout is the usual unknown outcome — the command may or may
   not have run — and only the key makes resending it safe; a command without one is never retried.
-- **A service answering a synchronous call answers from its own data**; it does not call another
-  service to produce that answer. A chain adds every hop's latency and fails when any hop fails. When
+- **A service answering a query answers from its own data**; it does not call another service for
+  data to produce that answer. A chain adds every hop's latency and fails when any hop fails. When
   one response needs several services' data:
   - a composer — a backend-for-frontend, an aggregator or the client — calls them in parallel and
     merges the answers, returning what it has when an optional part fails;
@@ -141,10 +141,10 @@ The defining property: any service can be released without releasing another (Ne
 - **The gateway validates the caller's token; each service authorizes its own operations** — may this
   caller cancel this order — because only the service knows the rule, and a call that bypasses the
   gateway must not bypass the rule.
-- **The identity reaches the service in a form it can verify** — the caller's token passed on, or an
-  internal token the gateway issues in exchange, checked locally against the issuer's keys — never a
-  plain header any caller inside the network could set. A service that cannot verify it refuses the
-  request.
+- **The identity reaches the service in a form it can verify** — the caller's token passed on where
+  its audience includes the service, or an internal token the gateway issues in exchange, checked
+  locally against the issuer's keys — never a plain header any caller inside the network could set.
+  A service that cannot verify it refuses the request.
 - **Each service holds only its own secrets and permissions** — its database credentials, its queue
   access — so one compromised service does not open the others.
 
