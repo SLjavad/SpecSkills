@@ -133,7 +133,9 @@ addendum; changing a decided cell is a superseding ADR.
 ## Area records and scoped rules
 
 An area record is the current-state memory of one area. The highest-value content in it is what you
-decided *not* to do, and why — it stops the next reader "fixing" something deliberate.
+decided *not* to do, and why — it stops the next reader "fixing" something deliberate. Where the
+project has living specs, they say what the area does: the record links them, and holds only why it
+is that way and what not to undo.
 
 - **Record the reason, not just the rule.** "Do not convert either side of that comparison" is
   unactionable without the paragraph explaining what the comparison is for.

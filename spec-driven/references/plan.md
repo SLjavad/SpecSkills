@@ -48,9 +48,9 @@ the reports and reviews. A step estimated at several days is several steps.
 **No step contains "and also".** A step that implements a feature and refactors something else and adds
 logging is three steps, and its verification cannot fail cleanly.
 
-**Dependencies stated, not implied.** Each step names which steps must be complete first, and whether
-it can run in parallel with others (disjoint files, no dependency), so an implementer can see what is
-parallelizable and what is not.
+**Dependencies stated, not implied.** The progress table names, for each step, which steps must be
+complete first and whether it can run in parallel with others (disjoint files, no dependency), so an
+implementer can see what is parallelizable and what is not.
 
 **Closing is not a plan step.** After the last step comes the change's review (phase 6), then the
 user's acceptance, then the close (phase 7, `changes.md`): merge the deltas into the living specs and
@@ -58,12 +58,12 @@ archive the folder. The plan's last step leaves everything the review needs in p
 
 ## Step template
 
-Every step, in its own file or its own section. Its status lives only in the progress table, so the
-step itself has none, and the step does not change during development except by a logged amendment.
+Every step, in its own file or its own section. Its status and its place in the order live only in
+the progress table, so the step itself holds neither, and the step does not change during development
+except by a logged amendment.
 
 ```markdown
 # S-NN — <imperative title>
-Depends on: <S-NN, or none> · Parallel: yes | no
 Implements: <FR/NFR ids> · Spec: <tech spec files this builds>
 Summary: <one line: what this step delivers>
 
@@ -124,12 +124,11 @@ For an implementer starting cold: the product overview, the requirement files th
 the tech spec files for its components, then this plan. Each step lists its own reading.
 
 ## Conventions
-Build, test, integration-test, run and migration commands, and any project rules the implementer must
-follow.
+What this change adds to the commands and rules in `AGENTS.md` — never a copy of them.
 
 ## Progress
-| Step | Title | Implements | Depends on | Parallel | Status |
-|---|---|---|---|---|---|
+| Step | Title | Depends on | Parallel | Status |
+|---|---|---|---|---|
 
 ## Deferred
 Work deliberately out of this plan, and why.

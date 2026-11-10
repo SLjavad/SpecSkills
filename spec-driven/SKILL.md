@@ -74,11 +74,11 @@ Read the files for the current phase, not all of them.
 | Phase | Read |
 |---|---|
 | Small track | `references/small-track.md`, with `references/setup.md` for the mode, the size and `AGENTS.md` — not the phase files |
-| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project/project-knowledge.md`, `../senior-engineering/references/project/decision-records.md` for the architecture ADR |
+| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project/project-knowledge.md`, `../senior-engineering/references/project/decision-records.md` for the architecture ADR; when choosing the architecture, the style files under `../senior-engineering/references/architecture/` that `setup.md` names |
 | 0 — Discovery, and at every gate | `references/discovery.md` |
 | 1 — Product spec | `references/product-spec.md` |
 | 2 — Requirements | `references/requirements.md` |
-| 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../senior-engineering/references/project/decision-records.md` for ADRs; `../senior-engineering/references/principles/modern-practices.md` for the stack playbook |
+| 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../senior-engineering/references/project/decision-records.md` for ADRs; `../senior-engineering/references/principles/modern-practices.md` for the stack playbook; the other senior-engineering references each step names |
 | 4 — Plan | `references/plan.md` |
 | A later change, any phase | `references/changes.md`, with that phase's file |
 | Multi-agent work | `references/multi-agent.md` |

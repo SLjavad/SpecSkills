@@ -70,7 +70,7 @@ Summary: How <project> writes <stack>: idioms, performance practice, what not to
 ## Data access
 ## Security-relevant defaults
 ## Test toolchain
-Unit · integration (Testcontainers modules and pinned images) · mutation · property-based ·
+Unit · integration (Testcontainers modules) · mutation · property-based ·
 architecture tests · load and benchmarks — the maintained tool for each, with licence notes.
 
 ## Superseded — do not generate

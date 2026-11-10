@@ -34,7 +34,8 @@ stated default, flagged for confirmation), or **asked**.
 Write `docs/discovery/understanding.md` (under 200 lines): the product understanding and the technical
 understanding in your own words, each point marked *confirmed* or *inferred*. Ask the user to correct
 it. A playback catches the misunderstanding that no individual question would, because it shows the
-whole picture you are about to build on.
+whole picture you are about to build on. It is the record of gate 0: once a spec is approved, the
+spec is the truth, and the playback is not kept in step with it.
 
 ## The gray-area register
 

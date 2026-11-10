@@ -45,8 +45,9 @@ using the signals in `design.md`: SOLID, "Balance" and the entry-point test. Rai
 concrete change scenario or defect risk; "violates principle X" on its own is not a finding.
 **Over-engineering is a finding with the same weight as a violation.** Layering and module boundaries
 are the project's chosen architecture: check the code against the architecture ADR, the "Signs of
-drift" in each named style's file (`references/architecture/`) and the "Misuse" entries of any pattern
-it uses (`references/patterns/`); the architecture tests and the dependency lens below enforce the rest.
+drift" in each named style's file (`references/architecture/`) and what `references/patterns/` says
+each pattern it uses is not for — its "Misuse" entries and their like; the architecture tests and the
+dependency lens below enforce the rest.
 
 ## Lens: domain model
 
@@ -123,7 +124,7 @@ reader will misunderstand. If you cannot name one, it is a note.
 - **A security finding** also records the exploit input, the impact, the regression test that proves
   the fix, its OWASP Top 10 or ASVS category and CWE, and a `Rating:` — a CVSS vector for a concrete
   vulnerability rated high or critical, likelihood × impact otherwise. Critical and high are always
-  `blocker`, and block release.
+  `blocker`, and block release; medium and low take the severity their consequence gives them.
 - **Severity means something.** A blocker produces wrong data, loses money, breaks a contract, or opens
   a security hole. A major is a real defect on a reachable path. A minor is a defect on an unlikely path
   or a genuine readability problem. A note has no defect behind it — keep notes few, or they train the

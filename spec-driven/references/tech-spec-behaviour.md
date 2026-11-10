@@ -158,9 +158,9 @@ one line — `not applicable — <reason>`. A contract test with no outside prov
 with one module, or a load test with no performance requirement behind it protects nothing. Mutation and
 architecture tests stay the default wherever there is a core or a boundary for them to guard.
 
-What each level proves is in senior-engineering's `testing.md`. The Step 8 worked examples become the
-unit tests' data directly, and integration tests go where money moves, data is written or a dependency
-is crossed, rather than aiming at coverage.
+The table says what each level covers; the methods behind them are in senior-engineering's
+`testing.md`. The Step 8 worked examples become the unit tests' data directly, and integration tests
+go where money moves, data is written or a dependency is crossed, rather than aiming at coverage.
 
 - **Integration infrastructure**: every external dependency and the container that stands in for it —
   the real engine, the vendor's emulator or a mock server — pinned to the production versions; the reset
@@ -169,7 +169,8 @@ is crossed, rather than aiming at coverage.
 - **Mutation testing**: which modules, which tool, the break threshold, and when it runs.
 - **Which requirement ids are covered by a test**, and which rely on a probe, a structural check or
   nothing — this is each requirement's `Verification` field, and the strategy has to agree with it.
-- **The exact verification command**, so an implementer and a reviewer run the same thing.
+- **The exact verification command** per level, so an implementer and a reviewer run the same thing;
+  the everyday commands live in `AGENTS.md` and are not repeated here.
 - **If the project will have no automated tests, say so and say what replaces them.** "No tests" with
   nothing named in its place means nothing is verified, and every rule in this spec is protected by
   prose alone.

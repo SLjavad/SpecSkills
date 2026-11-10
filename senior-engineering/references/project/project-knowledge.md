@@ -100,7 +100,7 @@ Integration tests need: <e.g. Docker running>
 - Specs, the current truth: docs/specs/README.md
 - Changes in flight: docs/changes/README.md
 - Decisions: docs/adr/README.md
-- Product and technical context: docs/discovery/understanding.md
+- Product and technical context, as understood at gate 0: docs/discovery/understanding.md
 - Open questions and proposals: docs/discovery/questions.md, docs/discovery/proposals.md
 - How we write code here — stack playbooks, area records: docs/engineering/README.md
 
@@ -169,7 +169,9 @@ Summary: The rules every agent follows on this project, whatever tool it runs in
                               project's own rules bind; risk lists are a floor, not a fence
 ## Design                      dependency rule; SOLID, DRY and KISS/YAGNI only, the simpler design
                               winning; over-engineering counts as a defect; rich domain
-                              entities and what stays plain; failure design; the architecture tests
+                              entities and what stays plain; the rules of the architecture styles
+                              the ADR names and of the patterns in use; failure design; the
+                              architecture tests
 ## Tests                       the four lenses — business, technical, performance, security — plus the
                               flow's other risks; Testcontainers for every external dependency; see it
                               fail first; never weaken a test; mutation testing on the core

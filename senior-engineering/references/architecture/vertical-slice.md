@@ -58,7 +58,8 @@ Each slice chooses how much design it needs, but the baseline is the rich domain
   calculation the business names. Do not skip this refactor: a rule left in a handler is the anemic
   model the style is often blamed for.
 - **A slice stays a plain transaction script only when there is no invariant**, and that
-  classification is recorded with its reason, as `design.md` requires for plain CRUD.
+  classification is recorded once for its aggregate or module, with its reason, as `design.md`
+  requires for plain CRUD.
 - **Value objects and domain services** come in on the same need test as in any style (`design.md`
   "Rich domain model").
 
@@ -149,8 +150,7 @@ Treat each as a review finding:
 ## Moving a module in or out
 
 - **Into Clean**, when a module's rules outgrow slices — several driving adapters, rules that must be
-  tested without the database, outside systems that will change: push the rules into entities first,
-  then put ports in front of the dependencies the handlers call, then move the adapter code outward,
-  one feature at a time (`references/architecture/clean.md` "Moving a module in or out").
-- **Out of Clean into slices**, when a Clean module turns out to be plain data: a superseding ADR,
-  then collapse the ports that serve no boundary and fold each use case into its slice.
+  tested without the database, outside systems that will change — by the steps in
+  `references/architecture/clean.md` "Moving a module in or out".
+- **Out of Clean into slices**, when a Clean module turns out to be plain data: the same section's
+  steps, then fold each use case into its slice.

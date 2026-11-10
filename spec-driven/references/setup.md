@@ -84,9 +84,9 @@ Create or update both from the templates in senior-engineering's
 `references/project/project-knowledge.md`, and write `docs/engineering/principles.md` from the same
 file, for any agent without these skills.
 
-- **Ask for the project's own rules** in the first batch of questions — the kinds the template lists
-  under "Rules for this project" — and record each there, with its reason. The skills set none of
-  them.
+- **Ask for the project's own rules** as one question in the first batch — the kinds the template
+  lists under "Rules for this project" — and record each there, with its reason. One still unset is
+  asked before the first action it would govern. The skills set none of them.
 
 - **An existing `AGENTS.md`** is updated, not replaced.
 - **Instruction files for other tools** (`.cursorrules`, Copilot instructions and the like): fold their
@@ -123,9 +123,9 @@ when its phase starts, never as empty placeholders.
 A small-track project has only `AGENTS.md`, `CLAUDE.md` and its page (`small-track.md`).
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly
-into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its plan, task
-files and reviews live in `docs/changes/CH-001-initial-build/`. Every later major change writes deltas
-instead (`changes.md`).
+into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its
+`proposal.md`, plan, task files and reviews live in `docs/changes/CH-001-initial-build/`. Every later
+major change writes deltas instead (`changes.md`).
 
 ## The indexes
 

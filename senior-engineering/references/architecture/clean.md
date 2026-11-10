@@ -81,7 +81,7 @@ The project's ADR fixes which rings exist; add none it did not choose. The commo
   `Services/`, `Helpers/` and `Models/` says only how it is built.
 - **Each feature keeps its command, handler and input validation together**, in one folder.
 - **A handler orchestrates and does not decide**: authorize, load, call domain behaviour, save,
-  publish. A business rule in a handler is in the wrong ring (`design.md` "Rich domain model").
+  respond. A business rule in a handler is in the wrong ring (`design.md` "Rich domain model").
 - **Input is a command or query** (`references/patterns/application.md` "Commands and queries");
   **output is a plain result.** The driving adapter maps the result to its delivery format. Martin's
   output port and presenter earn their place only where one use case serves several delivery formats
@@ -103,7 +103,8 @@ Each kind of check has one home:
   entity cannot be invalid (`design.md`).
 - **Rules that need data** — uniqueness, existence, limits across records: the use case, through a
   port, and backed by a database constraint, since a read-then-write check is a race (`design.md`
-  "Concurrency and idempotency").
+  "Concurrency and idempotency"). It is the one kind of rule a use case checks itself, because the
+  domain cannot see other records.
 - **Authentication** at the driving adapter; **authorization** of the operation — may this caller
   cancel this order — in the use case, where it cannot be bypassed by a second entry point.
 

@@ -89,6 +89,8 @@ later step depend on it. Then summarize in `stack.md`:
 |---|---|---|---|---|
 | Language / runtime | | | | |
 | Framework | | | | |
+| UI / client | | | | |
+| Identity and access | | | | |
 | Persistence, data access and migrations | | | | |
 | Messaging: broker, outbox and inbox / jobs | | | | |
 | Event envelope and contract format | | | | |
@@ -102,9 +104,9 @@ later step depend on it. Then summarize in `stack.md`:
 | Observability | | | | |
 ```
 
-Write `none` for a concern the system does not have. **Pin versions.** "Latest" is not reproducible
-and will not be the same next month. The versions and support dates live only here; the playbook does
-not repeat them.
+Write `none` for a concern the system does not have, and add a row for one this table does not list.
+**Pin versions.** "Latest" is not reproducible and will not be the same next month. The versions and
+support dates live only here; the playbook does not repeat them.
 
 **Then write the stack playbook** — `docs/engineering/stack-<name>.md` for each stack, following
 senior-engineering's `modern-practices.md`: the current idioms, performance practice, superseded
@@ -128,7 +130,7 @@ change. Then detail it:
   `application.md` "CQRS" and "Choosing the persistence shape") — proposed in the same dated
   addendum and decided by the user at this phase's gate.
 - **Module boundaries and the dependency direction.** List every module and what it may depend on.
-  Dependencies point inward, toward policy. State what the innermost layer is forbidden to know.
+  Dependencies point inward, toward policy. State what the domain is forbidden to know.
 - **The composition root** — the one place that wires everything.
 - **What must not leak inward.** Name the concrete types: the HTTP request, the provider's DTOs, the
   framework's attributes — and the ORM context, where the chosen style keeps the domain free of it.

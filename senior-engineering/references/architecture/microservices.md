@@ -94,10 +94,10 @@ The defining property: any service can be released without releasing another (Ne
 
 ## Communication
 
-- **Synchronous calls go over HTTP or gRPC.** The caller waits for the answer, whether or not its
-  code uses asynchronous I/O, so the other service must be up. Every call follows
-  `references/patterns/resilience.md` — timeout, bounded retry, breaker, a decided answer when the
-  owner is down — and passes its deadline on.
+- **Synchronous calls use a request–response protocol** — HTTP or gRPC, for example; a stack
+  decision. The caller waits for the answer, whether or not its code uses asynchronous I/O, so the
+  other service must be up. Every call follows `references/patterns/resilience.md` — timeout,
+  bounded retry, breaker, a decided answer when the owner is down — and passes its deadline on.
 - **Asynchronous messages go through a broker** — RabbitMQ, Kafka or the platform's own, a stack
   decision. The receiver may be down when a message is sent, and catches up later.
 - **Queries and commands may both be synchronous.** A command follows `modular-monolith.md`

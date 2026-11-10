@@ -19,8 +19,8 @@ reviewable, and separate from that truth until the user accepts it.
   reading one bundle, however long the project's history.
 - **`docs/changes/CH-NNN-<slug>/` is what will change, why, and how it is being built.**
 - **The initial build is CH-001**: its product, requirements and tech spec are written straight into
-  `docs/specs/`; its plan, tasks and reviews live in its change folder. Every change after that writes
-  deltas against the living specs.
+  `docs/specs/`; its `proposal.md`, plan, tasks and reviews live in its change folder. Every change
+  after that writes deltas against the living specs.
 
 ## When to open a change
 
