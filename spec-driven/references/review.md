@@ -70,6 +70,11 @@ lenses: requirement-gap, conformance, unverified, silent-risk, failure-path and 
 are scoped to the change and allocated in one sequence across its task reviews and phase-6 reviews —
 by the lead in multi-agent mode, by the reviewer otherwise. Cite them as `CH-007/F-12`.
 
+**A defect that pre-dates the change**, in code it did not touch, is recorded with `Introduced by this
+change: no` and never blocks the change. Tell the user at once when it is a blocker or major; it
+becomes a *Known defect* on the requirement it breaks or a proposal for its own change, and the user
+decides when it is fixed.
+
 ## Verifying the requirements
 
 Take each requirement's `Verification` field and actually do it, by its method in senior-engineering's
@@ -111,8 +116,9 @@ gain, cost, risk and verification — and waits for the user. Nothing is changed
 3. **The fixer works the findings in severity order**, filling in `Outcome` on each and setting `Status`.
    In multi-agent mode the coder never edits a review: it reports each outcome in its next report, and
    the lead records `Outcome` and `Status`.
-4. **Rejections need a written reason**, in the file. "Deliberate because X" is a legitimate outcome and
-   becomes an area-record entry — see below.
+4. **Rejections need a written reason**, in the file, and a blocker or major is rejected only by the
+   user — until then it stays open. "Deliberate because X" is a legitimate outcome and becomes an
+   area-record entry — see below.
 5. **Re-check only what changed.** Verify each fix against the finding that prompted it; do not re-review
    untouched code.
 6. **Close the review** with a line stating what remains open and why.
@@ -133,7 +139,8 @@ The point of recording feedback is that the correction is not needed a second ti
 
 ## Done when
 
-- Every blocker and major is fixed, or rejected with a written reason.
+- Every blocker and major the change introduced is fixed, or rejected by the user with a written
+  reason; the ones that pre-date it are with the user.
 - Every fix has been verified against the finding that prompted it.
 - Every `Must` requirement has been checked against its acceptance criteria, not just against its step
   being `done`.
@@ -141,7 +148,7 @@ The point of recording feedback is that the correction is not needed a second ti
   (one agent) or report (multi-agent): the test that ran, the probe result and what it ran against, an
   explicit "mechanism checked, outcome not measured", or an explicit "not verified, needs X". No blanks;
   where one falls short, the gap is a finding here.
-- The security lens ran and its critical and high findings are closed.
+- The security lens ran, and the critical and high findings the change introduced are closed.
 - Every spec defect is amended in the spec, not just in the code.
 - Anything deliberate that looked wrong is recorded where the next reader will find it.
 - The remaining open findings are listed with the reason each is still open.

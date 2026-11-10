@@ -142,7 +142,8 @@ writes it out in one go at the end, handling concurrency conflicts (Fowler, *PoE
   (`references/architecture/modular-monolith.md` "Commands between modules"), and by a saga when the
   steps must all complete or be compensated (`references/architecture/event-driven.md`).
 - **The commit is where concurrency is decided**: an optimistic concurrency conflict surfaces here,
-  and the use case states what the caller gets — a retry, a conflict response, a merge (`design.md`
+  and the use case states what the caller gets — a re-run of the whole use case
+  (`references/patterns/resilience.md` "Retry"), a conflict response, or a merge (`design.md`
   "Concurrency and idempotency").
 - **Domain events raised during the work** are dispatched at a point the project states — before the
   commit inside the transaction, or after it through an outbox (`references/patterns/code.md`

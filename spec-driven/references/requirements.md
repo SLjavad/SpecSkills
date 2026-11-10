@@ -11,8 +11,7 @@ product spec is incomplete — go back and amend it — or you are inventing sco
 a requirement. "Store the country as a two-character column" is a tech-spec decision. If a requirement
 names a table, framework or algorithm, it is in the wrong document.
 
-Write to `docs/specs/02-requirements/` — or, for a later change, as requirement deltas (`changes.md`);
-under the small track, to `docs/specs/requirements.md` (`small-track.md`).
+Write to `docs/specs/02-requirements/` — or, for a later change, as requirement deltas (`changes.md`).
 
 ## Contents
 - The files
@@ -147,6 +146,8 @@ verified — see below.
 
 **Consequence if missed.** What actually goes wrong for whom. If you cannot name one, this is not a
 requirement; delete it.
+
+**Known defect.** Only while one exists, as for a functional requirement.
 ```
 
 **An NFR without a number and a measurement method is not an NFR.** It is a wish, and it will be declared

@@ -1,6 +1,6 @@
 ---
 name: spec-driven
-description: Runs a project spec-first as small, linked, agent-readable files - discovery of every product and technical gray area, a product spec, numbered, testable FR/NFR requirements with a traceability matrix, a technical spec with ADRs and a researched stack playbook, a stepwise plan, then review with findings recorded in files, with a lighter small track for small projects. Keeps the specs living (later features are change folders merged on release), makes AGENTS.md - imported by CLAUDE.md - the entry point, and runs either one agent or a lead/coder loop that communicates through files, with the user approving every decision beyond the approved spec. Use when starting a new project or major feature, writing product or technical specs, requirements or ADRs, planning an implementation, setting up multi-agent or cross-tool work, handing work to another agent, or reviewing an implementation against its spec.
+description: Runs a project spec-first as small, linked, agent-readable files - discovery of every product and technical gray area, a product spec, numbered, testable FR/NFR requirements with a traceability matrix, a technical spec with ADRs and a researched stack playbook, a stepwise plan, then review with findings recorded in files, with a one-page small track for scripts and small tools. Keeps the specs living (later features are change folders merged when accepted), makes AGENTS.md - imported by CLAUDE.md - the entry point, and runs either one agent or a lead/coder loop that communicates through files, with the user approving every decision beyond the approved spec. Use when starting a new project or major feature, writing product or technical specs, requirements or ADRs, planning an implementation, setting up multi-agent or cross-tool work, handing work to another agent, or reviewing an implementation against its spec.
 ---
 
 # Spec-driven development
@@ -34,17 +34,18 @@ and hand it back. The user decides whether to implement here, later, or elsewher
 **The specs are living.** `docs/specs/` always describes the system as it is — or, before the first
 release, as it is being built. A later major feature is a *change*: its product, requirement and design
 deltas, its plan, tasks and reviews live in its change folder, and are merged into the living specs when
-it ships (`references/changes.md`).
+the user accepts it (`references/changes.md`).
 
 **Scale the ceremony to the change.** The full pipeline is for a new project or a major feature. A small
 change needs no change folder and no separate plan: run senior-engineering's product pass, add or amend
 the affected requirements and design items in the living specs — ids, statements, the traceability
 row, its Plan step cell naming the change as `YYYY-MM-DD-<slug>` — in the same edit as the code, and
-report it as one step. Heavy process on small work is how
-spec-driven development gets abandoned. The project's own weight — its size, architecture and the
-practices it uses — is decided once, at setup, with the user. A small project usually takes the
-**small track** (`references/small-track.md`): the same phases and rules in three spec files, one change
-file, and two approval stops instead of five.
+report it as one step; that report is its record. In multi-agent mode the lead writes those items
+into the living specs when it marks the step `done` (`references/multi-agent.md`). Heavy process on
+small work is how spec-driven development gets abandoned. The project's own weight — its size,
+architecture and the practices it uses — is decided once, at setup, with the user. A script, a
+utility or a one-job tool takes the **small track** (`references/small-track.md`): one page and one
+approval, in place of the pipeline.
 
 ## Ask the operating mode first
 
@@ -72,7 +73,7 @@ Read the files for the current phase, not all of them.
 
 | Phase | Read |
 |---|---|
-| Small track, any phase | `references/small-track.md` first; it says which parts of each phase file apply |
+| Small track | `references/small-track.md`, with `references/setup.md` for the mode, the size and `AGENTS.md` — not the phase files |
 | 0 — Setup | `references/setup.md`, `../senior-engineering/references/project/project-knowledge.md`, `../senior-engineering/references/project/decision-records.md` for the architecture ADR |
 | 0 — Discovery, and at every gate | `references/discovery.md` |
 | 1 — Product spec | `references/product-spec.md` |
@@ -148,8 +149,8 @@ going back one document is trivial compared with discovering it during implement
 
 ## Gates
 
-Under the small track, gate 0 and the gates after phases 1 and 2 merge into one stop, and the gates
-after phases 3 and 4 into another (`references/small-track.md`); everything else here holds.
+The small track has one stop, the approval of its page (`references/small-track.md`); the gates below
+are the standard track's.
 
 **Gate 0 — after setup and the first discovery pass:** present the operating mode, the size,
 architecture and practices proposed, the files created, the playback of your understanding, the

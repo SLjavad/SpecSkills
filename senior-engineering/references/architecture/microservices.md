@@ -44,7 +44,7 @@ both technical and business signals, and teams that operate what they build.
 
 ## Service boundaries
 
-- **A service is a business capability, ideally one bounded context**
+- **A service is a business capability, inside one bounded context**
   (`references/architecture/ddd-strategic.md`). Not an entity — a `CustomerService` that only stores
   customers for everyone else is a remote database table.
 - **Each service has exactly one owning team**, which builds and runs it; a service two teams share
@@ -161,7 +161,8 @@ The defining property: any service can be released without releasing another (Ne
 
 - **Technical libraries** — logging setup, tracing, the outbox — may be shared as versioned
   packages, upgraded by each service on its own schedule, never forcing a coordinated release.
-- **Never a shared domain library.** Shared domain types couple every service's model and release.
+- **Never a shared domain library.** Shared domain types couple every service's model and release;
+  a shared kernel of value types stays inside one deployable (`modular-monolith.md` "Shared code").
 - **Limit the stack deliberately** — a few supported languages, one way to log, trace and deploy —
   so autonomy does not become a dozen ways of doing the same thing.
 

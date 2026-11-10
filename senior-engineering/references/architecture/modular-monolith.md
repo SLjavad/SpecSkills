@@ -40,7 +40,7 @@ the same as a service's; only the deployment is shared.
 
 ## What a module is
 
-- **A business capability, ideally one bounded context** — Orders, Payments, Catalogue — with its
+- **A business capability: one bounded context** — Orders, Payments, Catalogue — with its
   own language and model (`references/architecture/ddd-strategic.md`). Not a technical layer, and not
   one entity: a module per table is a distributed data model in one process.
 - **High cohesion inside, low coupling between.** If two modules change together for most features, or
@@ -67,9 +67,12 @@ the same as a service's; only the deployment is shared.
 
 - **Each module owns its data** — its own schema, or its own tables with a clear owner — and is the
   only code that reads or writes it.
-- **No joins across modules, no shared tables, no foreign keys between modules' tables.** A module
-  stores another module's identifier as a plain value, and asks for the rest through the contract or
-  keeps its own copy updated by events.
+- **By default no joins across modules, no shared tables, no foreign keys between modules' tables.**
+  A module stores another module's identifier as a plain value, and asks for the rest through the
+  contract or keeps its own copy updated by events.
+- **A shared table is an exception recorded in an ADR**, under the rules of
+  `references/architecture/microservices.md` "Data": one owning module alone writes it and changes
+  its schema, and the others read it through a view or a read-only grant.
 - **One database server is fine; shared ownership is not.** Separate schemas and, where the database
   allows, separate credentials make an accidental cross-module query fail instead of working quietly.
 - **Each module migrates its own schema**, and a module's migration never touches another's.
@@ -142,8 +145,8 @@ by kind:
   the in-process bus.
 - **A shared kernel is deliberately tiny**: value objects that genuinely mean the same in every module
   — `Money`, perhaps an identifier type — changed only with the agreement of every module that uses it.
-- **Domain types are never shared across modules.** Each module models what it needs; a `Customer` in
-  Billing and a `Customer` in Support are different models of the same person.
+- **Beyond that kernel, domain types are never shared across modules.** Each module models what it
+  needs; a `Customer` in Billing and a `Customer` in Support are different models of the same person.
 - **No `Common` or `Utils` package** — it becomes the channel through which modules couple.
 
 ## Reporting and screens across modules
@@ -164,7 +167,7 @@ Folders are not walls. Boundaries hold only where the build fails when one is cr
   - a module references another module's contract only — never its domain, application or
     persistence;
   - no cycles between modules;
-  - no module accesses another module's schema or tables;
+  - no module accesses another module's schema or tables, except a shared table an ADR allows;
   - contract types do not expose domain types.
 - **Separate compiled packages per module**, with only the contract public, let the compiler enforce
   most of this; one package with modules as folders needs the tests to do it all.
@@ -174,7 +177,8 @@ Folders are not walls. Boundaries hold only where the build fails when one is cr
 
 Treat each as a review finding:
 
-- a join, a view or a foreign key across modules' tables;
+- a join, a view or a foreign key across modules' tables without an ADR, or a shared table written
+  by more than one module;
 - a module reading another's tables "just for a report";
 - a contract that returns entities, or mirrors one module's internal model;
 - a command to another module without an idempotency key, or sent while the caller's transaction is

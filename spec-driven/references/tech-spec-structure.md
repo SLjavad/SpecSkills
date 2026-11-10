@@ -123,6 +123,10 @@ change. Then detail it:
 - **The bounded contexts**, where there is more than one: the list, a record per context and the
   context map, in `contexts.md` (senior-engineering `ddd-strategic.md` "Recording the contexts" and
   "The context map"). Modules follow the contexts, and the architecture ADR points to the file.
+- **The architecture ADR's module table** — each module's classification, style, persistence shape,
+  CQRS degree and event sourcing (senior-engineering `decision-records.md` "The architecture ADR",
+  `application.md` "CQRS" and "Choosing the persistence shape") — proposed in the same dated
+  addendum and decided by the user at this phase's gate.
 - **Module boundaries and the dependency direction.** List every module and what it may depend on.
   Dependencies point inward, toward policy. State what the innermost layer is forbidden to know.
 - **The composition root** — the one place that wires everything.
@@ -187,8 +191,9 @@ Every externally visible surface, fully specified.
 - **Per message or event**: name, transport, queue or topic, payload with types, publisher, consumers,
   delivery guarantee, idempotency key, ordering key, and the envelope with its schema version
   (senior-engineering `event-driven.md` "Contracts and versioning").
-- **Per outbound call**: the service, the operation, request and response shapes, timeout, retry policy,
-  and what your system does when it fails or never answers.
+- **Per outbound call**: the service, the operation, request and response shapes, and a link to its
+  row in the resilience table (`cross-cutting.md`, Step 9) — timeout, retry, and what your system
+  does when it fails or never answers.
 - **Versioning**: how a breaking change is introduced.
 - **The error taxonomy**, in `contracts/errors.md`: the categories of failure, the status or code each
   maps to, and what the caller is expected to do about it. One shape, defined once.

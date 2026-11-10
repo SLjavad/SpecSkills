@@ -68,7 +68,8 @@ choose.
 Domain entities are rich: they own their rules and their state changes. An entity that is a bag of
 getters and setters, with its rules spread across services, handlers and controllers, is the anemic
 model — it pays the full cost of a domain model and gets none of the benefit, and it is the shape an
-agent produces by default. Treat it as a defect.
+agent produces by default. Treat it as a defect — in a codebase already built that way, as
+`SKILL.md` "Implement" says for existing code.
 
 - **State changes only through intention-revealing methods** that validate before they mutate —
   `order.Cancel(reason, now)`, not `order.Status = Cancelled`. No public setters on domain state.

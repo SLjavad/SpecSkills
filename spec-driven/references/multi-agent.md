@@ -28,7 +28,9 @@ does not read `AGENTS.md` gets a shim. Plain Markdown, paths from the repository
 syntax.
 
 The coder's instructions are the plan step itself (`plan.md`). A small change has no plan: its task
-folder holds a `step.md` written from the same template, with a `Status:` line.
+folder holds a `step.md` written from the same template, with a `Status:` line. It carries the
+requirement and design items the change adds or amends, and the lead writes them into the living
+specs when it marks the step `done`.
 
 ## The protocol
 
@@ -58,15 +60,12 @@ Summary: How the lead and coder agents build this project through files. Every a
 - Task folder, same name: docs/changes/CH-NNN-<slug>/tasks/S-NN-<slug>/ — report-01.md, a
   review-01.md only when the coder must act, report-02.md, …
 - A small change: docs/handoff/tasks/YYYY-MM-DD-<slug>/, with its step.md and the same files.
-- Small track: the step is its block in docs/changes/CH-NNN-<slug>.md; its task folder is
-  docs/handoff/tasks/CH-NNN-S-NN-<slug>/, with the same files.
 - One writer per file. Once submitted, a file is frozen — a correction is a new file. The file's
   writer still updates its status fields — a finding's Status and Outcome included — and the user may
   fill in decision fields anywhere.
 
 ## Step status
-In the plan's progress table — for a small change, its step.md; under the small track, the step
-block's Status: line. Only the lead writes it: planned |
+In the plan's progress table — for a small change, its step.md. Only the lead writes it: planned |
 ready | escalated | done YYYY-MM-DD | superseded by S-NN. `done` means the lead re-ran the
 verification and it passed. A check only the user can run keeps the step `ready` and goes under
 "Waiting on the user" on the board until it passes. A coder at work or blocked shows in its report,
@@ -144,6 +143,8 @@ Ideas beyond the step go in the report's Proposals — never into the code.
   failing test, a security issue, a regression — every blocker or major.
 - A non-blocking defect goes to a later step; where none will touch it, it becomes a Known defect on
   the requirement it breaks. A note with no consequence is dropped; an improvement is a proposal.
+- A defect that pre-dates the change, in code it did not touch, never blocks a step: it goes on the
+  board for the user. Only the user rejects a blocker or major.
 - A round is one report and the lead's response; `answered` does not count. From the second round a
   review only closes findings or flags regressions from the fix. At most three rounds: instead of a
   third `changes-requested`, the lead escalates, or supersedes the step with new steps (logged in the

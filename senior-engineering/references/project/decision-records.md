@@ -93,7 +93,8 @@ The condition that would reopen this decision.
 
 ## The architecture ADR
 
-The project's first ADR, in the full form, made at setup. Its Decision section holds:
+The project's first ADR, made at setup and completed by the technical specification — in the full
+form unless the project's practices chose short ADRs. Its Decision section holds:
 
 - **the system's shape** — one deployable, a modular monolith or services — and, for services, the
   stated need behind the split;
@@ -102,13 +103,17 @@ The project's first ADR, in the full form, made at setup. Its Decision section h
   | Module or context | Classification | Style | Persistence shape | CQRS degree | Event sourcing |
   |---|---|---|---|---|---|
 
-- **how each multi-step process is coordinated** — choreography or orchestration;
 - **where the context list and context map live** in the technical specification.
 
+**Setup decides the shape, and the style of the modules already known.** The technical specification
+adds the remaining rows and cells in a dated addendum, which the user decides at that gate. How a
+multi-step process is coordinated is recorded with its flow, not here.
+
 Name each style by its usual name — Clean, vertical slices, modular monolith, microservices,
-event-driven — so a reader knows which reference to load. Exceptions are their own ADRs that cite this
-one: shared tables, an unavoidable chain of calls, a rarely used pattern. A change to any row is a
-superseding ADR.
+event-driven, or the name an existing codebase's style already has, such as layered — so a reader
+knows which reference to load. Exceptions are their own ADRs that cite this one: shared tables, an
+unavoidable chain of calls, a rarely used pattern. Adding a row or filling an empty cell is a dated
+addendum; changing a decided cell is a superseding ADR.
 
 ## Lifecycle rules
 

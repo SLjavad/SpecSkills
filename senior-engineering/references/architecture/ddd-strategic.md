@@ -131,7 +131,7 @@ accommodate.
 | **Open host service** with a **published language** | upstream offers one documented, stable protocol for every consumer | several consumers need the same capability | one consumer with special needs — give it its own translator and keep the shared protocol simple |
 | **Anti-corruption layer** | downstream translates the upstream model into its own | the upstream model is poor, foreign, legacy, or changes for its own reasons | the upstream model already fits — translation then costs and protects nothing |
 | **Conformist** | downstream adopts the upstream model as it is | the model fits, cannot be influenced, and translating costs more than it protects | the upstream model would distort a core context |
-| **Shared kernel** | a small piece of model owned jointly | a few value types that truly mean the same in both, changed only by agreement | it grows — it couples every context that shares it (`modular-monolith.md` "Shared code") |
+| **Shared kernel** | a small piece of model owned jointly | a few value types that truly mean the same in both, inside one deployable, changed only by agreement | it grows — it couples every context that shares it (`modular-monolith.md` "Shared code") |
 | **Separate ways** | no integration at all | integrating costs more than it is worth, and duplication is cheaper | the duplicated part holds a business rule that must agree in both |
 | **Big ball of mud** | an existing area with no clear model | never chosen — it labels what exists | — |
 

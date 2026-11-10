@@ -63,6 +63,10 @@ with brief, transient faults and make overload worse.
 - **Retry at one layer.** Attempts multiply across layers: every layer that retries multiplies the
   calls the bottom receives for one user action. Pick the layer closest to the failing dependency;
   the layers above do not retry.
+- **A deadlock victim or a refused concurrency check is retried as the whole use case** — read,
+  decide and save again — by the pipeline around the handler, a small bounded number of times;
+  resending the one statement repeats the failure. A use case that has already caused an outside
+  side effect returns the conflict to its caller instead.
 - **Back off exponentially, with jitter, up to a cap**, and stop after a small number of attempts,
   recorded per dependency. Without jitter, every client retries in step and the recovering dependency
   receives synchronized waves.

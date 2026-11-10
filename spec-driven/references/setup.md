@@ -38,40 +38,41 @@ scale and growth, lifespan, the existing systems it must run alongside, where it
 whether any part must scale or deploy separately, and the obligations the product sweep found. Propose, with your
 reasons; the user decides.
 
-- **Size — small or standard.** Propose small when all of these hold; otherwise standard:
-  - one deployable, and no stated need to scale or deploy any part separately;
-  - about five capabilities or fewer — the distinct things users can do, counted from discovery's
-    product sweep;
-  - no regulatory, contractual or audit obligation that needs a formal record of decisions and
-    traceability;
-  - no stated growth that would break the points above within the expected lifespan.
+- **Size — small or standard.** Small is a script, a utility or a one-job tool. Propose it when all
+  of these hold; otherwise standard:
+  - one program that does one job, whose whole description fits one page;
+  - run by its owner or a few people, not offered to users as a product;
+  - no regulatory, contractual or audit obligation;
+  - not expected to grow into a maintained product.
 
-  Size is a property of the software, never of the people building it. Where the user has
-  already stated the size, use it and record it as `answered`. Where a point is open, ask it in the first
-  batch of questions. On the border, propose small and record it as `assumed` — growing out of it is
-  cheap by design (`small-track.md`), shrinking from standard is not.
+  Size is a property of the software, never of the people building it. Where the user has already
+  stated the size, use it. Where a point is open, ask it in the first batch of questions. On the
+  border, propose small and say it is an assumption — growing out of it is cheap by design
+  (`small-track.md`), shrinking from standard is not. **A small project takes the small track**: one
+  page and one approval, and nothing below this point but `AGENTS.md` and `CLAUDE.md`.
 - **The architecture shape — the lightest one the stated scale needs**: one deployable, a modular
   monolith, or services. When each fits is in senior-engineering's `references/architecture/` —
   `modular-monolith.md` and `microservices.md`; services only for a stated need.
 - **The internal style, per module** — Clean or vertical slices, chosen from each style's "When it
   fits" (`clean.md`, `vertical-slice.md`) and the module's classification (`ddd-strategic.md`
-  "Subdomains").
-- **The practices this project uses**, recommended from its size: how far the spec phases merge their
-  files, short or full ADRs, when a change gets its own folder, and where mutation, architecture and
-  load tests apply. A small project usually takes the **small track** (`small-track.md`): three spec
-  files, one change file per change, short ADRs, and two approval stops instead of five.
+  "Subdomains") — for the modules already known; the tech spec decides the rest.
+- **The practices this project uses**: how far the spec phases merge their files, short or full
+  ADRs, when a change gets its own folder, and where mutation, architecture and load tests apply —
+  the lighter end for a modest application.
 
-Record the size, shape and style per module as one decision in the first ADR, the architecture ADR
-(senior-engineering `decision-records.md` "The architecture ADR") — `proposed`, citing the discovery
-answers and any open or `assumed` entries it rests on — and, under "Working mode" in `AGENTS.md`, the
-size and architecture with the ADR's link, and the practices. The user decides it at gate 0 or, where
-it rests on open questions, once they are answered and before the tech spec starts. Modules the tech
-spec finds later are added to it as a dated addendum.
+Record the size, the shape and the style — per module where the modules are already known — as one
+decision in the first ADR, the architecture ADR (senior-engineering `decision-records.md` "The
+architecture ADR") — `proposed`, citing the discovery answers and any open or `assumed` entries it
+rests on — and, under "Working mode" in `AGENTS.md`, the size and architecture with the ADR's link,
+and the practices. The user decides it at gate 0 or, where it rests on open questions, once they are
+answered and before the tech spec starts. The tech spec completes its module table as a dated
+addendum (`tech-spec-structure.md`, Step 2).
 
-The tech spec details this architecture and checks it against the requirements; changing it later —
-growing from small to standard included — is a superseding ADR with the user's yes. A change of size
-applies forward: merged files split when next touched or at the cap, accepted ADRs stay as written,
-and new practices start with the next change.
+The tech spec details this architecture and checks it against the requirements; changing it later is
+a superseding ADR with the user's yes. A change of practices applies forward: merged files split
+when next touched or at the cap, accepted ADRs stay as written, and new practices start with the
+next change. A small-track tool that grows moves to the standard track (`small-track.md`,
+"Outgrowing it").
 
 **Size is not stakes.** Size removes documents and stops, never scrutiny: no size changes
 senior-engineering's rules, and a small tool that moves money still gets full tests on its money rules
@@ -119,7 +120,7 @@ docs/
 Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/`, `docs/adr/` (for the
 architecture ADR) and `docs/engineering/` (its index and `principles.md`) now; create each other folder
 when its phase starts, never as empty placeholders.
-Under the small track the layout is the one in `small-track.md`.
+A small-track project has only `AGENTS.md`, `CLAUDE.md` and its page (`small-track.md`).
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly
 into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its plan, task
@@ -174,7 +175,8 @@ A project with code but no specs does not get a reverse-engineered bundle of eve
 change touches; the specs grow change by change. Backfill ADRs only for decisions that matter now.
 
 Its architecture is the one that exists: record its size, shape and style as the first ADR instead of
-choosing again; changing it is a proposal, like any other. The living specs for the area describe the
+choosing again — under the style's usual name, layered for example, even where senior-engineering has
+no file for it; changing it is a proposal, like any other. The living specs for the area describe the
 system as it is, and the first change writes deltas against them, like any later change.
 
 A requirement the code already meets is marked `existing` in the matrix; one it fails gets a *Known
@@ -186,4 +188,4 @@ Continue straight into discovery (`discovery.md`): the sweep, the playback and t
 questions. Then stop at gate 0 — present the mode recorded, the size, architecture and practices
 proposed, the files created, the playback, the `assumed` entries and the questions — and wait for the
 user's decisions and corrections before writing the product spec. When proposing the small track, draft
-through to its first stop instead (`small-track.md`).
+its page and stop there instead (`small-track.md`).

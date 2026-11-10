@@ -1,7 +1,7 @@
 # Changes — living specs and change folders
 
 **Goal:** the living specs always tell the truth about the system, while work in flight stays visible,
-reviewable, and separate from that truth until it ships.
+reviewable, and separate from that truth until the user accepts it.
 
 ## Contents
 - Living specs versus changes
@@ -120,6 +120,9 @@ This is phase 7, and it runs in this order — never before the review:
 
 A change that is closed without the merge leaves the living specs lying about the system — the worst
 outcome of this method, because everyone who reads them next is misled.
+
+A rejected change is archived the same way, unmerged, with `rejected` and the reason in its
+`proposal.md` — so its ids stay findable and are never reused.
 
 ## Concurrent changes
 

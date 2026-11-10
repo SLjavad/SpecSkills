@@ -29,7 +29,8 @@ these lenses too, after checking the code against the spec.
 4. **Verify every candidate finding** against the code before reporting it — reproduce it, trace it, or
    measure it. Drop what does not survive; merge duplicates across lenses.
 5. **Rank the result**: blocking first, then non-blocking, with problems that pre-date the change
-   reported separately from the ones it introduced.
+   reported separately from the ones it introduced — they do not block it, and the user decides when
+   each is fixed.
 
 ## Lens: correctness
 
@@ -126,7 +127,8 @@ reader will misunderstand. If you cannot name one, it is a note.
 - **Severity means something.** A blocker produces wrong data, loses money, breaks a contract, or opens
   a security hole. A major is a real defect on a reachable path. A minor is a defect on an unlikely path
   or a genuine readability problem. A note has no defect behind it — keep notes few, or they train the
-  reader to skim. A blocker or major is always blocking.
+  reader to skim. A blocker or major the change introduced is always blocking, and only the user
+  rejects one.
 - **Do not manufacture findings.** A reviewer told to find problems finds some, and fixing invented ones
   breeds over-engineering. A clean review is a valid outcome — say exactly what you checked.
 

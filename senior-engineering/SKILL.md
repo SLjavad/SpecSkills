@@ -156,6 +156,12 @@ Read `references/principles/design.md` for anything beyond a local change, and
   (`modern-practices.md`).
 - **Follow the existing pattern for the fifth case of something that exists four times.** Consistency
   is worth more than your improvement, and the improvement belongs in its own change — as a proposal.
+- **In existing code, its own shape is the convention.** Record its architecture as it is, under its
+  usual name — layered, for example. New code in an existing module follows that module: its
+  layering, its entity style, its test tools. The stricter rules here — a rich domain model, a named
+  style's rules, real dependencies in containers — govern new modules, and reach existing ones only
+  through a proposal the user accepts. A style departure in code the change did not touch is a
+  proposal, never a finding.
 - **Readability comes from naming and decomposition.** Where the project forbids comments, that is the
   only tool; where it allows them, comment the *why* that code cannot express and never the *what*.
   Wanting to write a "what" comment is the signal to rename something or extract a named method.

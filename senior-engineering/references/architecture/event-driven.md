@@ -178,9 +178,9 @@ there is none of (`microservices.md` "Data").
 | Adding a step | changes several participants | changes the owner |
 | Fits | few steps; reactions in other contexts the owner does not wait for | many steps, compensation, deadlines; a process with a business owner |
 
-- **The choice is per process, recorded in the architecture ADR.** A rule of thumb (Cui, Ruecker):
-  orchestration inside the context that owns the process; events between contexts for reactions the
-  owner does not wait for.
+- **The choice is per process, recorded with its flow in the technical specification.** A rule of
+  thumb (Cui, Ruecker): orchestration inside the context that owns the process; events between
+  contexts for reactions the owner does not wait for.
 - **The orchestrator is the owning service, not a separate component.** It keeps the process's state
   in its own pending states, sends commands — synchronously under `modular-monolith.md` "Commands
   between modules", or as messages — and compensates on a refusal.

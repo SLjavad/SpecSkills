@@ -42,6 +42,8 @@ Per step: what is called, what it returns, what is written, what is published, a
 this step fails**. Then, for the flow as a whole:
 
 - **Transaction boundaries** — what commits together, and what is deliberately outside the transaction.
+- **Coordination**, where the flow is a process across modules or services — choreography or
+  orchestration, and who owns it (senior-engineering `event-driven.md` "Coordinating a saga").
 - **Ordering that matters**, and why. Note anything that must be persisted before a remote call, or
   published only after a commit.
 - **Idempotency** — what makes a repeat of this flow safe, and what the repeated caller receives; or
@@ -79,9 +81,17 @@ wrong-but-plausible version alongside the right one.
 
 Each of these, decided once and written down: authentication and authorization model; configuration and
 secrets; logging, and what must never be logged; metrics, tracing and health; the error-handling
-convention; localization and text; caching and invalidation; background work and scheduling; file and
-blob handling — and any other concern this system shares across components. Where one does not apply,
-say "not applicable" rather than omitting it — silence reads as oversight.
+convention; localization and text; resilience; caching and invalidation; background work and
+scheduling; file and blob handling; deployment and operations — and any other concern this system
+shares across components. Where one does not apply, say "not applicable" rather than omitting it —
+silence reads as oversight.
+
+- **Resilience** is one table, a row per outside dependency (senior-engineering `resilience.md`
+  "Decide per dependency"); each outbound contract links its row.
+- **Caching** is one table, a row per cached data set (senior-engineering `caching.md` "Decide before
+  caching").
+- **Deployment and operations**: where it runs and in which environments, how a release rolls out and
+  rolls back, migrations at deploy, backup and restore, health checks and alerts.
 
 ## Step 10 — Performance, and how every NFR is met
 
@@ -191,6 +201,9 @@ Accepted risks: <each with an owner and a revisit date>
 - **The controls**: authentication, authorization per operation and per object, input validation,
   secrets handling and credential lifetime, encryption at rest and in transit, rate and size limits,
   outbound-call restrictions, security logging.
+- **Model and agent features**: the tool-capability table — each tool, its side effect, who may
+  trigger it and whether the user confirms (senior-engineering `security.md` "Design and
+  implementation rules") — and a threat row for every boundary the model crosses.
 - **Each mitigation maps to a requirement id and a test** — a mitigation with neither is a hope.
 - **Keep it current**: a change that adds a trust boundary or a data class updates the model.
 
