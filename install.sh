@@ -204,7 +204,7 @@ if [ "$DRY_RUN" = 1 ]; then
   echo "Dry run: nothing was written."
 elif [ "$CHANGED" = 1 ]; then
   echo "Done. Replaced and removed files are backed up in $BACKUP."
-  echo "Start a new session in your agent tool so the skills load."
+  echo "Start a new session in your agent tool so the change takes effect."
 else
   echo "Already up to date; nothing changed."
 fi

@@ -184,7 +184,8 @@ your tool's documentation if one doesn't work.
   to read `AGENTS.md` first.
 
 A project set up with `spec-driven` also gets `docs/engineering/principles.md`: the rules distilled for
-any agent that works on it without the skills installed.
+any agent that works on it without the skills installed. A small-track project — a script or a
+one-job tool — does not; it is worked on by one agent that has the skills.
 
 ## Using them
 
@@ -193,7 +194,7 @@ any agent that works on it without the skills installed.
 - **A new project or a major feature: `spec-driven`.** It first asks whether you work with one agent or
   several, proposes the project's size, architecture and practices for you to decide, then works phase
   by phase and stops for your approval at each gate. A script or a one-job tool takes the small
-  track: one page and one approval. No code is written until the plan, or that page, is approved.
+  track: one agent, one page and one approval. No code is written until the plan, or that page, is approved.
 - **Everyday work** — designing, coding, testing, reviewing: `senior-engineering` applies throughout.
 - **Ideas beyond the task are proposals.** Nothing outside the approved scope is built without your yes.
 

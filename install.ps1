@@ -200,7 +200,7 @@ if ($DryRun) {
     Write-Host 'Dry run: nothing was written.'
 } elseif ($script:Changed) {
     Write-Host "Done. Replaced and removed files are backed up in $Backup."
-    Write-Host 'Start a new session in your agent tool so the skills load.'
+    Write-Host 'Start a new session in your agent tool so the change takes effect.'
 } else {
     Write-Host 'Already up to date; nothing changed.'
 }
