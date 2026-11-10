@@ -44,9 +44,8 @@ decisions go to `docs/adr/`.
 
 **Where the project's practices merge files**, a small system may keep each aggregate with its tables
 in one file, the endpoints and the error taxonomy in one `contracts.md`, all flows in `flows.md` and
-all rules in `rules.md` — as long as no file
-passes 300 lines and each still holds one coherent topic. The ids stay in the headings; split a file
-again when it outgrows the cap.
+all rules in `rules.md` — as long as no file passes 300 lines and each still holds one coherent topic.
+The ids stay in the headings; split a file again when it outgrows the cap.
 
 The rationale of every significant decision lives in its ADR. These files state the choice in one line
 and link the ADR — never a copy of the reasoning, which would drift.
@@ -71,8 +70,8 @@ Bring the user a recommendation with reasons and real alternatives — researche
   taste does.
 - **Deployment and runtime environment.** Where does this run, and what already exists there for logs,
   metrics, CI and secrets.
-- **Persistence shape.** Relational, document, key-value, search, time-series, or several — driven by the
-  access patterns, not by preference.
+- **Persistence shape.** Relational, document, key-value, search, time-series, or several — driven by
+  the access patterns, not by preference.
 - **Lifespan.** A tool used for one season and a system maintained for five years justify different
   structure.
 - **Support horizon and licences.** How long each pinned version is supported, and each licence.

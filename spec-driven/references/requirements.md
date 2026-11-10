@@ -150,8 +150,8 @@ requirement; delete it.
 **Known defect.** Only while one exists, as for a functional requirement.
 ```
 
-**An NFR without a number and a measurement method is not an NFR.** It is a wish, and it will be declared
-met by whoever is asked. Convert or delete:
+**An NFR without a number and a measurement method is not an NFR.** It is a wish, and it will be
+declared met by whoever is asked. Convert or delete:
 
 | Wish | Requirement |
 |---|---|

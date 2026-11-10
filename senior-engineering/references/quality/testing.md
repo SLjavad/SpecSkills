@@ -189,8 +189,8 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
 - **A "so it never drifts again" guard is still a test, and most are not worth it.** The genre is
   seductive because it feels like diligence rather than testing, so it escapes the judgement applied to
   everything above. It earns its place only when the drift would be **silent** *and* the consequence
-  severe — a guarantee that breaks with no error, a message dropped with no log line, money moved with no
-  record. When the drift would announce itself, or the fallback is simply correct, the guard is noise
+  severe — a guarantee that breaks with no error, a message dropped with no log line, money moved with
+  no record. When the drift would announce itself, or the fallback is simply correct, the guard is noise
   that makes the suite slower and less trusted.
 - **Delete a test that asserts nothing**, and do not add one for a trivial accessor, framework
   behaviour, a third-party library, or configuration wiring. A suite too slow or too brittle to be run

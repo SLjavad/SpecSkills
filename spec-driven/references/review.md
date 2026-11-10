@@ -4,9 +4,9 @@
 file, and close the loop so the same correction is never needed twice.
 
 **Any agent can run this** — the spec author, the implementer, or a fresh one with no history. So it is
-written to work from the artifacts alone: the living specs, the change folder, and the code. Never assume
-the reviewer remembers the conversation, and never assume the fixer does either. A reviewer with no
-memory of writing the code catches more than one that has; if the user has a choice, prefer that one.
+written to work from the artifacts alone: the living specs, the change folder, and the code. Never
+assume the reviewer remembers the conversation, and never assume the fixer does either. A reviewer with
+no memory of writing the code catches more than one that has; if the user has a choice, prefer that one.
 In multi-agent mode it runs in the lead role, and its blocking findings reach the coder as a fix step
 (`multi-agent.md`, the protocol's "Rounds and findings").
 
@@ -30,9 +30,9 @@ written only when its coder must act; this phase reviews the whole change before
 
 ## What to review against
 
-**The spec, first and above taste.** The tech spec is the agreed design. A deviation from it is a finding,
-even when the code is arguably better — because the document is now wrong, and the next reader will
-trust it.
+**The spec, first and above taste.** The tech spec is the agreed design. A deviation from it is a
+finding, even when the code is arguably better — because the document is now wrong, and the next reader
+will trust it.
 
 Then, in order:
 
@@ -106,21 +106,23 @@ working code is worse than no spec: it actively misleads everyone who reads it n
 
 An optimization, a refactor, an upgrade or a better design that is not a defect is **not a finding**. It
 goes to the proposal register (`discovery.md`) in the one proposal format — with its evidence, expected
-gain, cost, risk and verification — and waits for the user. Nothing is changed because a reviewer preferred it.
+gain, cost, risk and verification — and waits for the user. Nothing is changed because a reviewer
+preferred it.
 
 ## The loop
 
-1. **The reviewer writes all findings to the files** before any fixing starts. Reviewing and fixing in the
-   same pass produces a shallow review, because the reviewer starts optimising for what is easy to fix.
+1. **The reviewer writes all findings to the files** before any fixing starts. Reviewing and fixing in
+   the same pass produces a shallow review, because the reviewer starts optimising for what is easy to
+   fix.
 2. **Present a summary**: counts by severity, and the blockers by name.
-3. **The fixer works the findings in severity order**, filling in `Outcome` on each and setting `Status`.
-   In multi-agent mode the coder never edits a review: it reports each outcome in its next report, and
-   the lead records `Outcome` and `Status`.
+3. **The fixer works the findings in severity order**, filling in `Outcome` on each and setting
+   `Status`. In multi-agent mode the coder never edits a review: it reports each outcome in its next
+   report, and the lead records `Outcome` and `Status`.
 4. **Rejections need a written reason**, in the file, and a blocker or major is rejected only by the
    user — until then it stays open. "Deliberate because X" is a legitimate outcome and becomes an
    area-record entry — see below.
-5. **Re-check only what changed.** Verify each fix against the finding that prompted it; do not re-review
-   untouched code.
+5. **Re-check only what changed.** Verify each fix against the finding that prompted it; do not
+   re-review untouched code.
 6. **Close the review** with a line stating what remains open and why.
 
 Findings live in files, not in chat. A session ends; the file does not.
@@ -131,8 +133,8 @@ The point of recording feedback is that the correction is not needed a second ti
 
 - **A rejected finding that was actually deliberate** belongs in the area record, with the failure it
   prevents. That is what stops the next reviewer — or the next agent — "fixing" it.
-- **A finding that recurs across reviews** is not an implementation problem; it is a missing rule. Add it
-  to the area record, the stack playbook, `AGENTS.md`, or an architecture test, so it is prevented
+- **A finding that recurs across reviews** is not an implementation problem; it is a missing rule. Add
+  it to the area record, the stack playbook, `AGENTS.md`, or an architecture test, so it is prevented
   rather than caught.
 - **A whole category of finding appearing repeatedly** means the spec was too vague in that area. Note
   it, so the next change's tech spec covers it up front.

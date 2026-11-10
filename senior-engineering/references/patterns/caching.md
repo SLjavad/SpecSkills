@@ -84,8 +84,8 @@ setting. `references/principles/design.md` "Balance" governs — a cache names a
   with delete, a reader that loaded before the write can put the old value back — a short expiry, or a
   version or lease check on the put, bounds that race.
 - **Invalidate from the write, not from a guess.** When another service owns the data, its change
-  events drive the invalidation, published through an outbox (`references/architecture/event-driven.md`);
-  expiry remains the backstop for a missed event.
+  events drive the invalidation, published through an outbox
+  (`references/architecture/event-driven.md`); expiry remains the backstop for a missed event.
 - **Versioned keys** — the data's version or a generation number in the key — make invalidation a key
   change instead of a delete across many entries.
 - **In-process caches across instances** need a broadcast invalidation, or an expiry short enough that

@@ -52,8 +52,8 @@ this step fails**. Then, for the flow as a whole:
   concurrency token, lock, atomic update, single-writer queue.
 - **The failure matrix**: for each step, the failure, the resulting state, whether it is retryable, and
   whether it needs compensating.
-- **What a reader of the stored record can tell afterwards** about how far the flow got. If the answer is
-  "nothing", add it.
+- **What a reader of the stored record can tell afterwards** about how far the flow got. If the answer
+  is "nothing", add it.
 
 A flow with only a happy path is not specified. The failure behaviour will otherwise be invented during
 implementation, under time pressure, by whoever hits it first.
@@ -65,8 +65,8 @@ Any non-obvious computation, ordering, matching or selection logic, written out 
 - **The formula or procedure**, unambiguously.
 - **A worked example with real numbers**, and the expected output. This is the single most useful thing
   in the spec, and it is what an implementer will check their work against.
-- **The edge cases**: empty, zero, negative, one element, ties, absent input, maximum, overflow, rounding
-  direction.
+- **The edge cases**: empty, zero, negative, one element, ties, absent input, maximum, overflow,
+  rounding direction.
 - **Rounding, precision and units** wherever money, time or measurement is involved. State the rounding
   direction and where it is applied — this is a decision, not a detail.
 - **Ordering rules**, where output order is part of the contract, and what the tie-break is.
@@ -119,8 +119,8 @@ Then the performance work itself:
 - **The specific optimizations chosen**, each with the reason and the cost it accepts — using the stack
   playbook's current practice for the pinned versions.
 - **What was deliberately not optimized**, and the threshold at which that should be revisited.
-- **The known pathological cases** — the query that would table-scan, the N+1, the unbounded result set —
-  and what prevents them.
+- **The known pathological cases** — the query that would table-scan, the N+1, the unbounded result set
+  — and what prevents them.
 
 Premature optimization and unexamined slowness are both failures. Name which risk you took.
 

@@ -35,8 +35,8 @@ Record the answer under "Working mode" in `AGENTS.md`. In multi-agent mode, befo
 Every later phase depends on how heavy this project should be, so it is decided once, here — never
 re-guessed by each session. The inputs come from discovery's technical sweep (`discovery.md`): expected
 scale and growth, lifespan, the existing systems it must run alongside, where it will be deployed,
-whether any part must scale or deploy separately, and the obligations the product sweep found. Propose, with your
-reasons; the user decides.
+whether any part must scale or deploy separately, and the obligations the product sweep found. Propose,
+with your reasons; the user decides.
 
 - **Size — small or standard.** Small is a script, a utility or a one-job tool. Propose it when all
   of these hold; otherwise standard:

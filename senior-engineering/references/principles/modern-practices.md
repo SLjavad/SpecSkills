@@ -129,7 +129,7 @@ a better successor; a documentation generator the framework now provides nativel
 ## Readability still wins
 
 Modern idioms that are both clearer and faster — read-only collections in any language; in C#, for
-example, collection expressions, pattern matching and records — are the default everywhere. Low-level performance constructs — pooling, stack
-allocation, unsafe code, hand-tuned loops — belong only on a measured hot path, encapsulated behind a
-readable interface, with the measurement recorded next to them. If a reader must re-read a line to see
-why it is correct, the gain had better show in the numbers.
+example, collection expressions, pattern matching and records — are the default everywhere. Low-level
+performance constructs — pooling, stack allocation, unsafe code, hand-tuned loops — belong only on a
+measured hot path, encapsulated behind a readable interface, with the measurement recorded next to them.
+If a reader must re-read a line to see why it is correct, the gain had better show in the numbers.

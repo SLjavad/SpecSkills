@@ -82,8 +82,8 @@ One topic per file, each opening with the standard header (status, summary, ids,
 | `scope.md` | In / Out / Later as three lists; each constraint marked CONSTRAINT or PREFERENCE with its source; obligatory integrations; sensitive data handled; risks — likelihood, impact, response |
 | `docs/specs/glossary.md` | Every domain term used anywhere in the bundle, defined once |
 
-- **Assumptions and open questions are not sections.** They are entries in `docs/discovery/questions.md`,
-  cited by id where they apply.
+- **Assumptions and open questions are not sections.** They are entries in
+  `docs/discovery/questions.md`, cited by id where they apply.
 - **Where the project's practices merge files**, the journeys may live in a single `journeys.md`; past
   300 lines, a section of `overview.md` or `scope.md` moves into its own file.
 - **Add every file to the manifest** (`docs/specs/README.md`) as you create it.

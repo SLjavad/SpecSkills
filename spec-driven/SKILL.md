@@ -98,17 +98,17 @@ it is.
 - **Every decision carries its reason** — in the document for a small one, in an ADR for a significant
   one. A decision without a rationale gets silently reversed by the next reader who prefers something
   else.
-- **No `TBD`, no `etc.`, no "to be determined during implementation".** Either decide it, or record it in
-  the gray-area register and cite its `Q-` id where the doubt sits — escalate, do not guess. An
+- **No `TBD`, no `etc.`, no "to be determined during implementation".** Either decide it, or record it
+  in the gray-area register and cite its `Q-` id where the doubt sits — escalate, do not guess. An
   implementer must never have to invent a requirement.
 - **Concrete over descriptive.** Not "store the amount" but the field, its type, its precision, its
   nullability, and its unit. Not "handle errors" but which error, what the caller sees, what is logged,
   what is stored.
-- **Terms are defined once, in the glossary, and used consistently.** Two words for one concept is how two
-  implementations of it get built.
+- **Terms are defined once, in the glossary, and used consistently.** Two words for one concept is how
+  two implementations of it get built.
 - **Everything downstream of phase 2 cites requirement ids.** Components, flows, plan steps and
-  review findings name the `FR-`/`NFR-` they serve, and the traceability matrix is the one place coverage
-  is recorded.
+  review findings name the `FR-`/`NFR-` they serve, and the traceability matrix is the one place
+  coverage is recorded.
 - **Small and findable.** Within the size budget, opening with its header, listed in its index.
 
 Before declaring a phase done, run this test: *if I handed only these files to a competent stranger, in
@@ -132,8 +132,8 @@ keep the number, and say that is what you did.
 
 ## Order matters, and so does separation
 
-- **The product spec contains no technology.** No framework, no database, no library. If a sentence names
-  one, it belongs in the tech spec. This keeps product decisions from being quietly driven by an
+- **The product spec contains no technology.** No framework, no database, no library. If a sentence
+  names one, it belongs in the tech spec. This keeps product decisions from being quietly driven by an
   implementation preference.
 - **The requirements contain no solution language either**, and no requirement without a source in the
   product spec. They are the product spec made countable and checkable, not a second draft of it.
@@ -164,16 +164,16 @@ proposals; ask for approval or corrections. Do not roll straight into the next p
 **At the tech-spec and plan gates, run a pre-mortem first** (`references/discovery.md`) and present its
 list with the summary.
 
-**After phase 4: hand off.** State that the specs and plan are complete, where they are — the manifest and
-the change folder — and what an implementing agent should read first. Do not begin implementing unless
-the user asks you to; in multi-agent mode, the lead hands the first step to the coder only once the
-user approves the plan and says to start.
+**After phase 4: hand off.** State that the specs and plan are complete, where they are — the manifest
+and the change folder — and what an implementing agent should read first. Do not begin implementing
+unless the user asks you to; in multi-agent mode, the lead hands the first step to the coder only once
+the user approves the plan and says to start.
 
 **During implementation (phase 5):** work the plan step by step, in order. After each step, verify it as
 the plan specifies, record the result in the step's *Result*, and mark it done in the progress table —
-nothing else changes. Do not batch
-several steps and verify at the end, and do not improvise work that is not in the plan — if the plan is
-wrong, say so and amend it. In multi-agent mode the loop in `references/multi-agent.md` does this.
+nothing else changes. Do not batch several steps and verify at the end, and do not improvise work that
+is not in the plan — if the plan is wrong, say so and amend it. In multi-agent mode the loop in
+`references/multi-agent.md` does this.
 
 **Review (phase 6)** may be run by any agent the user chooses — the spec author, the implementer, or a
 fresh one — in multi-agent mode, one working in the lead role. Write it so it works for a reviewer with
@@ -190,8 +190,8 @@ invented ids.
 
 ## Amending an approved spec
 
-Specs drift. When implementation reveals the spec is wrong, that is a **finding against the spec**, not a
-licence to diverge.
+Specs drift. When implementation reveals the spec is wrong, that is a **finding against the spec**, not
+a licence to diverge.
 
 1. Stop and say what the spec got wrong, and propose the amendment.
 2. With the user's yes, amend the document, keeping the superseded decision visible with the reason it

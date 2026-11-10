@@ -158,8 +158,8 @@ The plan is a working document, not a snapshot.
 
 ## Done when
 
-- **Every `Must` requirement is implemented by at least one step**, and the matrix shows it. An empty cell
-  against a `Must` is the plan being incomplete, not the matrix being untidy.
+- **Every `Must` requirement is implemented by at least one step**, and the matrix shows it. An empty
+  cell against a `Must` is the plan being incomplete, not the matrix being untidy.
 - **Every requirement verified by anything other than an automated test** — an evaluation, a probe, an
   exercise, a structural check, a dedicated plan — **has a step that runs it**, with the passing
   result stated. One verified by an automated test is covered by the step that writes the test.
