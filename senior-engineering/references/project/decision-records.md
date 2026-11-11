@@ -105,8 +105,9 @@ form unless the project's practices chose short ADRs. Its Decision section holds
 
 - **where the context list and context map live** in the technical specification.
 
-**Setup decides the shape, and the style of the modules already known.** The technical specification
-adds the remaining rows and cells in a dated addendum, which the user decides at that gate. How a
+**Setup decides the shape, and the style of the modules already known** — with none known, the ADR
+has no table yet. The technical specification adds the remaining rows and cells in a dated addendum,
+which the user decides at that gate. How a
 multi-step process is coordinated is recorded with its flow, not here.
 
 Name each style by its usual name — Clean, vertical slices, modular monolith, microservices,

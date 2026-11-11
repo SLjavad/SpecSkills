@@ -64,6 +64,8 @@ What the agent decided without asking, for the user to confirm or correct.
 ```
 
 - **Every item under "What it must do" names its check.** An item nobody can check is a wish.
+- **Versions, libraries and checks follow senior-engineering**: `modern-practices.md` for what "How
+  it is built" pins, `testing.md` for each check.
 - **The page holds each choice with its reason**; there are no decision records beside it.
 - **No `TBD`.** A point still open is an assumption on the page or a question to the user.
 - **Steps are build steps.** The self-review is not one; it is step 4 of "How it runs".

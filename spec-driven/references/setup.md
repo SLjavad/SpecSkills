@@ -194,7 +194,7 @@ defect* (`requirements.md`).
 ## Then stop
 
 Continue straight into discovery (`discovery.md`): the sweep, the playback and the first batch of
-questions. Then stop at gate 0 — present the mode recorded, the size, architecture and practices
-proposed, the files created, the playback, the `assumed` entries and the questions — and wait for the
+questions. Then stop at gate 0 — present the size, architecture and practices proposed, the files
+created, the playback, the `assumed` entries and the questions, setup's included — and wait for the
 user's decisions and corrections before writing the product spec. When proposing the small track, draft
 its page and stop there instead (`small-track.md`).
