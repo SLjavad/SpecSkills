@@ -9,7 +9,9 @@ they fail for the wrong reasons, get muted, and then everything around them is a
 - Four lenses on every significant flow
 - Beyond the lenses: the flow's own risks
 - Integration tests run every external dependency for real
+- End-to-end tests
 - Writing a test worth having
+- Challenging the code
 - Proving the tests can fail
 - Sizing the coverage
 - Tools
@@ -24,6 +26,7 @@ verification.
 |---|---|---|
 | Unit test | pure logic — rules, arithmetic, parsing, mapping, state transitions; fast, no I/O, no clock | the test |
 | Integration test with Testcontainers | anything that crosses an external dependency: the real engine, the vendor's emulator, or a containerized mock server | the test |
+| End-to-end test | a critical journey across the whole system, assembled as deployed and driven from outside | the test, and its trace on failure |
 | Characterization | a behaviour-preserving change: capture the current output, change, re-run, **diff** | the diff |
 | Evaluation | an output judged over many cases — ranking, classification, extraction, generated text: a versioned dataset, a scoring method and a threshold, run like a test | the score, the dataset and model versions; below the threshold fails |
 | Benchmark, load test or probe | a number — latency, throughput, allocations, a query plan — or behaviour where there is no suite to add to | the result, and what it ran against |
@@ -115,6 +118,10 @@ mail or SMS gateway, another of your services, a third-party API. Those are exam
 every tool or service outside the process. Testcontainers exists for most major languages; for a stack
 it does not cover, use the closest tool that runs the dependency in a throwaway container.
 
+- **Drive it through the front door.** Start the application in the test host with its real
+  dependencies, call it the way a client does — over HTTP, through the queue, from the command line —
+  and check the effects in the dependencies themselves. Arrange data through the application where it
+  can create it, so the test does not depend on the table layout; seed directly only what it cannot.
 - **Choose the most real option that can run**: the production engine itself; otherwise the vendor's
   official emulator; otherwise a containerized mock server for an API you cannot run — plus a contract
   test wherever the provider's shape can drift independently of your release.
@@ -138,10 +145,39 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
   containers, say so and report those tests as written but not run — never substitute another engine,
   and never let the suite be skipped quietly.
 
+## End-to-end tests
+
+An end-to-end test runs the whole system assembled as it is deployed — every service, the real
+database, broker and identity provider in containers — and drives it only from outside, through the
+UI, the public API or the command line, the way a user does. It is the only test that proves the parts
+are wired together: configuration, routing, authentication across services, the deployed images.
+
+- **Few, and only for the journeys the product exists for** — sign up, order, pay, and the flow whose
+  failure costs most. They are slow and the likeliest to flake, so a rule a unit or integration test
+  can check is checked there. When an end-to-end test finds a bug no lower test did, add the lower test.
+- **Assert what the user gets and the effects behind it**: the page or response, plus the stored
+  record, the email in the mail container's inbox, the message on the bus.
+- **Outside services you cannot run** stand in as containerized mock servers, as in integration tests;
+  never a real third party and never production.
+- **Each test creates its own data** — its own user, tenant and records, through the system — so tests
+  run in parallel and in any order.
+- **Wait on conditions, never on time**: the element visible, the row present, the message arrived,
+  each with a timeout. Find UI elements by role and label, as a user does, never by CSS path.
+- **Make a failure readable**: keep the trace or screenshot and every container's logs.
+- **Run them in CI against the images that will ship**, before each release at least. A smoke test is
+  the smallest of them, run against a real deployment right after it rolls out.
+
 ## Writing a test worth having
 
+- **Decide the expected result before running the code** — from the spec, a worked example, or a
+  hand calculation. Never run the code and paste its output in as the expectation: that freezes
+  whatever it does today, bugs included. A captured snapshot is acceptable only as a characterization
+  diff, or after a person has read it and confirmed it right — kept small, with volatile fields removed.
 - **Test the rule, not the implementation.** If tidying the code breaks the test, the test was reading
   the code rather than the behaviour. Assert what the caller can observe.
+- **Assert every effect the caller relies on** — the result or response, the stored state, the
+  messages published, the calls made to outside services — and what must not have happened: no extra
+  row, no message after a rollback, no second charge. Check state, not which methods were called.
 - **Name it after the behaviour**, and cite what it guards. `RoundsUpAtTwoDecimals` beats
   `RoundUp_Test` — the name is the whole message when it fails at 2am in CI — and a requirement or
   flow id in the name or a trait lets the matrix find it.
@@ -163,6 +199,24 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
   through, from the spec, an area record or ADR, or the ticket.
 - **Cover the boundary and the negative case**, not three variations of the happy path. Empty, zero,
   one, absent, maximum, tie, wrong type.
+
+## Challenging the code
+
+Tests of the expected results show the code does what was intended, on the inputs someone thought of.
+Then try to break it. The lenses and the flow's risks say what to challenge; this is how:
+
+- **Hostile input**: malformed, oversized, empty, duplicated fields, unusual Unicode, values at and just
+  past each limit. Generate it — property-based tests, or a fuzzer on parsers and decoders — since
+  hand-picked cases miss what nobody thought of.
+- **Odd sequences**: the same action twice, out of order, cancelled halfway, retried after a timeout,
+  by two users at once.
+- **A dependency that misbehaves**: slow, down, closing the connection mid-response, answering with an
+  error or garbage — a fault-injecting proxy such as Toxiproxy between the application and its
+  container, or the container stopped mid-flow. Write down what should happen first, from the failure
+  matrix, then check it did: no lost or duplicated data, a clear error, recovery once it returns.
+- **Explore the running system**: use it as a user and as a hostile client would, watching the logs and
+  the stored data. Every surprise is a bug or an unwritten rule; it becomes a test, or a question to the
+  user when the spec does not say which.
 
 ## Proving the tests can fail
 
@@ -206,5 +260,6 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
 - The project's stack playbook names the maintained tool for each kind, for every stack. Examples of
   the kinds, not a closed list: mutation (Stryker, PIT), property-based (FsCheck, jqwik, fast-check,
   Hypothesis), architecture tests (ArchUnitNET, ArchUnit, dependency-cruiser), load (k6, Gatling,
-  Locust), micro-benchmarks (BenchmarkDotNet, JMH, Go's benchmarks). Check maintenance and licence
-  before adopting any of them.
+  Locust), micro-benchmarks (BenchmarkDotNet, JMH, Go's benchmarks), browser end-to-end (Playwright,
+  Cypress), fault injection (Toxiproxy), fuzzing (the stack's own fuzzer, or AFL++ and libFuzzer).
+  Check maintenance and licence before adopting any of them.

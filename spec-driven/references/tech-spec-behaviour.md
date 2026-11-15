@@ -149,6 +149,7 @@ tries to break; one skipped is skipped with a reason.
 | Contract | outbound providers whose shape can drift | | |
 | Architecture | the architecture ADR's rules | | |
 | Mutation | the domain core, with the break threshold | adapters, UI glue | |
+| End-to-end | the critical journeys, across the assembled system | rules a lower level already checks | |
 | Load / benchmark | the architecturally significant NFRs | | |
 | Smoke | the deployed thing answers and its dependencies resolve | | |
 ```
