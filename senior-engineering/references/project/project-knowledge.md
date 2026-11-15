@@ -17,20 +17,22 @@ docs, or whenever a project has no `AGENTS.md`.
 ## The hierarchy
 
 ```
-AGENTS.md                  entry point for every agent and tool — short, always loaded
-CLAUDE.md                  @AGENTS.md, plus Claude-only notes
-docs/specs/README.md       manifest of the living specs: every file, one line each
-docs/changes/README.md     changes in flight, and archived
-docs/adr/README.md         index of decisions
-docs/discovery/            understanding, gray-area register, proposal register
-docs/engineering/README.md index of stack playbooks, area records (areas/), principles
-docs/handoff/              multi-agent protocol and board (only when used)
+AGENTS.md          entry point for every agent and tool — short, always loaded
+CLAUDE.md          @AGENTS.md, plus Claude-only notes
+docs/specs/        the living specs, the glossary included
+docs/changes/      one folder per change in flight; closed ones under archive/
+docs/adr/          decisions, one file each
+docs/discovery/    understanding, gray-area register, proposal register
+docs/engineering/  stack playbooks, area records (areas/), principles
+docs/handoff/      multi-agent protocol and board (only when used)
 ```
 
-Every living document is reachable from `AGENTS.md` in two hops: `AGENTS.md` → an index → the file.
-A change folder is reached through the changes index, and its plan index lists its steps and tasks. A
-plan step links the exact files the task needs, so an implementer reads a handful of small files
-instead of the whole bundle. That selective loading is where the token saving comes from.
+Every living document is reachable from `AGENTS.md` in two hops: `AGENTS.md` → its folder → the file.
+No folder has an index file, because the folder already is one: list it, read each file's header, or
+search for an id — it appears once, in the heading that defines it. An index would repeat those
+headers and drift from them. A change's plan index lists its steps and tasks, and a plan step links
+the exact files the task needs, so an implementer reads a handful of small files instead of the whole
+bundle. That selective loading is where the token saving comes from.
 
 ## Size and sharding rules
 
@@ -39,10 +41,8 @@ instead of the whole bundle. That selective loading is where the token saving co
   read still shows everything it holds.
 - **Author topic files from the start.** A monolith chopped up afterwards produces fragments that cut
   across topics; design the files for how they will be loaded.
-- **Split by sub-topic when a file passes the cap**, and update its index in the same edit. Merge two
-  tiny files that are always read together.
-- **Indexes stay under 150 lines.** An index lists a path and one line; it never restates content —
-  not even a file's status, which lives only in that file's header.
+- **Split by sub-topic when a file passes the cap**, and update the links to it in the same edit. Merge
+  two tiny files that are always read together.
 - **Registers and logs archive rather than grow.** When an append-only file passes the cap, move closed
   entries to an archive file and keep the open ones.
 - **`AGENTS.md` stays under 150 lines**, and the whole instruction chain a tool loads — root plus nested
@@ -97,12 +97,15 @@ Build: `…` · Test: `…` · Run: `…` · Lint/format: `…` · Migrate: `…
 Integration tests need: <e.g. Docker running>
 
 ## Where the knowledge lives
-- Specs, the current truth: docs/specs/README.md
-- Changes in flight: docs/changes/README.md
-- Decisions: docs/adr/README.md
+Each file's header says what it holds; search for an id to find its definition.
+- Specs, the current truth: docs/specs/
+- New to the project: docs/specs/01-product/overview.md → docs/specs/02-requirements/overview.md →
+  docs/specs/03-tech/architecture.md
+- Changes in flight: docs/changes/ (closed ones under archive/)
+- Decisions: docs/adr/
 - Product and technical context, as understood at gate 0: docs/discovery/understanding.md
 - Open questions and proposals: docs/discovery/questions.md, docs/discovery/proposals.md
-- How we write code here — stack playbooks, area records: docs/engineering/README.md
+- How we write code here — stack playbooks, area records: docs/engineering/
 
 ## Working mode
 <single agent | lead + coder> · Lead: <tool> · Coder: <tool>
@@ -186,5 +189,6 @@ Summary: The rules every agent follows on this project, whatever tool it runs in
 
 - **Update the docs a change affects in the same change.** Code that disagrees with an approved document
   makes the document actively misleading — worse than having no document.
-- **Every added, renamed or removed document updates its index** in the same edit.
+- **A renamed, moved or removed document has every link to it updated in the same edit** — one search
+  for its path finds them.
 - **Delete what a change made false** rather than writing around it.

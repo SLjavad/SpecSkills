@@ -110,13 +110,12 @@ This is phase 7, and it runs in this order — never before the review:
    the original; REMOVED items with an id stay, with status `retired` and the reason, and those
    without one are deleted; RENAMED items are updated everywhere — search for the old name.
 3. Merge the change's traceability rows into the living matrix — their plan-step cells
-   (`CH-NNN/S-NN`) record which change implemented each — and update the glossary, the manifest and
-   the ADR index.
+   (`CH-NNN/S-NN`) record which change implemented each — and update the glossary.
 4. Re-check the merged files against the "Done when" lists in `product-spec.md`, `requirements.md` and
    `tech-spec-behaviour.md` ("Quality bars") — nothing may still point at the change as pending.
-5. Move the folder to `docs/changes/archive/YYYY-MM-DD-CH-NNN-<slug>/` and update
-   `docs/changes/README.md`. Documents outside the folder cite a change by its id (`CH-007`,
-   `CH-007/S-02`), never by folder path, so their references survive the move.
+5. Move the folder to `docs/changes/archive/YYYY-MM-DD-CH-NNN-<slug>/`. Documents outside the folder
+   cite a change by its id (`CH-007`, `CH-007/S-02`), never by folder path, so their references survive
+   the move.
 
 A change that is closed without the merge leaves the living specs lying about the system — the worst
 outcome of this method, because everyone who reads them next is misled.

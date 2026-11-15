@@ -86,7 +86,6 @@ One topic per file, each opening with the standard header (status, summary, ids,
   `docs/discovery/questions.md`, cited by id where they apply.
 - **Where the project's practices merge files**, the journeys may live in a single `journeys.md`; past
   300 lines, a section of `overview.md` or `scope.md` moves into its own file.
-- **Add every file to the manifest** (`docs/specs/README.md`) as you create it.
 
 ## The glossary is not optional
 
@@ -109,7 +108,7 @@ context — `Customer (Billing)`, `Customer (Support)` — added once the tech s
 - No technology appears anywhere.
 - Every assumption is a register entry rather than prose buried in a paragraph, and no approved file
   cites an unresolved `Q-` entry.
-- Every file is within the size budget, opens with its header, and is listed in the manifest.
+- Every file is within the size budget and opens with its header.
 
 ## Then stop
 

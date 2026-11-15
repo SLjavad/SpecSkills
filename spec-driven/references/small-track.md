@@ -71,7 +71,7 @@ What the agent decided without asking, for the user to confirm or correct.
 - **Steps are build steps.** The self-review is not one; it is step 4 of "How it runs".
 - **`AGENTS.md` holds** the purpose, the commands, a link to the page, the working mode (`single
   agent · Size: small`), the project's own rules and the baseline line for agents with the skills —
-  and none of the template's index links, its architecture entry or its line for agents without
+  and none of the template's folder links, its architecture entry or its line for agents without
   them (senior-engineering `project-knowledge.md`).
 
 ## How it runs
@@ -93,7 +93,7 @@ What the agent decided without asking, for the user to confirm or correct.
 ## What it leaves out
 
 Requirement ids and the traceability matrix, ADRs, change folders, review files, the question and
-proposal registers, the playback file, the indexes and `docs/engineering/`. Questions are asked in
+proposal registers, the playback file and `docs/engineering/`. Questions are asked in
 the conversation and their answers written into the page. An idea beyond the page goes into the
 report as a proposal, and is built only after the user's yes.
 

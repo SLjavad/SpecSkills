@@ -8,7 +8,6 @@ every later document plugs into.
 - Decide the size and the architecture, with the user
 - AGENTS.md and CLAUDE.md
 - The docs skeleton
-- The indexes
 - Existing projects
 - Then stop
 
@@ -110,72 +109,28 @@ file, for any agent without these skills — except on the small track, which ha
 ```
 docs/
   specs/                  living specs: the system as it is (or, before release 1, as it is being built)
-    README.md             manifest: every spec file, one line each
     glossary.md           every domain term, defined once
     01-product/  02-requirements/  03-tech/
   changes/                work in flight: one folder per change, then archive/
-    README.md
-  adr/                    decisions
-    README.md
+  adr/                    decisions, one file each
   discovery/
     understanding.md      the confirmed playback of product and technical context
     questions.md          gray-area register (Q-)
     proposals.md          proposal register (P-)
-  engineering/            README.md index; stack playbooks, areas/ records, principles
+  engineering/            stack playbooks, areas/ records, principles
   handoff/                multi-agent only: PROTOCOL.md, BOARD.md
 ```
 
-Create `AGENTS.md`, `CLAUDE.md`, `docs/specs/README.md`, `docs/discovery/`, `docs/adr/` (for the
-architecture ADR) and `docs/engineering/` (its index and `principles.md`) now; create each other folder
-when its phase starts and `glossary.md` with the product spec, never as empty placeholders.
-A small-track project has only `AGENTS.md`, `CLAUDE.md` and its page (`small-track.md`).
+Create `AGENTS.md`, `CLAUDE.md`, `docs/discovery/`, `docs/adr/` (for the architecture ADR) and
+`docs/engineering/principles.md` now; create each other folder when its phase starts and `glossary.md`
+with the product spec, never as empty placeholders. No folder gets an index file (senior-engineering
+`project-knowledge.md`, "The hierarchy"). A small-track project has only `AGENTS.md`, `CLAUDE.md` and
+its page (`small-track.md`).
 
 **The initial build is change CH-001.** Its product, requirements and tech spec are written directly
 into `docs/specs/` — nothing is built yet, so there is nothing to diverge from — while its
 `proposal.md`, plan, task files and reviews live in `docs/changes/CH-001-initial-build/`. Every later
 major change writes deltas instead (`changes.md`).
-
-## The indexes
-
-**`docs/specs/README.md`** — the manifest, under 150 lines:
-
-```markdown
-# <Project> — specifications
-Status: draft | approved · Updated: YYYY-MM-DD
-Summary: The living specification — what the system is, what it must do, how it is built. Start here.
-
-## Reading paths
-- New to the project: docs/specs/01-product/overview.md → docs/specs/02-requirements/overview.md →
-  docs/specs/03-tech/architecture.md
-- Implementing a task: the files your plan step lists — nothing else by default.
-- Reviewing: the plan step, the requirement files it cites, the tech files for the components it touches.
-
-## Files
-| File | Holds | IDs |
-|---|---|---|
-| docs/specs/glossary.md | every domain term, defined once | — |
-| docs/specs/01-product/overview.md | summary, problem, value, success, scale | — |
-| docs/specs/02-requirements/functional/ordering.md | ordering capability requirements | FR-010–FR-021 |
-```
-
-List every file, one line each, with its path from the repository root. Collections — flows, rules,
-aggregates — are listed file by file too, so any living document is two hops from `AGENTS.md`. Add
-each reading path when the files it names exist.
-
-**`docs/engineering/README.md`** — the same shape, listing the stack playbooks, the area records under
-`areas/`, and `principles.md` when it exists.
-
-**`docs/changes/README.md`**:
-
-```markdown
-| Change | Title | Folder |
-|---|---|---|
-| CH-001 | Initial build | CH-001-initial-build/ |
-```
-
-**`docs/adr/README.md`**: `| ADR | Title |`, one row each.
-
-Statuses live in each change's `proposal.md` and each ADR's header, never in these indexes.
 
 ## Existing projects
 

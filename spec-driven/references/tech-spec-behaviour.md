@@ -237,7 +237,7 @@ Before declaring the tech spec done:
 | Decisions | Every significant decision is an ADR; none is decided in prose alone |
 | Citations | No component with an empty `Satisfies`, no flow without an FR id |
 | Matrix | The `Tech spec` and `Components` columns are filled in |
-| Files | Every file within budget, with its header, listed in the manifest |
+| Files | Every file within budget, with its header |
 
 Then the handoff test: **list what a competent stranger would still have to ask you.** That list is
 your remaining work. Empty it, or record each item as a `Q-` entry.

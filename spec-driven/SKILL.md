@@ -110,7 +110,7 @@ it is.
 - **Everything downstream of phase 2 cites requirement ids.** Components, flows, plan steps and
   review findings name the `FR-`/`NFR-` they serve, and the traceability matrix is the one place
   coverage is recorded.
-- **Small and findable.** Within the size budget, opening with its header, listed in its index.
+- **Small and findable.** Within the size budget, opening with its header, in its phase's folder.
 
 Before declaring a phase done, run this test: *if I handed only these files to a competent stranger, in
 another tool, what would they have to ask me?* Every answer is a gap. Fix it, or record it in the
@@ -165,7 +165,7 @@ proposals; ask for approval or corrections. Do not roll straight into the next p
 **At the tech-spec and plan gates, run a pre-mortem first** (`references/discovery.md`) and present its
 list with the summary.
 
-**After phase 4: hand off.** State that the specs and plan are complete, where they are — the manifest
+**After phase 4: hand off.** State that the specs and plan are complete, where they are — `docs/specs/`
 and the change folder — and what an implementing agent should read first. Do not begin implementing
 unless the user asks you to; in multi-agent mode, the lead hands the first step to the coder only once
 the user approves the plan and says to start.
