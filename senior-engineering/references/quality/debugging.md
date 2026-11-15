@@ -18,8 +18,9 @@ until it returns somewhere worse.
 
 ## When this applies
 
-Any failure: wrong output, a crash, a failing or flaky test, a broken build, a performance regression,
-an integration that stopped working. It applies most when the cause looks obvious or time is short —
+Any failure: wrong output, a crash, a failing or flaky test, a broken build, an integration that
+stopped working. Something too slow follows `performance.md`, which measures where this file
+reproduces. It applies most when the cause looks obvious or time is short —
 that is when guessing is most tempting and costs most. An obvious-looking cause is checked like any
 other.
 
