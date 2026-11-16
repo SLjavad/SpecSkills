@@ -42,16 +42,17 @@ way, is a rewrite under another name — and carries a rewrite's risk.
   after each. A step that fails is undone, not debugged forward.
 - **Use the automated refactorings** of the editor or language tooling where they exist; they do the
   same thing every time and miss no reference.
-- **Commit after each green step**, so any one step can be undone alone.
+- **Each green step can be undone alone** — its own commit where the project's git rules let agents
+  commit.
 - **The system works and can be released after every step.** If it cannot, the steps are too big.
 - **Contracts stay stable while callers move**: add the new form, keep the old one delegating to it,
   move the callers, then remove the old one.
 
 ## Structure and behaviour apart
 
-- **A step changes structure or behaviour, never both.** The structural change goes first, in its own
-  commit or pull request, and the behaviour change follows. Each can then be reviewed on its own
-  terms, and the structure can be undone without losing the feature.
+- **A step changes structure or behaviour, never both.** The structural change goes first, as its own
+  change, and the behaviour change follows. Each can then be reviewed on its own terms, and the
+  structure can be undone without losing the feature.
 - **When a structural need appears in the middle of a behaviour change**, finish or set aside the
   behaviour change, make the structural one separately, then continue.
 - **A behaviour difference found during a refactoring is named**, even when it fixes a bug

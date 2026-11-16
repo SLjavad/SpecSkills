@@ -128,6 +128,8 @@ it does not cover, use the closest tool that runs the dependency in a throwaway 
 - **Never substitute a different engine** — an in-memory database, SQLite standing in for another
   database, an embedded fake broker — and never mock a dependency you can run. A substitute behaves
   differently exactly where bugs hide: transactions, locking, collation, serialization, error codes.
+- **An existing module whose tests already use a substitute** keeps it for new tests there
+  (`SKILL.md` "Implement"); moving the module to the real engine is a proposal that names the risk.
 - **Pin each image to the production version**, from one place in the repository, by tag and ideally
   by digest.
 - **Start containers once per test run or per worker**, not per test, unless isolation demands it.
