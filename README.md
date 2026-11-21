@@ -1,4 +1,4 @@
-# SpecSkills
+# sdd-eng-skills
 
 **Two agent skills that make your coding agent work like a senior engineer — and take bigger work
 spec-first.**
@@ -14,8 +14,8 @@ back to plain project files for tools that don't.
 ## Quick start
 
 ```bash
-git clone https://github.com/SLjavad/SpecSkills.git
-cd SpecSkills
+git clone https://github.com/SLjavad/sdd-eng-skills.git
+cd sdd-eng-skills
 ```
 
 | Windows | macOS / Linux |
@@ -27,7 +27,7 @@ installer would touch, without writing anything.
 
 ## What you get
 
-### `senior-engineering` — the baseline for every code task
+### `software-engineer` — the baseline for every code task
 
 - **Asks instead of guessing**, and brings ideas as proposals — nothing outside the task is built
   without your yes.
@@ -43,7 +43,7 @@ installer would touch, without writing anything.
 - **Has a procedure** for debugging, for performance investigation and for safe refactoring, plus code
   review and ADRs.
 
-### `spec-driven` — spec first, for a new project or a major feature
+### `spec2code` — spec first, for a new project or a major feature
 
 - **One phase at a time**: discovery of every gray area → product spec → numbered, testable
   requirements with a traceability matrix → tech spec with ADRs and a stack playbook → a stepwise
@@ -54,19 +54,19 @@ installer would touch, without writing anything.
 - **Living specs**: a later feature is a change folder, merged into the specs when you accept it.
 - **One agent, or a lead and a coder** that work together through files.
 
-`spec-driven` builds on `senior-engineering` and links to it as `../senior-engineering/`, so the two
+`spec2code` builds on `software-engineer` and links to it as `../software-engineer/`, so the two
 sit side by side — the installer takes care of that.
 
 ## Using them
 
 | When you are… | What happens |
 |---|---|
-| Designing, coding, testing, debugging, refactoring, speeding up or reviewing code | `senior-engineering` applies throughout |
-| Starting a new project or a major feature | `spec-driven` asks whether you work with one agent or several, proposes the size, architecture and practices for you to decide, then stops for your approval at every gate |
-| Writing a script or a one-job tool | `spec-driven` takes the small track: one agent, one page, one approval |
+| Designing, coding, testing, debugging, refactoring, speeding up or reviewing code | `software-engineer` applies throughout |
+| Starting a new project or a major feature | `spec2code` asks whether you work with one agent or several, proposes the size, architecture and practices for you to decide, then stops for your approval at every gate |
+| Writing a script or a one-job tool | `spec2code` takes the small track: one agent, one page, one approval |
 
 Most tools load a skill by themselves when your request matches it. If yours doesn't, ask by name:
-*"Use the spec-driven skill to start this project."*
+*"Use the spec2code skill to start this project."*
 
 ## Installation
 
@@ -74,16 +74,16 @@ Most tools load a skill by themselves when your request matches it. If yours doe
 Projects whose integration tests run their real dependencies also need Docker, or another runtime
 Testcontainers supports.
 
-1. **Get it** — `git clone https://github.com/SLjavad/SpecSkills.git`
+1. **Get it** — `git clone https://github.com/SLjavad/sdd-eng-skills.git`
 2. **Preview** — `.\install.cmd --dry-run` on Windows, `./install.sh --dry-run` elsewhere. It lists
    every file it would add, update or remove, and writes nothing.
 3. **Install** — the same command without `--dry-run`. On Windows you can also double-click
    `install.cmd`.
-4. **Check** — start a new session and ask which skills it has: `senior-engineering` and `spec-driven`
+4. **Check** — start a new session and ask which skills it has: `software-engineer` and `spec2code`
    should be listed.
 
 There is no need to close your agent tool first; the skills load in the next session.
-**To update**, run `git -C SpecSkills pull`, then the installer again.
+**To update**, run `git -C sdd-eng-skills pull`, then the installer again.
 
 <details>
 <summary><b>Where it installs, and why it is safe to run again</b></summary>
@@ -92,7 +92,7 @@ There is no need to close your agent tool first; the skills load in the next ses
   installed, and `~/.copilot/skills/` when GitHub Copilot is. Set `CLAUDE_CONFIG_DIR` to install into
   another Claude Code folder.
 - **Backed up** — every file it replaces or removes is first copied to
-  `~/.claude/backups/spec-skills/<date-time>/`. To undo a change, copy the file back.
+  `~/.claude/backups/sdd-eng-skills/<date-time>/`. To undo a change, copy the file back.
 - **Repeatable** — it changes only what differs, and says "Already up to date" when nothing does.
 - **Contained** — it touches only the skill folders it installs; your other skills and settings keep
   their place. Those skill folders belong to the installer: installing makes each one match the
@@ -117,15 +117,15 @@ In PowerShell, `-DryRun` and `-Uninstall` work as well. On Windows the same argu
 `.\install.cmd`:
 
 ```bash
-./install.sh spec-driven
-./install.sh --uninstall spec-driven
+./install.sh spec2code
+./install.sh --uninstall spec2code
 ```
 
-- **Installing named skills** puts in only those, plus any skill they link into — `spec-driven` brings
-  `senior-engineering`, and the installer says so — and leaves the others as they are.
+- **Installing named skills** puts in only those, plus any skill they link into — `spec2code` brings
+  `software-engineer`, and the installer says so — and leaves the others as they are.
 - **Uninstalling** removes the named skills — or, with none named, both — from every tool folder. It
   refuses, and changes nothing, when a skill you keep links into one you are removing, such as
-  `senior-engineering` while `spec-driven` stays.
+  `software-engineer` while `spec2code` stays.
 - **An unknown name** stops it before anything changes, listing the skills it knows.
 
 </details>
@@ -134,7 +134,7 @@ In PowerShell, `-DryRun` and `-Uninstall` work as well. On Windows the same argu
 <summary><b>Claude Code only — clone straight into its skills folder</b></summary>
 
 ```bash
-git clone https://github.com/SLjavad/SpecSkills.git ~/.claude/skills
+git clone https://github.com/SLjavad/sdd-eng-skills.git ~/.claude/skills
 ```
 
 The skills are then live where Claude Code reads them, and updating is a `git pull`. This needs
@@ -167,15 +167,15 @@ tool's documentation if one doesn't work.
 
   ```markdown
   ## Engineering baseline
-  Before any task, read .agents/skills/senior-engineering/SKILL.md and follow it. For specs, plans,
-  reviews or multi-agent work, also read .agents/skills/spec-driven/SKILL.md. Open the reference
+  Before any task, read .agents/skills/software-engineer/SKILL.md and follow it. For specs, plans,
+  reviews or multi-agent work, also read .agents/skills/spec2code/SKILL.md. Open the reference
   files they point to only when the task needs them.
   ```
 
 - **A tool that reads only its own instruction file**: put the same lines there, or one line telling it
   to read `AGENTS.md` first.
 
-A project set up with `spec-driven` also gets `docs/engineering/principles.md` — the rules distilled for
+A project set up with `spec2code` also gets `docs/engineering/principles.md` — the rules distilled for
 any agent that works on it without the skills. A small-track project does not; one agent with the
 skills works on it.
 

@@ -54,7 +54,7 @@ with your reasons; the user decides.
   (`small-track.md`), shrinking from standard is not. **A small project takes the small track**: one
   page and one approval, and nothing below this point but `AGENTS.md` and `CLAUDE.md`.
 - **The architecture shape — the lightest one the stated scale needs**: one deployable, a modular
-  monolith, or services. When each fits is in senior-engineering's `references/architecture/` —
+  monolith, or services. When each fits is in software-engineer's `references/architecture/` —
   `modular-monolith.md` and `microservices.md`; services only for a stated need.
 - **The internal style, per module** — Clean or vertical slices, chosen from each style's "When it
   fits" (`clean.md`, `vertical-slice.md`) and the module's classification (`ddd-strategic.md`
@@ -67,7 +67,7 @@ with your reasons; the user decides.
   application.
 
 Record the size, the shape and the style — per module where the modules are already known — as one
-decision in the first ADR, the architecture ADR (senior-engineering `decision-records.md` "The
+decision in the first ADR, the architecture ADR (software-engineer `decision-records.md` "The
 architecture ADR") — `proposed`, citing the discovery answers and any open or `assumed` entries it
 rests on — and, under "Working mode" in `AGENTS.md`, the size and architecture with the ADR's link,
 and the practices. The user decides it at gate 0 or, where it rests on open questions, once they are
@@ -81,12 +81,12 @@ next change. A small-track tool that grows moves to the standard track (`small-t
 "Outgrowing it").
 
 **Size is not stakes.** Size removes documents and stops, never scrutiny: no size changes
-senior-engineering's rules, and a small tool that moves money still gets full tests on its money rules
+software-engineer's rules, and a small tool that moves money still gets full tests on its money rules
 and a security review.
 
 ## AGENTS.md and CLAUDE.md
 
-Create or update both from the templates in senior-engineering's
+Create or update both from the templates in software-engineer's
 `references/project/project-knowledge.md`, and write `docs/engineering/principles.md` from the same
 file, for any agent without these skills — except on the small track, which has none
 (`small-track.md`).
@@ -123,7 +123,7 @@ docs/
 
 Create `AGENTS.md`, `CLAUDE.md`, `docs/discovery/`, `docs/adr/` (for the architecture ADR) and
 `docs/engineering/principles.md` now; create each other folder when its phase starts and `glossary.md`
-with the product spec, never as empty placeholders. No folder gets an index file (senior-engineering
+with the product spec, never as empty placeholders. No folder gets an index file (software-engineer
 `project-knowledge.md`, "The hierarchy"). A small-track project has only `AGENTS.md`, `CLAUDE.md` and
 its page (`small-track.md`).
 
@@ -139,7 +139,7 @@ A project with code but no specs does not get a reverse-engineered bundle of eve
 change touches; the specs grow change by change. Backfill ADRs only for decisions that matter now.
 
 Its architecture is the one that exists: record its size, shape and style as the first ADR instead of
-choosing again — under the style's usual name, layered for example, even where senior-engineering has
+choosing again — under the style's usual name, layered for example, even where software-engineer has
 no file for it; changing it is a proposal, like any other. The living specs for the area describe the
 system as it is, and the first change writes deltas against them, like any later change.
 

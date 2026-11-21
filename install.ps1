@@ -30,7 +30,7 @@ foreach ($arg in $args) {
 $Repo = (Resolve-Path -LiteralPath $PSScriptRoot).Path
 $HomeDir = if ($env:USERPROFILE) { $env:USERPROFILE } else { [Environment]::GetFolderPath('UserProfile') }
 $Config = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HomeDir '.claude' }
-$Backup = Join-Path $Config ('backups\spec-skills\' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+$Backup = Join-Path $Config ('backups\sdd-eng-skills\' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 $script:Changed = $false
 
 function Report([string] $Status, [string] $What) {
@@ -109,7 +109,7 @@ function Get-LinkedSkills([string] $Skill) {
 }
 
 $mode = if ($Uninstall) { 'uninstall' } else { 'install' }
-if ($DryRun) { Write-Host "spec-skills $mode - dry run, nothing written ($Config)" } else { Write-Host "spec-skills $mode ($Config)" }
+if ($DryRun) { Write-Host "sdd-eng-skills $mode - dry run, nothing written ($Config)" } else { Write-Host "sdd-eng-skills $mode ($Config)" }
 
 $skillNames = @()
 if (Test-Path -LiteralPath (Join-Path $Repo '.git')) {

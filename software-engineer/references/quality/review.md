@@ -1,6 +1,6 @@
 # Code review lenses
 
-How to judge code — your own before reporting, or anyone's on request. spec-driven's review phase runs
+How to judge code — your own before reporting, or anyone's on request. spec2code's review phase runs
 these lenses too, after checking the code against the spec.
 
 ## Contents
@@ -105,7 +105,7 @@ and the stack playbook, and look too for what they do not list:
 
 ## Writing findings
 
-The one finding format, for every review — in a report, or in a spec-driven review file:
+The one finding format, for every review — in a report, or in a spec2code review file:
 
 ```markdown
 ### F-NN — <short title>
@@ -154,5 +154,5 @@ Implemented through: <FR-/ADR-/CH-> · Revisit when: <…>
 ```
 
 This is the one proposal format, for every kind of proposal. An optimization's evidence is a
-measurement or an estimate at a stated data size, never a hunch. In a spec-driven project the proposal
+measurement or an estimate at a stated data size, never a hunch. In a spec2code project the proposal
 goes into the register, `docs/discovery/proposals.md`; elsewhere, into the report.

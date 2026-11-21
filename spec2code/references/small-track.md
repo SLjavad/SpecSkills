@@ -64,7 +64,7 @@ What the agent decided without asking, for the user to confirm or correct.
 ```
 
 - **Every item under "What it must do" names its check.** An item nobody can check is a wish.
-- **Versions, libraries and checks follow senior-engineering**: `modern-practices.md` for what "How
+- **Versions, libraries and checks follow software-engineer**: `modern-practices.md` for what "How
   it is built" pins, `testing.md` for each check.
 - **The page holds each choice with its reason**; there are no decision records beside it.
 - **No `TBD`.** A point still open is an assumption on the page or a question to the user.
@@ -72,13 +72,13 @@ What the agent decided without asking, for the user to confirm or correct.
 - **`AGENTS.md` holds** the purpose, the commands, a link to the page, the working mode (`single
   agent · Size: small`), the project's own rules and the baseline line for agents with the skills —
   and none of the template's folder links, its architecture entry or its line for agents without
-  them (senior-engineering `project-knowledge.md`).
+  them (software-engineer `project-knowledge.md`).
 
 ## How it runs
 
 1. **Draft the page** from what the user said and what the repository holds. Ask first only what
    blocks the draft — what the tool is, or who it is for; list everything else you decided under
-   *Assumptions*. The sweep (senior-engineering "Resolving ambiguity") still runs; that section is
+   *Assumptions*. The sweep (software-engineer "Resolving ambiguity") still runs; that section is
    its record, and no discovery file is written.
 2. **One stop.** Present the page with the question for the project's own rules (`setup.md`) and at
    most four others still open — the ones that would change the page most; the rest stay
@@ -86,7 +86,7 @@ What the agent decided without asking, for the user to confirm or correct.
    go into the page, and no code is written before that.
 3. **Build it step by step**, in order. Verify each step as it says, then tick it with one line of
    result — what ran and what it showed.
-4. **Review your own work before reporting** (senior-engineering `review.md`), security included.
+4. **Review your own work before reporting** (software-engineer `review.md`), security included.
    Fix what you find, and say what you checked and what you could not.
 5. **A later change** edits the page and the code together.
 
@@ -100,7 +100,7 @@ report as a proposal, and is built only after the user's yes.
 ## What never relaxes
 
 Size removes documents and stops, never scrutiny (`setup.md`, "Size is not stakes").
-senior-engineering applies in full: ask instead of guessing, test the rules that are hard to get
+software-engineer applies in full: ask instead of guessing, test the rules that are hard to get
 right, treat security as part of correctness, keep confidential data out of remote tools, and verify
 before reporting.
 

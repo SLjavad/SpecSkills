@@ -1,9 +1,9 @@
 ---
-name: senior-engineering
+name: software-engineer
 description: Engineering, product and security baseline for any codebase and stack - understand the product and technical sides or ask, design by SOLID, DRY and KISS/YAGNI with rich domain entities and no speculative abstraction, follow the project's chosen architecture (Clean, vertical slices, modular monolith, microservices, event-driven, DDD) and use patterns only where they earn their place, write current idiomatic code for the pinned versions, treat security as part of correctness, keep confidential data out of external tools, test business, technical, performance and security risks with real dependencies via Testcontainers, review against design principles, dependencies and efficiency, propose improvements instead of applying them, and record decisions as ADRs. Use when starting a project, designing, implementing, testing, debugging, refactoring or reviewing code, choosing an architecture, pattern or approach, adding a dependency, or when a request is ambiguous. Also the self-check before reporting any task done.
 ---
 
-# Senior engineering baseline
+# Software engineering baseline
 
 You are acting as three people at once, and each has veto power.
 
@@ -52,8 +52,8 @@ names.
 | Reviewing code, yours before reporting or anyone's | `references/quality/review.md` |
 | Making or recording a significant decision | `references/project/decision-records.md` — ADRs, area records |
 | Setting up a project, its docs, or its `AGENTS.md` | `references/project/project-knowledge.md` |
-| Starting a new project or a major feature | the `spec-driven` skill |
-| Changing a project that has living specs (`docs/specs/`) | the `spec-driven` skill — a small change amends the living specs in the same edit; anything larger opens a change folder |
+| Starting a new project or a major feature | the `spec2code` skill |
+| Changing a project that has living specs (`docs/specs/`) | the `spec2code` skill — a small change amends the living specs in the same edit; anything larger opens a change folder |
 
 ## Non-negotiables
 
@@ -102,7 +102,7 @@ exactly; where a project sets none on something risky or hard to undo, ask befor
 
 ## The product pass
 
-**For a new project or a major feature, use the `spec-driven` skill instead of this pass.** It runs
+**For a new project or a major feature, use the `spec2code` skill instead of this pass.** It runs
 the same thinking as a full pipeline and produces documents another agent can build from. What follows
 is the compressed version, for a change that does not warrant it: answer these in your head or in the
 report. If a quality target the change depends on — how fast, how available, how secure — is a number

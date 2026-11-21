@@ -75,7 +75,7 @@ not here.
 - Lead: BOARD.md, then where the active steps' status lives (see "Step status"), then the task folder
   whose turn it is.
 - Coder: the step its handoff prompt names.
-- Both: the files the step links, the engineering rules (<the senior-engineering skill |
+- Both: the files the step links, the engineering rules (<the software-engineer skill |
   docs/engineering/principles.md>) and docs/engineering/stack-<name>.md — nothing more by default.
 
 ## Whose turn — read from the task folder; the status may lag a report just submitted
@@ -108,7 +108,7 @@ Lead:
    acceptance criterion testable, files in scope, latitude and verification named. A gap is fixed by
    amending the step, logged in the plan. Marks it `ready`.
 2. On a submitted report: reads it and the diff, re-runs the verification itself — the report is a
-   claim, the run is evidence — and reviews the diff (<the spec-driven and senior-engineering review
+   claim, the run is evidence — and reviews the diff (<the spec2code and software-engineer review
    files | docs/engineering/principles.md>).
 3. Responds with one of: approval — the step `done YYYY-MM-DD`, no review file, the report stays the
    record of the result; a review file, `changes-requested` (blocking findings only) or `answered`
@@ -180,7 +180,7 @@ Status: in progress | submitted | blocked · Tool and model: <…> · Base: <com
 ~~~markdown
 # Review <step id> — round N
 Verdict: changes-requested | answered · Reviewed: <commit> · Verification re-run: <commands and result>
-## Findings — in senior-engineering's references/quality/review.md format ("Writing findings")
+## Findings — in software-engineer's references/quality/review.md format ("Writing findings")
 ## Closed from earlier rounds — each with its outcome
 ## Deferred — where each one went
 ## Answers to the report's questions

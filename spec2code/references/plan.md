@@ -100,7 +100,7 @@ mode the task's report holds it instead.
 ## Verification is per step and must be real
 
 A step whose verification is "the project compiles" is unverified. Compilation proves syntax. Choose
-the method from senior-engineering's `testing.md` ("Choosing the verification method"), strongest
+the method from software-engineer's `testing.md` ("Choosing the verification method"), strongest
 first; a manual procedure is written precisely enough that someone else would perform it identically,
 and a probe's output goes into the step's result.
 

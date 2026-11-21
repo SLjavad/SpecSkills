@@ -50,7 +50,7 @@ something to say in: a small project's playbook is often a page, and none passes
 **A stack decision** — a language, a framework, or a library a reference file leaves to the stack,
 such as the broker or the resilience library — is recorded where the project records the stack: an
 ADR for one that is expensive to reverse, and the stack summary where the project keeps one
-(spec-driven's `stack.md`), with its pinned version and when its support ends. The playbook does not
+(spec2code's `stack.md`), with its pinned version and when its support ends. The playbook does not
 choose and does not repeat the versions; it says how to use what was chosen, at the pinned version.
 
 ```markdown

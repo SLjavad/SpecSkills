@@ -43,7 +43,7 @@ this step fails**. Then, for the flow as a whole:
 
 - **Transaction boundaries** — what commits together, and what is deliberately outside the transaction.
 - **Coordination**, where the flow is a process across modules or services — choreography or
-  orchestration, and who owns it (senior-engineering `event-driven.md` "Coordinating a saga").
+  orchestration, and who owns it (software-engineer `event-driven.md` "Coordinating a saga").
 - **Ordering that matters**, and why. Note anything that must be persisted before a remote call, or
   published only after a commit.
 - **Idempotency** — what makes a repeat of this flow safe, and what the repeated caller receives; or
@@ -86,9 +86,9 @@ scheduling; file and blob handling; deployment and operations — and any other 
 shares across components. Where one does not apply, say "not applicable" rather than omitting it —
 silence reads as oversight.
 
-- **Resilience** is one table, a row per outside dependency (senior-engineering `resilience.md`
+- **Resilience** is one table, a row per outside dependency (software-engineer `resilience.md`
   "Decide per dependency"); each outbound contract links its row.
-- **Caching** is one table, a row per cached data set (senior-engineering `caching.md` "Decide before
+- **Caching** is one table, a row per cached data set (software-engineer `caching.md` "Decide before
   caching").
 - **Deployment and operations**: where it runs and in which environments, how a release rolls out and
   rolls back, migrations at deploy, backup and restore, health checks and alerts.
@@ -126,7 +126,7 @@ Premature optimization and unexamined slowness are both failures. Name which ris
 
 ## Step 11 — Test strategy
 
-A decision, recorded, not a default — built on senior-engineering's `testing.md`.
+A decision, recorded, not a default — built on software-engineer's `testing.md`.
 
 **One class is not optional: pure logic carrying a rule that was hard to get right.** Money and rounding
 arithmetic, tax and commission splits, ordering and tie-breaks, parsing and code mapping,
@@ -159,7 +159,7 @@ one line — `not applicable — <reason>`. A contract test with no outside prov
 with one module, or a load test with no performance requirement behind it protects nothing. Mutation and
 architecture tests stay the default wherever there is a core or a boundary for them to guard.
 
-The table says what each level covers; the methods behind them are in senior-engineering's
+The table says what each level covers; the methods behind them are in software-engineer's
 `testing.md`. The Step 8 worked examples become the unit tests' data directly, and integration tests
 go where money moves, data is written or a dependency is crossed, rather than aiming at coverage.
 
@@ -181,7 +181,7 @@ go where money moves, data is written or a dependency is crossed, rather than ai
 
 ## Step 12 — Security
 
-Security is designed here, not bolted on at review. Build on senior-engineering's `security.md`.
+Security is designed here, not bolted on at review. Build on software-engineer's `security.md`.
 
 **Data classification**: every data class the system handles — public, internal, confidential, secret,
 personal — where each is stored, who may read it, and what must never be returned to a client or
@@ -204,7 +204,7 @@ Accepted risks: <each with an owner and a revisit date>
   secrets handling and credential lifetime, encryption at rest and in transit, rate and size limits,
   outbound-call restrictions, security logging.
 - **Model and agent features**: the tool-capability table — each tool, its side effect, who may
-  trigger it and whether the user confirms (senior-engineering `security.md` "Design and
+  trigger it and whether the user confirms (software-engineer `security.md` "Design and
   implementation rules") — and a threat row for every boundary the model crosses.
 - **Each mitigation maps to a requirement id and a test** — a mitigation with neither is a hope.
 - **Keep it current**: a change that adds a trust boundary or a data class updates the model.

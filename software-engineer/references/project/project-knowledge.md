@@ -117,7 +117,7 @@ Multi-agent: every agent starts at docs/handoff/PROTOCOL.md.
 - <the project's own non-obvious conventions, one line each>
 
 ## Engineering baseline
-Agents with the senior-engineering and spec-driven skills installed: use them.
+Agents with the software-engineer and spec2code skills installed: use them.
 Every other agent: read docs/engineering/principles.md before changing anything.
 ```
 
@@ -136,7 +136,7 @@ until the commands exist. A value proposed to the user and not yet decided is wr
 @AGENTS.md
 
 ## Claude Code
-- Skills, where installed: senior-engineering (always), spec-driven (specs, plans, reviews, multi-agent
+- Skills, where installed: software-engineer (always), spec2code (specs, plans, reviews, multi-agent
   work).
 - <Claude-only notes: MCP servers to prefer, plan-mode areas, permission notes.>
 ```
@@ -157,15 +157,15 @@ reliable — it may never open the file. On Windows, use the import, not a symli
 
 ## Engineering principles for agents without these skills
 
-At setup, write `docs/engineering/principles.md`, under 200 lines, distilled from senior-engineering
+At setup, write `docs/engineering/principles.md`, under 200 lines, distilled from software-engineer
 for this project — the one home of the baseline for any agent without these skills, in any tool, on
-any machine, since `AGENTS.md` does not repeat it. Fill it from senior-engineering's `SKILL.md`,
+any machine, since `AGENTS.md` does not repeat it. Fill it from software-engineer's `SKILL.md`,
 opening a reference only for a heading the core does not cover. Record the date and the skill it
 came from, and refresh it when the skill changes.
 
 ```markdown
 # Engineering principles
-Status: current · Distilled from: senior-engineering, YYYY-MM-DD · Owner: lead
+Status: current · Distilled from: software-engineer, YYYY-MM-DD · Owner: lead
 Summary: The rules every agent follows on this project, whatever tool it runs in.
 
 ## Non-negotiables            ask instead of guessing; no silent behaviour change; propose, never

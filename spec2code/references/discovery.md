@@ -22,7 +22,7 @@ costs a paragraph; the same assumption in code costs a rewrite.
 
 ## Sweep both sides
 
-Run senior-engineering's sweep ("Resolving ambiguity") against everything you have been told and
+Run software-engineer's sweep ("Resolving ambiguity") against everything you have been told and
 everything already in the repository. For a whole project, also cover: on the product side, the
 problem today and what it costs, money, time and units, and how success is measured; on the technical
 side, the logging, metrics, CI and secret storage already there, the expected lifespan, and whether any
@@ -64,7 +64,7 @@ Applied to: <FR-/ADR-/file>
 
 ## How to ask
 
-As senior-engineering's "Resolving ambiguity" describes, with three additions: draft first — never
+As software-engineer's "Resolving ambiguity" describes, with three additions: draft first — never
 interrogate from a blank page; ask at most four questions per round, the ones with the most impact —
 setup's own questions go with the first round and are not counted (`setup.md`); and record every
 answer immediately, in the register and in the documents it changes.
@@ -82,7 +82,7 @@ answer immediately, in the register and in the documents it changes.
 
 ## Research
 
-A design or solution choice is researched as senior-engineering's "Thinking beyond the ask" says, with
+A design or solution choice is researched as software-engineer's "Thinking beyond the ask" says, with
 queries kept generic (`security.md`). Record the sources, what each contributed and the date, in the
 ADR or the understanding file.
 
@@ -91,7 +91,7 @@ ADR or the understanding file.
 `docs/discovery/proposals.md` holds every idea that goes beyond the approved scope — a product
 improvement, a creative alternative, an optimization, a refactor, a new dependency, a better process —
 from any agent, at any phase. Each entry, `### P-NNN — <title>`, uses the one proposal format in
-senior-engineering's `references/quality/review.md` ("Improvements are proposals").
+software-engineer's `references/quality/review.md` ("Improvements are proposals").
 
 - **`idea`** is noted but not yet worked up; it becomes `proposed` once its fields are filled in.
 - **Hard rule: nothing in this register is built until the user accepts it.** An accepted proposal

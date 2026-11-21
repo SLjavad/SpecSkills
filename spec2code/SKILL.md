@@ -1,5 +1,5 @@
 ---
-name: spec-driven
+name: spec2code
 description: Runs a project spec-first as small, linked, agent-readable files - discovery of every product and technical gray area, a product spec, numbered, testable FR/NFR requirements with a traceability matrix, a technical spec with ADRs and a researched stack playbook, a stepwise plan, then review with findings recorded in files, with a one-page small track for scripts and small tools. Keeps the specs living (later features are change folders merged when accepted), makes AGENTS.md - imported by CLAUDE.md - the entry point, and runs either one agent or a lead/coder loop that communicates through files, with the user approving every decision beyond the approved spec. Use when starting a new project or major feature, writing product or technical specs, requirements or ADRs, planning an implementation, setting up multi-agent or cross-tool work, handing work to another agent, or reviewing an implementation against its spec.
 ---
 
@@ -11,7 +11,7 @@ conversation that produced them — can implement the project correctly, and spl
 loads only the pages its task needs.
 
 That constraint is what makes this method worth the effort, and it is the bar every document is held
-to. This skill builds on `senior-engineering`, which applies throughout; load both. Use the project's
+to. This skill builds on `software-engineer`, which applies throughout; load both. Use the project's
 own refactoring or cleanup skill when one exists.
 
 ## The pipeline
@@ -37,8 +37,8 @@ deltas, its plan, tasks and reviews live in its change folder, and are merged in
 the user accepts it (`references/changes.md`).
 
 **Scale the ceremony to the change.** The full pipeline is for a new project or a major feature. A small
-change needs no change folder and no separate plan: run senior-engineering's product pass, add or amend
-the affected requirements and design items in the living specs — ids, statements, the traceability
+change needs no change folder and no separate plan: run software-engineer's product pass, add or
+amend the affected requirements and design items in the living specs — ids, statements, the traceability
 row, its Plan step cell naming the change as `YYYY-MM-DD-<slug>` — in the same edit as the code, and
 report it as one step; that report is its record. In multi-agent mode the lead writes those items
 into the living specs when it marks the step `done` (`references/multi-agent.md`). Heavy process on
@@ -62,7 +62,7 @@ A single long specification is expensive for an agent to load and mostly irrelev
 Every phase writes **a folder of small topic files**, authored that way from the start — each opening
 with its header, cited by stable id, and reachable from `AGENTS.md` in two hops. The rules and the
 `AGENTS.md` and `CLAUDE.md` templates are in
-`../senior-engineering/references/project/project-knowledge.md`.
+`../software-engineer/references/project/project-knowledge.md`.
 
 - **Every plan step names the exact files it needs**, so nobody reads the whole bundle.
 - **Each fact is written once; everything else links to it.** A result, a status, a rule or a decision
@@ -75,16 +75,16 @@ Read the files for the current phase, not all of them.
 | Phase | Read |
 |---|---|
 | Small track | `references/small-track.md`, with `references/setup.md` for the mode, the size and `AGENTS.md` — not the phase files |
-| 0 — Setup | `references/setup.md`, `../senior-engineering/references/project/project-knowledge.md`, `../senior-engineering/references/project/decision-records.md` for the architecture ADR; when choosing the architecture, the style files under `../senior-engineering/references/architecture/` that `setup.md` names |
+| 0 — Setup | `references/setup.md`, `../software-engineer/references/project/project-knowledge.md`, `../software-engineer/references/project/decision-records.md` for the architecture ADR; when choosing the architecture, the style files under `../software-engineer/references/architecture/` that `setup.md` names |
 | 0 — Discovery, and at every gate | `references/discovery.md` |
 | 1 — Product spec | `references/product-spec.md` |
 | 2 — Requirements | `references/requirements.md` |
-| 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../senior-engineering/references/project/decision-records.md` for ADRs; `../senior-engineering/references/principles/modern-practices.md` for the stack playbook; the other senior-engineering references each step names |
+| 3 — Tech spec | `references/tech-spec-structure.md`, then `references/tech-spec-behaviour.md`; `../software-engineer/references/project/decision-records.md` for ADRs; `../software-engineer/references/principles/modern-practices.md` for the stack playbook; the other software-engineer references each step names |
 | 4 — Plan | `references/plan.md` |
 | A later change, any phase | `references/changes.md`, with that phase's file |
 | Multi-agent work | `references/multi-agent.md` |
-| 5 — Implementation | the plan step and the files it lists, plus `senior-engineering` |
-| 6 — Review | `references/review.md`, `../senior-engineering/references/quality/review.md`, `../senior-engineering/references/quality/security.md`, `../senior-engineering/references/quality/testing.md` |
+| 5 — Implementation | the plan step and the files it lists, plus `software-engineer` |
+| 6 — Review | `references/review.md`, `../software-engineer/references/quality/review.md`, `../software-engineer/references/quality/security.md`, `../software-engineer/references/quality/testing.md` |
 | 7 — Close | `references/changes.md` |
 
 ## The handoff contract
@@ -118,13 +118,13 @@ register.
 
 ## Working method for the spec phases
 
-**Understand, then ask — as senior-engineering's "Resolving ambiguity" describes, run as discovery**
+**Understand, then ask — as software-engineer's "Resolving ambiguity" describes, run as discovery**
 (`references/discovery.md`): draft first and mark every inference, never invent a requirement to fill
 silence, keep every gray area in the register until it is resolved, and list every `assumed` entry at
 the next gate.
 
-**Research, think, propose** — senior-engineering's "Thinking beyond the ask". Ideas go to the proposal
-register. **Hard rule: a proposal is never built until the user accepts it.**
+**Research, think, propose** — software-engineer's "Thinking beyond the ask". Ideas go to the
+proposal register. **Hard rule: a proposal is never built until the user accepts it.**
 
 **Write no implementation code during phases 1-4.** Sketching a type signature or a schema fragment
 inside the tech spec is the spec; creating project files is not. Research is the exception: to check a

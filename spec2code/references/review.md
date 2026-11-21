@@ -51,7 +51,7 @@ Then, in order:
    what would tell us? "Nothing" is a finding, whether or not the code is currently correct.
 6. **The threat model.** Every mitigation implemented and tested; no trust boundary or data class the
    model does not know about.
-7. **Every code-quality lens in senior-engineering's `review.md`** — correctness against the spec's
+7. **Every code-quality lens in software-engineer's `review.md`** — correctness against the spec's
    worked examples and edge cases, design, domain, dependencies, efficiency at the spec's stated scale,
    the security audit (always), tests, readability and leftovers — plus the architecture tests an ADR
    names.
@@ -65,7 +65,7 @@ operability, compatibility with existing clients.
 ## Finding format
 
 Every finding — in this phase's review and in a multi-agent task's review alike — uses the one finding
-format in senior-engineering's `references/quality/review.md` ("Writing findings"), with this phase's
+format in software-engineer's `references/quality/review.md` ("Writing findings"), with this phase's
 lenses: requirement-gap, conformance, unverified, silent-risk, failure-path and spec-defect. `F-` ids
 are scoped to the change and allocated in one sequence across its task reviews and phase-6 reviews —
 by the lead in multi-agent mode, by the reviewer otherwise. Cite them as `CH-007/F-12`.
@@ -77,7 +77,7 @@ decides when it is fixed.
 
 ## Verifying the requirements
 
-Take each requirement's `Verification` field and actually do it, by its method in senior-engineering's
+Take each requirement's `Verification` field and actually do it, by its method in software-engineer's
 `testing.md` — **functional as well as non-functional**. An unverified requirement is reported as
 unverified, never as met.
 

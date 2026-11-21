@@ -79,7 +79,7 @@ Bring the user a recommendation with reasons and real alternatives — researche
 **Apply the project's rules** from `AGENTS.md` — licences, version policy, tools — without asking
 again; they are the user's decisions already.
 
-Record each significant choice as an ADR (senior-engineering `decision-records.md`) with status
+Record each significant choice as an ADR (software-engineer `decision-records.md`) with status
 `proposed`, and get the user's decision before writing the rest of this phase — the playbook and every
 later step depend on it. Then summarize in `stack.md`:
 
@@ -108,7 +108,7 @@ Write `none` for a concern the system does not have, and add a row for one this 
 support dates live only here; the playbook does not repeat them.
 
 **Then write the stack playbook** — `docs/engineering/stack-<name>.md` for each stack, following
-senior-engineering's `modern-practices.md`: the current idioms, performance practice, superseded
+software-engineer's `modern-practices.md`: the current idioms, performance practice, superseded
 patterns and test toolchain for exactly these versions, researched and dated. The rest of the tech spec
 is written concretely in that ecosystem — its real type names, project layout and idioms. Generic
 pseudo-guidance is what this phase exists to avoid.
@@ -122,10 +122,10 @@ decides. Never make the architecture heavier here on your own: every layer is pa
 change. Then detail it:
 
 - **The bounded contexts**, where there is more than one: the list, a record per context and the
-  context map, in `contexts.md` (senior-engineering `ddd-strategic.md` "Recording the contexts" and
+  context map, in `contexts.md` (software-engineer `ddd-strategic.md` "Recording the contexts" and
   "The context map"). Modules follow the contexts, and the architecture ADR points to the file.
 - **The architecture ADR's module table** — each module's classification, style, persistence shape,
-  CQRS degree and event sourcing (senior-engineering `decision-records.md` "The architecture ADR",
+  CQRS degree and event sourcing (software-engineer `decision-records.md` "The architecture ADR",
   `application.md` "CQRS" and "Choosing the persistence shape") — proposed in the same dated
   addendum and decided by the user at this phase's gate.
 - **Module boundaries and the dependency direction.** List every module and what it may depend on.
@@ -138,12 +138,12 @@ change. Then detail it:
   as the architecture ADR's *Confirmation* in the same dated addendum, and built by an early plan step.
 
 Then the check for the chosen style: does anything depend in a forbidden direction, and does the
-design show any of the style's signs of drift (senior-engineering `references/architecture/`, the
+design show any of the style's signs of drift (software-engineer `references/architecture/`, the
 style's own file)? If so, say where and fix the design before continuing.
 
 ## Step 3 — Domain model
 
-Domain entities are **rich** — senior-engineering's `design.md` has the rules. One file per aggregate:
+Domain entities are **rich** — software-engineer's `design.md` has the rules. One file per aggregate:
 
 - **The aggregate root and its entities**: what each represents, its identity.
 - **Behaviour**: the intention-revealing operations the aggregate exposes, each with the invariants it
@@ -191,7 +191,7 @@ Every externally visible surface, fully specified.
   code it can return, the error body, and what a repeated call returns.
 - **Per message or event**: name, transport, queue or topic, payload with types, publisher, consumers,
   delivery guarantee, idempotency key, ordering key, and the envelope with its schema version
-  (senior-engineering `event-driven.md` "Contracts and versioning").
+  (software-engineer `event-driven.md` "Contracts and versioning").
 - **Per outbound call**: the service, the operation, request and response shapes, and a link to its
   row in the resilience table (`cross-cutting.md`, Step 9) — timeout, retry, and what your system
   does when it fails or never answers.
@@ -210,11 +210,11 @@ responsibility; its contract types, mappers and private helpers belong to its ro
 ```
 
 - **One sentence per responsibility.** If it needs "and", check the two jobs against single
-  responsibility (senior-engineering `design.md`): split the row only when they change for different
+  responsibility (software-engineer `design.md`): split the row only when they change for different
   reasons.
 - **Every component names the reason it exists.** A component whose row reads as forwarding is a layer
   with no purpose; remove it.
-- **An interface appears only where it passes the need test** in senior-engineering's `design.md`
+- **An interface appears only where it passes the need test** in software-engineer's `design.md`
   ("Balance"). Then it and its implementation are separate rows, with the module each lives in — the
   interface belongs to the layer that needs it, the implementation to the layer outside.
 - **`Satisfies` carries the requirement ids** this component exists for. An empty cell is a question to

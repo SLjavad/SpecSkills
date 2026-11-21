@@ -6,8 +6,8 @@
 !/.claude/
 /.claude/*
 !/.claude/settings.json
-!/spec-driven/
-!/senior-engineering/
+!/spec2code/
+!/software-engineer/
 !/.gitattributes
 !/install.sh
 !/install.ps1

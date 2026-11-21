@@ -35,7 +35,7 @@ Four questions, answered in writing for every trust boundary a change creates or
    owner and a revisit date.
 4. **Did we do a good enough job?** Every mitigation has a test or a check.
 
-spec-driven's tech spec holds the full template. For a small change, four short paragraphs in the
+spec2code's tech spec holds the full template. For a small change, four short paragraphs in the
 report are enough — and where the project has a threat model, add the new boundary or entry point to
 it in the same change.
 

@@ -179,7 +179,7 @@ stack ADRs have to cite them by id — that is what stops the stack being chosen
 
 **Every requirement carries a `Verification` field — functional and non-functional alike** — naming
 one method: test | evaluation | probe | exercise | structural check | dedicated plan | not verified.
-What each proves and what it records is in senior-engineering's `references/quality/testing.md`
+What each proves and what it records is in software-engineer's `references/quality/testing.md`
 ("Choosing the verification method"); choose the strongest that can run. A requirement nobody can
 show is met is indistinguishable from one that is not, and a structural check on an FR usually means
 the requirement is not testable as written.

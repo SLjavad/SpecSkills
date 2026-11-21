@@ -38,7 +38,7 @@ for arg in "$@"; do
 done
 
 CONFIG="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
-BACKUP="$CONFIG/backups/spec-skills/$(date +%Y%m%d-%H%M%S)"
+BACKUP="$CONFIG/backups/sdd-eng-skills/$(date +%Y%m%d-%H%M%S)"
 CHANGED=0
 
 report() {
@@ -178,7 +178,7 @@ else
 fi
 
 if [ "$UNINSTALL" = 1 ]; then MODE=uninstall; else MODE=install; fi
-if [ "$DRY_RUN" = 1 ]; then echo "spec-skills $MODE — dry run, nothing written ($CONFIG)"; else echo "spec-skills $MODE ($CONFIG)"; fi
+if [ "$DRY_RUN" = 1 ]; then echo "sdd-eng-skills $MODE — dry run, nothing written ($CONFIG)"; else echo "sdd-eng-skills $MODE ($CONFIG)"; fi
 
 echo "Skills: ${SELECTED[*]}"
 for note in ${NOTES[@]+"${NOTES[@]}"}; do
